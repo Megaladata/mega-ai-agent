@@ -324,7 +324,7 @@ jobs:
     name: build (macos)
     needs: verify
     if: vars.MEGALADATA_RELEASE_SKIP_MACOS != 'true'
-    runs-on: macos-14
+    runs-on: macos-15
     timeout-minutes: 120
     env:
       MEGALADATA_AI_AGENT_VERSION: ${{ needs.verify.outputs.version }}

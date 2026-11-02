@@ -1,6 +1,8 @@
 interface ImportMetaEnv {
   readonly MEGALADATA_AI_AGENT_CHANNEL: string
   readonly MEGALADATA_AI_AGENT_BROWSER_RECOVERY: boolean
+  readonly MEGALADATA_AI_AGENT_SOURCE_SHA: string | null
+  readonly MEGALADATA_AI_AGENT_SOURCE_DIRTY: boolean | null
 }
 
 interface ImportMeta {

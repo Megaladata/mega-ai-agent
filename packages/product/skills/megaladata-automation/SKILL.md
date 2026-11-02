@@ -94,12 +94,46 @@ Text File import (`imports.text`), Text File export (`exports.text`),
 Join (`transform.join_data`), Union (`transform.union_data`), and JavaScript
 (`programming.javascript`). A free canvas label is not a palette title.
 
+## One calculation of a chain
+
+If the user names a field or column, the output technical name must be exactly that name: no prefixes, translations, or suffixes. Keep this when creating fields and mappings, including REST response parsing and export.
+
+If the user asks to configure a chain and calculate it once, first configure the import and intermediate nodes with `megaladata_dock_node_apply`, `finish:"done"`, and `read:{ports:[]}`. Prepare every requested measure before the first calculation. Do not execute intermediate nodes separately unless the next node needs an active source.
+
+If configuring a node fails with `requires an active source output`, `NOT_APPLIED`, `effect_possible:false`, and `cleanup_complete:true`, execute the nearest previous source once with an existing apply, `finish:"execute"`, `inputs:[]`, and an empty patch for that type. After the confirmed execution, repeat the configuration with a new operation_id. That activation does not break the single-calculation rule. Do not recreate the source or a target node that does not exist yet. On an unknown effect, follow recovery and do not repeat the launch.
+
+Execute the last calculating node once with `finish:"execute"` and read its result. For one output use `read:{ports:[0],sample_rows:100,require_exact_numbers:true}`. A GET with a full URL and no query parameters may use `query_parameters:[]`, `inputs:[]`, and `finish:"execute"`. For several outputs, use the ports from the node contract. For a small final table, request at least its row count and check `sample_complete:true`. Take sums and source-record counts from that read. Do not add a Calculator only to answer from totals that were already read, and do not report the number of groups as the number of source records.
+
+Then configure and execute `exports.text` from that same active result without changing the calculating chain. Pass `read:{ports:[]}`: export returns `file_artifacts`, not a table port. After the calculation, do not call `megaladata_dock_node_read`: that tool executes the node again. Do not repeat Execute of calculating nodes for a read, an answer, or an export. Add rounding only when the user asks for it.
+
+## Export
+
+If the exported data contains NULL and empty strings and the user did not set an export marker, pass a non-empty `null_marker` for `exports.text` that does not collide with non-NULL values. Prefer the same non-empty marker used for import when one was set; otherwise use `NULL`. Tell the user which marker was chosen.
+
 ## Choosing nodes
 
 By default, solve the task with standard nodes from the current catalog,
 including compositions of those nodes. Before choosing JavaScript, check
 whether each required step can be expressed with the available standard nodes
 and modes.
+
+For Pearson correlation of numeric fields, use `dock_node_apply` with `target.type:"research.corr_analysis"`, `mode:"pearson"`, and complete technical-name arrays in `parameters.first_set` and `parameters.second_set`. Connect the table to input 0, `finish:"execute"`, `read.ports:[0]`. Output columns are ColSet1, ColSet1_Label, ColSet2, ColSet2_Label, and Pirson. Do not compute this correlation in Calculator or JavaScript.
+
+For a regular-expression replacement, use `target.type="transform.replace_columns"` and `mode="regex"`, not Calculator or JavaScript. In `parameters.rules` set a string field, ordered `pairs` with `from`/`to` string values, and `other={mode:"keep"}` or `null`. The first substring match replaces the whole cell with the constant; group references are not substituted. Put `(?i)` at the start of the pattern for case-insensitive matching, and omit `case_sensitive` and `precision`. `output_mode="add"` keeps the source field; `replace` replaces it. Both produce a logical `<field>_Replaced`.
+
+For outliers and extremes by SD or IQR, use `target.type:"preprocessing.elim_outlier"`, `mode:"detect"`. A new node needs `parameters.outlier` with continuous numeric `fields`, `method:"sd"` or `"iqr"`, explicit `outlier_factor` and `extreme_factor`, and `ordered`. Detect keeps original values, trains on the current input, then executes. Use `finish:"execute"` and `read.ports:[0,1,2]`: all rows, outliers excluding extremes, and extremes.
+
+For copies of previous and next records, use `target.type="transform.sliding_window"`, `mode="lag"`, and `parameters.windows=[{field:"Sales",history:3,horizon:1}]`. A new node needs an explicit `incomplete_records`: `keep_incomplete`, `drop_added`, or `drop_all_incomplete`. Input order is the time order. On an existing node, omitting a parameter keeps it, and `windows:[]` clears every window.
+
+To match two tables by keys, use `target.type:"transform.join_data"`. `mode:"right"` keeps every right-input row, `"full"` keeps both inputs, and `"difference"` keeps only left rows without a right match. Set input 0 as left and input 1 as right, `parameters.keys:[{left,right}]` for every key part, and explicit `case_sensitive` and `include_joined_keys`. Difference output contains only left-table fields. Use Join for these operations; Calculator is for row formulas.
+
+Choose the first or last N rows with `preprocessing.sampling`, `mode:"sequential"`, and `parameters:{count:N,position:"first"}` or `"last"`. Split rows sequentially with `preprocessing.data_partition`, `mode:"sequential"`, and `parameters:{train_count:N,test_count:M,allocation_order:"test_train_unused"}`. Use a normal `finish:"execute"` without training. Read ports `[0,1,2]`: all, train, and test. The combined output starts with train, then test, and its first field is boolean `IsTestSet`. Random modes and offset selection are not supported.
+
+For a binary string target and an event probability, use `target.type:"datamining.log_regression"`, `mode:"enter"`, and `parameters:{logistic:{input_fields:[...],target_field:"...",event:"...",threshold:...}}`. The event is `p >= threshold`. `finish:"execute"` trains on every current input row and runs the model; `read.ports:[0]` returns the class, probability, and original fields. `input_fields` contains only numeric factors. The intercept and epsilon 1e-10 are fixed. Use Logistic Regression for this training. Apply mode, weights, selection, validation, coefficients, and the variables output are not available yet. Request the node `parameter_schema` first.
+
+For a LinReg forecast on new data, use `mode:"apply"` on an already trained node with the saved `input_fields` and `target_field`, `inputs:[]`, and `finish:"execute"`. `enter` trains or retrains the model.
+
+For a server CSV/TSV/TXT larger than 16 MiB, or of unknown size, download it to the cache before a full import: `megaladata_dock_storage_source`, then `megaladata_dock_storage_download_start` with the returned `server_source_ref` and a new `operation_id`. Wait with the same id. Only a successful download allows the profile, exact `megaladata_file_scan`, and `megaladata_file_sample` of the returned local `output.path`. Deliver only the sample; the full file is already on the server. On `MEGALADATA_FILE_CHANGED`, stop the full calculation, find the source again, and repeat the download and exact check in a new operation. Afterward call `megaladata_dock_storage_download_cleanup` with the download operation id. Do not replace the exact check with the visible row count, and do not upload the full server file again.
 
 A JavaScript node is allowed only when the user explicitly asked to use that
 node, or a specific operation is confirmed unavailable to a standard
