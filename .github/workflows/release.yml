@@ -178,6 +178,16 @@ jobs:
           } >> "$GITHUB_OUTPUT"
           echo "Building version \`$version\` on channel \`$channel\` (prerelease: $prerelease)" >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Require release notes
+        if: github.ref_type == 'tag'
+        run: |
+          set -euo pipefail
+          notes="script/release-notes/${GITHUB_REF_NAME}.md"
+          if [ ! -s "$notes" ]; then
+            echo "::error::Release notes file is missing or empty: $notes"
+            exit 1
+          fi
+
   build:
     name: build (linux)
     needs: verify

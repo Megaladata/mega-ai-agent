@@ -21,11 +21,6 @@ if (!args.tag || !args.channel || !args.assets || !args.output)
 
 const version = args.tag.replace(/^v/, "")
 const commit = (await $`git rev-parse --verify ${args.tag + "^{commit}"}`.text()).trim()
-const previous = (
-  await $`git describe --tags --abbrev=0 --match ${"v*"} --exclude ${args.tag} ${args.tag}`.nothrow().quiet().text()
-).trim()
-const range = previous ? `${previous}..${args.tag}` : args.tag
-const changes = (await $`git log --no-merges --max-count=200 --format=${"- %h %s"} ${range}`.text()).trimEnd()
 
 const dir = path.resolve(args.assets)
 const files = (await readdir(dir, { withFileTypes: true }))
@@ -112,11 +107,15 @@ const rows = [
     .map((file) => `| ${file} | ${hashes.get(file)} | metadata |`),
   "| SHA256SUMS.txt | — | checksums of every asset above |",
 ]
-// Human-written notes for this version. Asset checksums below stay generated from this build.
-const narrativeFile = Bun.file(path.join(import.meta.dir, "release-notes", `${version}.md`))
-const narrative = (await narrativeFile.exists()) ? (await narrativeFile.text()).trim() : ""
+// The tag is v0.3.9, so the notes file is script/release-notes/v0.3.9.md.
+// Asset checksums below stay generated from this build.
+const narrativeFile = Bun.file(path.join(import.meta.dir, "release-notes", `${args.tag}.md`))
+if (!(await narrativeFile.exists())) throw new Error(`Release notes file is missing: script/release-notes/${args.tag}.md`)
+const narrative = (await narrativeFile.text()).trim()
+if (!narrative) throw new Error(`Release notes file is empty: script/release-notes/${args.tag}.md`)
 const notes = [
-  ...(narrative ? [narrative, ""] : []),
+  narrative,
+  "",
   `# Mega AI Agent ${args.tag}`,
   "",
   `- Version: ${version}`,
@@ -141,10 +140,6 @@ const notes = [
   "| --- | --- | --- |",
   ...rows,
   "",
-  // A prepared narrative already describes the version. The product history is a snapshot commit.
-  ...(narrative
-    ? []
-    : [previous ? `## Changes since ${previous}` : "## Changes", "", changes || "- No commits", ""]),
 ].join("\n")
 await Bun.write(args.output, notes)
 console.log(notes)
