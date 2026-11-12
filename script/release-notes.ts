@@ -112,7 +112,11 @@ const rows = [
     .map((file) => `| ${file} | ${hashes.get(file)} | metadata |`),
   "| SHA256SUMS.txt | — | checksums of every asset above |",
 ]
+// Human-written notes for this version. Asset checksums below stay generated from this build.
+const narrativeFile = Bun.file(path.join(import.meta.dir, "release-notes", `${version}.md`))
+const narrative = (await narrativeFile.exists()) ? (await narrativeFile.text()).trim() : ""
 const notes = [
+  ...(narrative ? [narrative, ""] : []),
   `# Megaladata AI Agent ${args.tag}`,
   "",
   `- Version: ${version}`,
@@ -137,10 +141,10 @@ const notes = [
   "| --- | --- | --- |",
   ...rows,
   "",
-  previous ? `## Changes since ${previous}` : "## Changes",
-  "",
-  changes || "- No commits",
-  "",
+  // A prepared narrative already describes the version. The product history is a snapshot commit.
+  ...(narrative
+    ? []
+    : [previous ? `## Changes since ${previous}` : "## Changes", "", changes || "- No commits", ""]),
 ].join("\n")
 await Bun.write(args.output, notes)
 console.log(notes)
