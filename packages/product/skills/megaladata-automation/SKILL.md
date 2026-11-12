@@ -287,8 +287,9 @@ every new metric in the scenario; when the sample is incomplete, do not fill
 it with unseen rows. Save the package through `package.save_checkpoint` and
 wait for the receipt. If the user did not give a path for the changed local
 package, save into the agent's own uploaded copy that was opened: the exact
-full `workspace.package_ref.path` from preparation
-(`/<user>/<identity>-0-<name>.mgp`). `conflict_policy: replace` is allowed
+full `workspace.package_ref.path` from preparation. For a new draft, save
+`<storage_directories.packages>/<name>.mgp`. That directory is the signed-in
+account folder from preparation. `conflict_policy: replace` is allowed
 only when replacing that own copy. An explicitly requested path follows the
 previous overwrite rules. Permission for the own copy does not extend to other
 files. Use `package.save_as` with reopen when the request asks for it. A saved

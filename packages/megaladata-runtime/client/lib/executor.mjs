@@ -1328,7 +1328,8 @@ function browserCapability(page, task, readNodeTargetGraph, rebindTargetEpochs, 
     if (!value.toLowerCase().endsWith('.mgp')) value += '.mgp';
     if (value.includes('/../') || value.endsWith('/..') || value.includes('/./') || /[\0\r\n]/.test(value)) throw new Error('Unsafe package path');
     const roots = task.action.effect.allowed_roots;
-    if (!Array.isArray(roots) || !roots.some(root => value === root || value.startsWith(root + '/'))) throw new Error('Package path is outside the allowed Megaladata storage root');
+    if (!Array.isArray(roots) || !roots.some(root => value === root || value.startsWith(root + '/')))
+      throw new Error('Package path is outside the allowed Megaladata storage root' + (Array.isArray(roots) && roots.length ? ': ' + roots.join(', ') : ''));
     return value;
   };
   const packageIdentity = async () => page.evaluate(() => {
@@ -1743,17 +1744,31 @@ function browserCapability(page, task, readNodeTargetGraph, rebindTargetEpochs, 
   })();
 }
 
+// The bundled catalog still names the acceptance fixture /user/data/packages.
+// A prepared session replaces that root with the host-selected account folder.
+function withSessionPackageRoot(action, directories) {
+  const root = directories?.packages
+  if (!root || action.effect?.destination_policy === 'session_storage'
+      || !['package.save_as', 'package.save_checkpoint'].includes(action.action_key)) return action
+  const copy = structuredClone(action)
+  copy.effect.allowed_roots = [root]
+  if (copy.input_schema?.properties?.path)
+    copy.input_schema.properties.path.description = `Save the package inside ${root}`
+  return copy
+}
+
 export function makeCapabilityCode(action, selectors, parameters, options = {}) {
-  if(action.effect?.destination_policy==='session_storage'){
+  const scoped = withSessionPackageRoot(action, options.storage_binding?.directories)
+  if(scoped.effect?.destination_policy==='session_storage'){
     const binding=options.storage_binding;
     if(!binding || !binding.document_id || !binding.megaladata_account)throw Error('Session storage is not prepared');
     options={...options,storage_destination:requireStorageDestination(parameters.path,binding.directories,'packages')};
   }
   const {node_target_graph_reader:readNodeTargetGraph,...serializableOptions}=options;
   if(readNodeTargetGraph!==undefined&&(typeof readNodeTargetGraph!=='function'||!options.node_target_context))throw Error('Internal node graph reader requires a bound context');
-  const handler = requireCapability(action).handler;
-  const allowedSelectors = Object.fromEntries(action.selector_symbols.map(symbol => [symbol, selectors.get(symbol)]));
-  const task = { action: structuredClone(action), selectors: structuredClone(allowedSelectors), parameters: structuredClone(parameters), ...structuredClone(serializableOptions), handler,
+  const handler = requireCapability(scoped).handler;
+  const allowedSelectors = Object.fromEntries(scoped.selector_symbols.map(symbol => [symbol, selectors.get(symbol)]));
+  const task = { action: structuredClone(scoped), selectors: structuredClone(allowedSelectors), parameters: structuredClone(parameters), ...structuredClone(serializableOptions), handler,
     ...(['packageSaveAs','packageSaveCheckpoint'].includes(handler) ? { arrangement_selector: structuredClone(arrangementSelector) } : {}) };
   const body = `(${browserCapability.toString()})(page, ${JSON.stringify(task)}, ${readNodeTargetGraph?readNodeTargetGraph.toString():'undefined'}, ${rebindNodeTargetLinkEpochs.toString()}, ${readNodeTargetLinkValidation.toString()})`;
   return ['apply', 'recover_link'].includes(task.mode) && task.receipt_namespace
@@ -2979,7 +2994,7 @@ export function createActionRuntime({ pinned, execute, artifactStore, allowCandi
         if (query.action_keys === undefined && query.node_types === undefined) return this.describe();
         if (query.action_keys !== undefined && (!Array.isArray(query.action_keys) || !query.action_keys.length
           || query.action_keys.length > 16 || new Set(query.action_keys).size !== query.action_keys.length)) throw new Error('Select distinct action keys');
-        return { actions: (query.action_keys ?? []).map(key => structuredClone(find(key))),
+        return { actions: (query.action_keys ?? []).map(key => withSessionPackageRoot(structuredClone(find(key)), getStorageBinding()?.directories)),
           node_types: query.node_types === undefined ? [] : describeNodeTypes(query.node_types, getNodeContractPins(), pinned.actions,
             allowCandidate&&nodeApplyDriverFactory?nodeApplyHandlers:new Map(),targetBuild),
           session_manifest: structuredClone(pinned.pins) };
@@ -2990,7 +3005,7 @@ export function createActionRuntime({ pinned, execute, artifactStore, allowCandi
         ...(allowCandidate && artifactStore ? {artifact_upload_tool:'dock_artifact_upload',artifact_verify_tool:'dock_artifact_verify',input_artifacts:artifactStore.list()} : {}),
         ui_action_tool: 'dock_ui_action', observation_tool: 'dock_workspace_observe', session_manifest: structuredClone(pinned.pins) };
       const action = find(actionKey);
-      return { action: structuredClone(action), session_manifest: structuredClone(pinned.pins) };
+      return { action: withSessionPackageRoot(structuredClone(action), getStorageBinding()?.directories), session_manifest: structuredClone(pinned.pins) };
     },
     requestFailure(error) {
       return { status: pending ? 'AMBIGUOUS' : 'FAILED', action_key: pending?.action.action_key ?? 'request.validate',

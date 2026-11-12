@@ -161,7 +161,9 @@ does not mean the analysis is complete.
 
 On `LOGIN_REQUIRED`, sign in in the open browser and repeat
 `megaladata_dock_prepare`. Use the selected `storage_directories` for packages,
-input files, and export. Open a local `.mgp` for editing through
+input files, and export. Save a new `.mgp` inside
+`storage_directories.packages`: that directory is the signed-in account folder
+returned by preparation. Open a local `.mgp` for editing through
 `megaladata_dock_prepare` with `intent: open_package` and `local_package_path`.
 Take the path of the agent's own opened copy from `workspace.package_ref.path`.
 `package_path` refers to a package that is already on the server.
