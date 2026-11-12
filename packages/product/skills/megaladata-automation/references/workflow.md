@@ -161,7 +161,33 @@ does not mean the analysis is complete.
 
 On `LOGIN_REQUIRED`, sign in in the open browser and repeat
 `megaladata_dock_prepare`. Use the selected `storage_directories` for packages,
-input files, and export. Files attached by the user arrive in
+input files, and export. Open a local `.mgp` for editing through
+`megaladata_dock_prepare` with `intent: open_package` and `local_package_path`.
+Take the path of the agent's own opened copy from `workspace.package_ref.path`.
+`package_path` refers to a package that is already on the server.
+For a local CSV, TSV, or TXT larger than 16 MiB, or of unknown size, call
+`megaladata_file_profile({path})` after prepare instead of Read. The response
+contains ready `source`, `format`, and `columns`. An empty `source_path` is
+filled only after delivery. Ask explicitly when a parameter is ambiguous. On a
+continuation, collect every column page: a page with `settings_complete:false`
+is not a complete import configuration. The exact count, SHA, and the first
+type violation come from a separate cancellable
+`megaladata_file_scan({profile_id})`. An interrupted pass stays partial.
+Then `megaladata_file_sample({profile_id,seed,max_records,max_bytes})` creates
+at most 8 MiB of original bytes, in whole records, with one header. Register
+its returned `path` through `megaladata_file_admit`, deliver the artifact, and
+build the scenario on the sample. Keep `profile_id` and the manifest as the
+origin of the result. Call the result a sample: the full calculation runs
+after the full file is uploaded. Until that delivery is confirmed, do not
+promise a full scenario or full totals. `MEGALADATA_FILE_CHANGED` requires a
+new profile of the source.
+
+Register small local data files after a successful prepare:
+`megaladata_file_admit({path: "the path from the prompt"})`, separately for
+each source. Do not replace those paths with a request to attach the file.
+Use the issued artifact or grant for delivery, and its confirmed destination
+for import. After preparation is repeated, register the local files again and
+obtain new artifact ids. Files attached by the user arrive in
 `input_artifacts` through the native hook. If they are absent, say that
 attachment delivery is not confirmed; do not invent a server path and do not
 treat a text fragment from the message as the full dataset. If the file is
@@ -278,7 +304,12 @@ destination and the format with the task. Done and Close do not confirm the
 file.
 
 Save the finished package at the end through `package.save_checkpoint` and
-wait for the receipt. If `dock_saved_package_state` reports `modified:true`,
+wait for the receipt. When editing a local `.mgp` and the user did not name a
+save path, use the full `workspace.package_ref.path` of the agent's own
+uploaded copy. `conflict_policy: replace` is allowed only for overwriting that
+copy. If a path was given, the previous overwrite rules apply. In the reply,
+name the full server path and say that the local file was not changed.
+If `dock_saved_package_state` reports `modified:true`,
 perform its next save step for the same owned package with a new ID before
 finishing. Do not discard the changes and do not repeat a reopen to clear a
 dirty state. An intermediate save is for a user request or before a risk of

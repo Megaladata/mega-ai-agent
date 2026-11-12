@@ -85,7 +85,7 @@ Boolean results and a type change in regex are not supported yet.
 
 Use `dock_node_apply` with `target.type="transform.replace_columns"`, `mode="regex"`, not Calculator or JavaScript.
 In `parameters.rules` set `field={kind:"input_field",name:…}`, `type="string"`, ordered `pairs` with `from={type:"string",value:<pattern>}` and `to={type:"string",value:<constant>}`, and `other={mode:"keep"}` or `null`.
-The first substring match replaces the whole cell with the constant. Group references are not substituted and are copied literally.
+The first substring match replaces the whole cell with the constant. Group references (`$` and a number) are not substituted and are copied into the value literally.
 Put `(?i)` at the start of the pattern for case-insensitive matching, and omit `case_sensitive` and `precision`.
 ASCII literals, groups, `[0-9]`, a positive `{n}`, and `^`/`$` are supported.
 `output_mode="add"` keeps the source field; `replace` replaces it. Both produce a logical `<field>_Replaced`.
@@ -96,7 +96,7 @@ Mixed exact/regex tables and other constructions must be refused, not bypassed w
 
 To find outliers and extremes by SD or IQR, use `target.type:preprocessing.elim_outlier`, `mode:detect`.
 In `parameters.outlier` of a new node set `fields` (technical names of continuous numeric fields only), `method:sd|iqr`, explicit `outlier_factor`, `extreme_factor` (not less than the first), and `ordered` (the input is already ordered; this does not sort).
-Detect keeps the original values, trains on the current input, then executes.
+Detect keeps the original values (keep/keep), trains on the current input, then executes.
 Use `finish:execute` and `read.ports:[0,1,2]`: all rows, outliers excluding extremes, and extremes.
 Omitted parameters of an existing node are kept.
 Do not compute this supported operation in Calculator or JavaScript.
@@ -106,7 +106,7 @@ Other edit policies, quality, and applying a saved model to a new input are not 
 
 For copies of previous and next records, use `target.type="transform.sliding_window"`, `mode="lag"`, and `parameters.windows=[{field:"Sales",history:3,horizon:1}]`.
 A new node requires an explicit `incomplete_records`: `keep_incomplete` adds incomplete edges, `drop_added` keeps the original rows, and `drop_all_incomplete` trims the edges while keeping real NULL.
-Input order is the time order.
+Input order is the time order. Use this node for lags. Calculator and JavaScript are not needed for this step.
 On an existing node, omitting a parameter keeps it, and `windows:[]` clears every window.
 
 ## Join
@@ -116,6 +116,7 @@ To match two tables by keys, use `target.type:"transform.join_data"`.
 Set input 0 as left and input 1 as right, `parameters.keys:[{left,right}]` for every key part, and explicit `case_sensitive` and `include_joined_keys`.
 Repeated keys keep every matched pair. A missing side is NULL.
 Difference output contains only left-table fields for any `include_joined_keys`.
+Use Join for these operations. Calculator is for formulas over rows.
 Key field names must have the same types. Resolve output-name collisions through input `mappings`.
 Run an existing node without reconfiguration using its actual `mode`, `parameters:{}`, `inputs:[]`, and `mappings:[]`.
 
@@ -123,9 +124,10 @@ Run an existing node without reconfiguration using its actual `mode`, `parameter
 
 Choose the first or last N rows with `preprocessing.sampling`, `mode:"sequential"`, and `parameters:{count:N,position:"first"}` or `"last"`.
 Split rows sequentially with `preprocessing.data_partition`, `mode:"sequential"`, and `parameters:{train_count:N,test_count:M,allocation_order:"test_train_unused"}`.
-Sizes are row counts. Use a normal `finish:"execute"` without training.
+Sizes are row counts. `allocation_order` sets the allocation order. Use a normal `finish:"execute"` without training.
 Read ports `[0,1,2]`: all, train, and test. The combined output starts with train, then test, and its first field is boolean `IsTestSet` (false for train, true for test).
 For a small complete result set `sample_rows:100,require_exact_numbers:true` and check completeness.
+Choose the export NULL marker by the rule in the Export section of the automation skill. Use the nodes named here for these operations. Calculator and JavaScript are not needed.
 For datetime fields, if the user did not set an export format, set `date_format:"yyyy/mm/dd"`, `date_separator:"-"`, `time_format:"hh:nn:ss.zzz"`, and `time_separator:":"` on `exports.text`. Empty settings use the local date format.
 Create a random sample with the same `preprocessing.sampling`, `mode:"random"`, and `parameters:{count:N,seed:42}`.
 For a random partition, use `preprocessing.data_partition`, `mode:"random"`, and `parameters:{train_count:N,test_count:M,seed:42}`. Test-set priority is off.
@@ -142,11 +144,13 @@ Give the exact event label and an explicit threshold: the event is `p >= thresho
 `read.ports:[0]` returns the class, probability, and original fields.
 `input_fields` contains only numeric factors. Identifiers and comments stay without a role.
 The intercept and epsilon 1e-10 are fixed.
+Use Logistic Regression for this supported training. Calculator and JavaScript are not needed.
 For factor selection, use the same node with `mode:"forward"`, `"backward"`, or `"stepwise"`.
 The criterion and selection thresholds are the standard Megaladata defaults.
 Choosing the criterion and custom inclusion or exclusion thresholds is not supported.
 If the user asks to change them, say so. Do not send those parameters and do not replace the request with standard selection.
 `input_fields` are the candidates. Excluded factors remain in the output table.
+Use Logistic Regression for factor selection as well.
 Apply mode, weights, validation, coefficients, and the variables output are not available yet.
 Request the node `parameter_schema` first.
 
@@ -161,6 +165,7 @@ For calendar features, use `target.type:"transform.date_time"`, `mode:"calendar"
 Input fields must already be `datetime`.
 Calendar year is `year`, ISO year is `iso_year`, ISO week number is `iso_week`, and its Monday at midnight is `iso_week_start`.
 Day of week from Monday 1 through Sunday 7 is `day_of_week`.
+Compute these features with this node.
 Also supported: `quarter`, `month`, `day_of_month`, `hour`, `minute`, `second`, `year_start`, `year_end`, `quarter_start`, `quarter_end`, `month_start`, `month_end`, and `date`.
 A field allows at most 12 transformations.
 `minute` and `second` extract integers 0…59. Missing values stay NULL.

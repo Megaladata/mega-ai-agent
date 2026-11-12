@@ -44,11 +44,15 @@ File, and Supernode. Creating or changing a scenario uses the
 
 ## 1. Local input
 
-Take the absolute path from the message or a real `.mgp` attachment.
-A `file:` link and the displayed path string help identify the file;
-authorization is checked by the backend against original user messages of this session.
-A path from the model, a tool, or synthetic text by itself does not grant
-access. Do not decode base64 and do not save the package again.
+Take the exact local path from the message or a real `.mgp` attachment.
+A relative path is resolved from the session directory. The backend checks ordinary
+read and external_directory permissions. An original visible attachment of this
+session whose realpath matches allows reading without a second request; an explicit
+deny is stronger. A `file:` link and a path string help identify the file, but
+synthetic text does not create a permission. Authorization is still checked by the
+backend against the original user messages of this session. A path from the model
+or a tool by itself does not grant access. Do not decode base64 and do not save
+the package again.
 If the exact path of an attached `.mgp` is already shown, pass it immediately to
 `package_docs_run` with the `extract` operation. Do not search for this file through `glob` and
 do not read the parent directory: permission for a specific attachment does not grant
@@ -60,8 +64,11 @@ If the user explicitly named the path as a server path, do not check it through 
 `read`, `glob`, or `package_docs_run`, even if it starts with `/`.
 Immediately ask to attach an exported local `.mgp`; a server path
 is not a local input for the generator.
-A path in text goes through read/external_directory; on refusal, report the error.
-In the standalone CLI, the original attachment uses `--file /absolute/package.mgp`.
+On any error, report the reason and the path. Add "attach the file — `--file`
+in the CLI, or an attachment in Desktop/TUI" only when a permission request was
+denied, including an automatic deny of a noninteractive CLI. Do not add that hint
+for a missing file, a directory, an OS permission error, or an explicit settings
+denial. In the standalone CLI, the original attachment uses `--file /absolute/package.mgp`.
 Do not suggest `--auto` to bypass a refusal; explicit denies remain for attachments as well.
 
 ## 2. Structure and draft

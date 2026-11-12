@@ -40,7 +40,7 @@ experience as the current contract.
 The original skill was imported from ai-skills commit
 `51ce567d1e7c168f87277bc24fa48c522e333356`, path
 `.agents/skills/megaladata-automation`. The product adaptation lives in
-`packages/product/skills/megaladata-automation` and is shipped with Megaladata
-AI Agent. The historical server publication remains for older clients until it
+`packages/product/skills/megaladata-automation` and is shipped with Mega AI
+Agent. The historical server publication remains for older clients until it
 is removed separately; the new runtime uses the local skill. The source
 resource is not modified.
