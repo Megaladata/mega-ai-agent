@@ -96,6 +96,8 @@ Join (`transform.join_data`), Union (`transform.union_data`), and JavaScript
 
 ## One calculation of a chain
 
+Before creating a node that reads an output of any node X, confirm that output is active: execute X with `megaladata_dock_node_apply` and `finish:"execute"`, or create X with a finish that activates the output, and wait for success. `finish:"done"` only saves settings. An empty table after Execute is still an active output. Do not execute an output that is already active, and do not wait for a `requires an active source output` refusal.
+
 If the user names a field or column, the output technical name must be exactly that name: no prefixes, translations, or suffixes. Keep this when creating fields and mappings, including REST response parsing and export.
 
 If the user asks to configure a chain and calculate it once, first configure the import and intermediate nodes with `megaladata_dock_node_apply`, `finish:"done"`, and `read:{ports:[]}`. Prepare every requested measure before the first calculation. Do not execute intermediate nodes separately unless the next node needs an active source.
@@ -108,6 +110,10 @@ Then configure and execute `exports.text` from that same active result without c
 
 ## Export
 
+Use UTF-8 for text export unless the user explicitly asks for `encoding:"Windows-1251"`. Megaladata 7.4.2 ignores a BOM for CP1251; set `bom:false`. Characters outside CP1251 become byte `0x1A` (SUB). Warn the user about that loss.
+
+For an Excel workbook, use `dock_node_apply` with `target.type:"exports.excel"`, `mode:"xlsx"`, input 0, and `parameters.excel_export`: a new `.xlsx` `destination` in the selected export directory, an explicit `sheet_name`, `header:"none"|"names"|"labels"`, and `overwrite:"reject"`. A new node needs all four. `finish:"execute"` and `read:{ports:[],sample_rows:0,require_exact_numbers:false}` return `output.file_artifacts`. An existing file is rejected; choose a new path. Read [Excel export](references/node-settings.md#excel-export) before configuring.
+
 If the exported data contains NULL and empty strings and the user did not set an export marker, pass a non-empty `null_marker` for `exports.text` that does not collide with non-NULL values. Prefer the same non-empty marker used for import when one was set; otherwise use `NULL`. Tell the user which marker was chosen.
 
 ## Choosing nodes
@@ -117,21 +123,38 @@ including compositions of those nodes. Before choosing JavaScript, check
 whether each required step can be expressed with the available standard nodes
 and modes.
 
-For Pearson correlation of numeric fields, use `dock_node_apply` with `target.type:"research.corr_analysis"`, `mode:"pearson"`, and complete technical-name arrays in `parameters.first_set` and `parameters.second_set`. Connect the table to input 0, `finish:"execute"`, `read.ports:[0]`. Output columns are ColSet1, ColSet1_Label, ColSet2, ColSet2_Label, and Pirson. Do not compute this correlation in Calculator or JavaScript.
+For the operations below, use the named standard node and mode. Do not replace them with Calculator or JavaScript. Before configuring, read the matching section of [node settings](references/node-settings.md), then request `parameter_schema`.
 
-For a regular-expression replacement, use `target.type="transform.replace_columns"` and `mode="regex"`, not Calculator or JavaScript. In `parameters.rules` set a string field, ordered `pairs` with `from`/`to` string values, and `other={mode:"keep"}` or `null`. The first substring match replaces the whole cell with the constant; group references are not substituted. Put `(?i)` at the start of the pattern for case-insensitive matching, and omit `case_sensitive` and `precision`. `output_mode="add"` keeps the source field; `replace` replaces it. Both produce a logical `<field>_Replaced`.
+| Task | Type and mode |
+| --- | --- |
+| Pearson correlation of numeric fields | `research.corr_analysis`, `pearson` |
+| Exact dictionary with a typed result | `transform.replace_columns`, `exact` |
+| Regular-expression replacement | `transform.replace_columns`, `regex` |
+| Outliers and extremes by SD or IQR | `preprocessing.elim_outlier`, `detect` |
+| Previous and next records | `transform.sliding_window`, `lag` |
+| Join two tables by keys | `transform.join_data`, `right` / `full` / `difference` |
+| First or last N rows | `preprocessing.sampling`, `sequential` |
+| Sequential split | `preprocessing.data_partition`, `sequential` |
+| Random sample or split | same sampling and data-partition nodes, `mode:"random"` |
+| Binary string target, probability, and factor selection | `datamining.log_regression`, `enter` / `forward` / `backward` / `stepwise` |
+| LinReg on new data | a trained LinReg node, `apply` |
+| Calendar features of a datetime field | `transform.date_time`, `calendar` |
+| Numeric missing values replaced by zero | `preprocessing.data_recovery`, `impute`, `method:"zero"` |
+| k-means, including different units | `datamining.clustering`, `k_means` |
+| Numeric intervals | `preprocessing.binning`, `internal` or `apply` |
+| Dependence of a series on earlier values | `research.auto_correlation`, `time_domain` |
+| Hodrick-Prescott trend | `preprocessing.smoothing`, `hodrick_prescott` |
+| Named Excel sheet import | `imports.excel`, `xlsx` |
+| Excel workbook export | `exports.excel`, `xlsx` |
+| JSON tree and tree to table | `trees.from_json` / `trees.to_table` |
 
-For outliers and extremes by SD or IQR, use `target.type:"preprocessing.elim_outlier"`, `mode:"detect"`. A new node needs `parameters.outlier` with continuous numeric `fields`, `method:"sd"` or `"iqr"`, explicit `outlier_factor` and `extreme_factor`, and `ordered`. Detect keeps original values, trains on the current input, then executes. Use `finish:"execute"` and `read.ports:[0,1,2]`: all rows, outliers excluding extremes, and extremes.
+Stratified, biased, and uniform-random sampling are not supported. Say so and do not substitute another algorithm. `iso_week_end` is unavailable because of a Megaladata platform error; report the limitation and do not substitute a calculated value. User-chosen logistic selection criteria and custom inclusion thresholds are not supported; do not send those parameters or silently replace the request with standard selection.
 
-For copies of previous and next records, use `target.type="transform.sliding_window"`, `mode="lag"`, and `parameters.windows=[{field:"Sales",history:3,horizon:1}]`. A new node needs an explicit `incomplete_records`: `keep_incomplete`, `drop_added`, or `drop_all_incomplete`. Input order is the time order. On an existing node, omitting a parameter keeps it, and `windows:[]` clears every window.
+When changing measures of an existing Grouping node, pass the complete `group_by` and the input 0 link. `unique_count` is available for integer and string fields.
 
-To match two tables by keys, use `target.type:"transform.join_data"`. `mode:"right"` keeps every right-input row, `"full"` keeps both inputs, and `"difference"` keeps only left rows without a right match. Set input 0 as left and input 1 as right, `parameters.keys:[{left,right}]` for every key part, and explicit `case_sensitive` and `include_joined_keys`. Difference output contains only left-table fields. Use Join for these operations; Calculator is for row formulas.
+When changing Cross Table roles, pass the complete keys, columns, facts, mode, and explicit input 0. After `finish:"done"` or a wizard inspection, execute and read the Cross Table again before connecting the next node, including export: its output is deactivated.
 
-Choose the first or last N rows with `preprocessing.sampling`, `mode:"sequential"`, and `parameters:{count:N,position:"first"}` or `"last"`. Split rows sequentially with `preprocessing.data_partition`, `mode:"sequential"`, and `parameters:{train_count:N,test_count:M,allocation_order:"test_train_unused"}`. Use a normal `finish:"execute"` without training. Read ports `[0,1,2]`: all, train, and test. The combined output starts with train, then test, and its first field is boolean `IsTestSet`. Random modes and offset selection are not supported.
-
-For a binary string target and an event probability, use `target.type:"datamining.log_regression"`, `mode:"enter"`, and `parameters:{logistic:{input_fields:[...],target_field:"...",event:"...",threshold:...}}`. The event is `p >= threshold`. `finish:"execute"` trains on every current input row and runs the model; `read.ports:[0]` returns the class, probability, and original fields. `input_fields` contains only numeric factors. The intercept and epsilon 1e-10 are fixed. Use Logistic Regression for this training. Apply mode, weights, selection, validation, coefficients, and the variables output are not available yet. Request the node `parameter_schema` first.
-
-For a LinReg forecast on new data, use `mode:"apply"` on an already trained node with the saved `input_fields` and `target_field`, `inputs:[]`, and `finish:"execute"`. `enter` trains or retrains the model.
+For a REST response turned into a table, use Calculator, then Collapse, then Cross Table. Use `trees.from_json` and `trees.to_table` when the user asks for a tree or the JSON is a flat repeated record branch. If tree support refuses the document, return to the table path after the issued recovery.
 
 For a server CSV/TSV/TXT larger than 16 MiB, or of unknown size, download it to the cache before a full import: `megaladata_dock_storage_source`, then `megaladata_dock_storage_download_start` with the returned `server_source_ref` and a new `operation_id`. Wait with the same id. Only a successful download allows the profile, exact `megaladata_file_scan`, and `megaladata_file_sample` of the returned local `output.path`. Deliver only the sample; the full file is already on the server. On `MEGALADATA_FILE_CHANGED`, stop the full calculation, find the source again, and repeat the download and exact check in a new operation. Afterward call `megaladata_dock_storage_download_cleanup` with the download operation id. Do not replace the exact check with the visible row count, and do not upload the full server file again.
 

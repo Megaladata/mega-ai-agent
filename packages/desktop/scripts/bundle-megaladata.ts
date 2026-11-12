@@ -10,5 +10,6 @@ const result = await stageResources({
   browsers,
   target: { platform: process.platform, arch: process.arch },
   flavor: "desktop",
+  knowledgeKey: process.env.MEGALADATA_MCP_API_KEY,
 })
 console.log(`Bundled Megaladata ${process.platform}-${process.arch} runtime: ${result.files} verified resource files`)

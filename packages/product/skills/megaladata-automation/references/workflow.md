@@ -19,12 +19,15 @@ or `join_type`.
 
 Before imputation, match the method to the actual field type and kind and the
 contract: the current `preprocessing.data_recovery` supports `mean` only for
-continuous integer/real, and `constant` only for discrete string.
+continuous integer/real, `zero` for numeric integer/real, and `constant` only
+for discrete string.
 A numeric constant cannot be passed as the string `"0"` to bypass that boundary.
-If a business rule says a missing payment or observation means zero, use
-Calculator `NVLF(Field, 0)` before arithmetic and filtering; keep the field type.
-If zero is also required in the original export column, replace it explicitly,
-not only by computing the debt. Without such a rule, do not substitute NULL.
+If a business rule says a missing payment or observation means zero, use the
+standard `method:"zero"` of this node without `value`. Set an allowed null
+percent and `ordered:false`. With `mean`, the threshold may leave NULL; native
+`zero` fills numeric NULL regardless of the threshold, including an all-null
+numeric field. Check the actual result before arithmetic and filtering.
+Without such a rule, do not substitute NULL.
 After a refusal, read the current output of the chosen existing source; do not
 build a formula from the output of a failed node.
 If an effect is possible, settle the original operation according to browser.md first.
@@ -121,7 +124,18 @@ and the parameters from the task. Available handlers and modes are listed in
 `knowledge.node_types`; the profile is limited to Megaladata 7.4.2.
 
 Cross Table (`transform.cross_table`, pivot) builds rows × categories ×
-aggregates of supported scalar and Variant facts. After the source changes,
+aggregates of supported scalar and Variant facts. Row keys may be discrete
+string/integer/real/boolean/datetime or continuous integer/real; keep the
+original data kind. Columns require discrete fields. Equal numeric keys,
+including 0 and -0, merge; do not round distinct reals. A NULL key is its own
+group. A continuous key may be combined with a discrete key in fixed and
+sliding. Changing roles requires the complete `row_keys`, column/columns,
+facts, `category_mode`, and an explicit input 0, including on an existing node.
+Check settings against `configuration.readback` of the completed operation.
+After Done or a wizard inspection the output is deactivated: before the next
+node or an export, execute and read the same Cross Table again through
+`megaladata_dock_node_read`, using `source_operation_id` of the last successful
+configuration with `finish=execute`. After the source changes,
 execute and read the same node again through `megaladata_dock_node_read` with
 the original `source_operation_id`; Sliding returns a new schema and the
 current category/fact/function-to-field correspondence. Reconfiguring the node

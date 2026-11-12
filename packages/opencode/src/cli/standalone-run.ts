@@ -83,7 +83,7 @@ export async function standaloneRun(args: string[], paths: ReturnType<typeof cli
       failure("MEGALADATA_RECOVERY_REQUIRED", 4)
       return
     }
-    if (mode === "run" && automation && !status.value.hasApiKey) {
+    if (mode === "run" && automation && !status.value.generation) {
       failure("MEGALADATA_CONFIG_REQUIRED", 2)
       return
     }
@@ -104,7 +104,7 @@ export async function standaloneRun(args: string[], paths: ReturnType<typeof cli
         signal?.removeEventListener("abort", interrupt)
       }
     }
-    if (mode === "tui" && !status.value.hasApiKey && process.stdin.isTTY) {
+    if (mode === "tui" && !status.value.generation && process.stdin.isTTY) {
       const { confirm, isCancel } = await import("@clack/prompts")
       const setup = await confirm({
         message: "Configure Megaladata now? You can continue an ordinary chat without a connection.",

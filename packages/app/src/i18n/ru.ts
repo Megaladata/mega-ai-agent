@@ -21,8 +21,6 @@ export const dict = {
     "Не удалось применить сохранённые настройки Megaladata. Откройте настройки Megaladata и проверьте подключение.",
   "megaladata.statusUnavailable":
     "Не удалось подтвердить применение сохранённых настроек. Откройте настройки Megaladata и проверьте состояние подключения.",
-  "megaladata.keyUnsaved": "Новый ключ ещё не сохранён.",
-  "megaladata.keyStored": "Ключ сохранён. Чтобы заменить его, введите новый.",
   "megaladata.checkedSaved": "Подключение проверено: AI-сервер доступен, вход в Megaladata выполнен.",
   "megaladata.refresh": "Обновить настройки",
   "megaladata.discardTitle": "Закрыть без сохранения?",
@@ -32,7 +30,7 @@ export const dict = {
   "megaladata.recoveryRequired":
     "Предыдущий запуск завершился до подтверждения операций Megaladata. Проверьте их результат в веб-приложении Megaladata перед продолжением. Операции не будут повторены автоматически; журналы сохранены.",
   "megaladata.acknowledgeRecovery": "Результат проверен — завершить восстановление",
-  "megaladata.invalidKey": "AI-сервер отклонил API-ключ. Проверьте ключ.",
+  "megaladata.invalidKey": "Встроенный ключ AI-сервера недействителен. Обновите приложение.",
   "megaladata.serverUnavailable": "AI-сервер недоступен. Проверьте сеть и повторите попытку.",
   "megaladata.invalidPassword": "Megaladata не подтвердил вход. Проверьте имя пользователя и пароль.",
   "megaladata.accountMismatch": "Открыта сессия другого пользователя Megaladata. Подключение не сохранено.",
@@ -43,13 +41,11 @@ export const dict = {
   "megaladata.later": "Позже",
   "megaladata.welcome": "Добро пожаловать в Megaladata AI Agent",
   "megaladata.description":
-    "Подключите AI-сервер и веб-приложение Megaladata. Эти параметры всегда доступны в разделе Megaladata.",
+    "Подключите веб-приложение Megaladata. Эти параметры всегда доступны в разделе Megaladata.",
   "megaladata.desktopOnly": "Подключение Megaladata доступно в установленном приложении.",
-  "megaladata.apiKey": "API-ключ Megaladata AI сервера",
   "megaladata.url": "Адрес веб-приложения Megaladata",
   "megaladata.username": "Имя пользователя Megaladata",
   "megaladata.password": "Пароль Megaladata",
-  "megaladata.keySaved": "Ключ сохранён. Оставьте поле пустым, чтобы не менять его.",
   "megaladata.passwordSaved": "Пароль сохранён. Введите новый или выберите использование пустого пароля.",
   "megaladata.emptyPassword": "Использовать пустой пароль",
   "megaladata.folder": "Папка пользователя в Megaladata",

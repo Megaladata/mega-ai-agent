@@ -136,7 +136,7 @@ export function megaladataHostPort(port: HostPort, service: Awaited<ReturnType<t
     if (run.lease) return run.lease
     const status = await service.api.status()
     if (run.lease) return run.lease
-    if (!status.hasApiKey) throw new Error("MEGALADATA_CONFIG_REQUIRED")
+    if (!status.generation) throw new Error("MEGALADATA_CONFIG_REQUIRED")
     if (preparation && status.state === "starting") {
       // Reuse this generation's startup request; it spends the prepare budget.
       preparation.waited = true

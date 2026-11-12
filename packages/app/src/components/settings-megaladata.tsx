@@ -92,22 +92,6 @@ export function SettingsMegaladata(props: { onSaved?: () => void; onLater?: () =
               >
                 <fieldset disabled={form.disabled()} class="flex flex-col gap-4">
                   <TextField
-                    label={language.t("megaladata.apiKey")}
-                    type="password"
-                    required={!form.state.baseline?.hasApiKey}
-                    value={form.state.apiKey}
-                    placeholder={form.state.baseline?.hasApiKey ? "••••••••" : undefined}
-                    description={
-                      form.state.apiKey
-                        ? language.t("megaladata.keyUnsaved")
-                        : form.state.baseline?.hasApiKey
-                          ? language.t("megaladata.keyStored")
-                          : undefined
-                    }
-                    onChange={(apiKey) => form.edit({ apiKey })}
-                    autocomplete="off"
-                  />
-                  <TextField
                     label={language.t("megaladata.url")}
                     type="url"
                     value={form.state.url}

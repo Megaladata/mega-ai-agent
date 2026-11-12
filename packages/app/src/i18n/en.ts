@@ -23,8 +23,6 @@ export const MEGALADATA_ENGLISH = {
   "megaladata.applyFailed": "Saved Megaladata settings could not be applied. Open Megaladata settings to review the connection.",
   "megaladata.statusUnavailable":
     "Could not confirm whether the saved settings were applied. Open Megaladata settings to check the status.",
-  "megaladata.keyUnsaved": "The new key has not been saved yet.",
-  "megaladata.keyStored": "A key is saved. Enter a new key to replace it.",
   "megaladata.checkedSaved": "Connection verified: the AI server is accessible and Megaladata sign-in succeeded.",
   "megaladata.refresh": "Refresh settings",
   "megaladata.discardTitle": "Close without saving?",
@@ -34,7 +32,7 @@ export const MEGALADATA_ENGLISH = {
   "megaladata.recoveryRequired":
     "The previous run ended before Megaladata operations were confirmed. Check their results in the Megaladata web application before continuing. Operations will not be replayed automatically; their journals are preserved.",
   "megaladata.acknowledgeRecovery": "Results checked — finish recovery",
-  "megaladata.invalidKey": "The AI server rejected the API key. Check your key.",
+  "megaladata.invalidKey": "The built-in AI server key was rejected. Update the application.",
   "megaladata.serverUnavailable": "The AI server is unavailable. Check the network and retry.",
   "megaladata.invalidPassword": "Megaladata did not confirm login. Check your username and password.",
   "megaladata.accountMismatch": "The Megaladata session belongs to another account. Settings were not saved.",
@@ -45,13 +43,11 @@ export const MEGALADATA_ENGLISH = {
   "megaladata.later": "Later",
   "megaladata.welcome": "Welcome to Megaladata AI Agent",
   "megaladata.description":
-    "Connect your AI server and Megaladata web application. You can change these settings anytime in Megaladata.",
+    "Connect the Megaladata web application. You can change these settings anytime in Megaladata.",
   "megaladata.desktopOnly": "Megaladata connections are available in the desktop application.",
-  "megaladata.apiKey": "Megaladata AI server API key",
   "megaladata.url": "Megaladata web application URL",
   "megaladata.username": "Megaladata username",
   "megaladata.password": "Megaladata password",
-  "megaladata.keySaved": "A key is saved. Leave this field empty to keep it.",
   "megaladata.passwordSaved": "A password is saved. Enter a replacement or choose an empty password.",
   "megaladata.emptyPassword": "Use an empty password",
   "megaladata.folder": "Megaladata user folder",

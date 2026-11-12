@@ -13,7 +13,7 @@ export function DesktopFirstLaunchOnboarding(props: { initialUrl: string; onLoad
     void runFirstLaunchOnboarding().finally(() => {
       props.onLoaded()
       void window.api.megaladata.read().then((connection) => {
-        if (connection.hasApiKey) return
+        if (connection.generation) return
         void dialog.show(() => (
           <Dialog fit class="megaladata-dialog">
             <SettingsMegaladata wizard onSaved={() => dialog.close()} onLater={() => dialog.close()} />

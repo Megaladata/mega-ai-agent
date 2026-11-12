@@ -5,6 +5,7 @@ import type { launchNodeHost } from "@megaladata-ai-agent/megaladata-host/node-c
 const setupSchema = Schema.Struct({
   url: Schema.optionalKey(Schema.String),
   username: Schema.optionalKey(Schema.String),
+  // Older setup scripts still send their own MCP key; the built-in key replaced it.
   apiKey: Schema.optionalKey(Schema.String),
   password: Schema.optionalKey(Schema.String),
 })
@@ -15,15 +16,10 @@ const validation = Schema.decodeUnknownOption(Megaladata.Validation)
 export function setupCandidate(json: string, current: Megaladata.View): Megaladata.Candidate {
   const decoded = setup(json, { onExcessProperty: "error" })
   if (Option.isNone(decoded)) throw new Error("CLI_SETUP_INVALID")
-  if (decoded.value.apiKey === "") throw new Error("MEGALADATA_API_KEY_REQUIRED")
   return {
     revision: current.revision,
     url: decoded.value.url ?? current.url,
     username: decoded.value.username ?? current.username,
-    apiKey:
-      decoded.value.apiKey === undefined
-        ? { operation: "preserve" }
-        : { operation: "replace", value: decoded.value.apiKey },
     password:
       decoded.value.password === undefined
         ? { operation: "preserve" }
@@ -65,7 +61,7 @@ export async function megaladataManagement(
     })
   }
   if (command === "check") {
-    if (!current.hasApiKey) throw new Error("MEGALADATA_CONFIG_REQUIRED")
+    if (!current.generation) throw new Error("MEGALADATA_CONFIG_REQUIRED")
     const checked = validation(await host.request("connection.check", setupCandidate("{}", current)))
     if (Option.isNone(checked)) throw new Error("MEGALADATA_REPLY_INVALID")
     return {
@@ -104,11 +100,6 @@ async function readSetup() {
 async function interactiveSetup(current: Megaladata.View): Promise<Megaladata.Candidate> {
   if (!process.stdin.isTTY) throw new Error("CLI_STDIN_REQUIRED")
   const { password, text, select } = await import("@clack/prompts")
-  const apiKey = await password({
-    message: current.hasApiKey ? "API key (Enter keeps the current one)" : "API key",
-    output: process.stderr,
-  })
-  if (typeof apiKey !== "string") throw new Error("CLI_CANCELLED")
   const url = await text({
     message: "Megaladata URL",
     defaultValue: current.url,
@@ -139,7 +130,6 @@ async function interactiveSetup(current: Megaladata.View): Promise<Megaladata.Ca
     JSON.stringify({
       url,
       username,
-      ...(apiKey ? { apiKey } : {}),
       ...(mode === "preserve" ? {} : { password: secret }),
     }),
     current,

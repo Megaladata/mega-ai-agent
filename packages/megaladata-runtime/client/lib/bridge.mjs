@@ -95,6 +95,9 @@ export async function createBridge(config, session, { browserTransport: managedB
   if (config.closeSavedPackageOnShutdown !== undefined && typeof config.closeSavedPackageOnShutdown !== 'boolean'
       || config.closeSavedPackageOnShutdown === true && config.acceptanceCleanupPackage)
     throw Error('Invalid private saved-package cleanup policy');
+  if (config.bundledCatalog !== undefined && typeof config.bundledCatalog !== 'boolean'
+      || config.bundledCatalog === true && config.mode !== 'executor-replay')
+    throw Error('Invalid bundled action catalog policy');
   // Browser recovery leases the managed user-v1 page only; other modes keep their own browser contract.
   if (config.browserRecovery !== undefined && typeof config.browserRecovery !== 'boolean'
       || config.browserRecovery === true && (config.mode !== 'executor-replay' || config.resultProfile !== 'user-v1'

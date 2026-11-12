@@ -48,7 +48,6 @@ export async function standaloneCommand(args: string[], paths: ReturnType<typeof
                   "CLI_SETUP_TOO_LARGE",
                   "CLI_STDIN_REQUIRED",
                   "MEGALADATA_CONFIG_REQUIRED",
-                  "MEGALADATA_API_KEY_REQUIRED",
                   "MEGALADATA_CANDIDATE_INVALID",
                   "MEGALADATA_URL_INVALID",
                   "MEGALADATA_USERNAME_INVALID",

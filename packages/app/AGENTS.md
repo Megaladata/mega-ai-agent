@@ -53,7 +53,7 @@ Core workflow:
 
 - Agent selection (`showCustomAgents`) is on by default for new installations, including after the first Desktop/web initialization. Profiles that are already initialized keep the user's choice; regression: `src/context/settings.test.ts`.
 - `src/components/settings-megaladata.tsx` is the shared first-run/settings form; `megaladata-button.tsx` keeps access prominent. Desktop operations go through the platform/preload contract.
-- Ask API key, URL, username and password only. Default URL/username come from Product; password is empty and has no placeholder. Never add a folder input or folder availability check; use `/<username>` in runtime. Keep provider/model connection in the existing settings flow.
+- Ask URL, username and password only; the knowledge service key is built in and the form never sends one. Default URL/username come from Product; password is empty and has no placeholder. Never add a folder input or folder availability check; use `/<username>` in runtime. Keep provider/model connection in the existing settings flow.
 - Never render stored secrets back from main. Connection changes may be pending until the active generation is released; display the actual state rather than treating save as immediate activation.
 - New-chat branding comes from `@opencode-ai/ui/v2/wordmark-v2`, used by `src/pages/new-session/new-session-view.tsx`. The requested text is `Megaladata AI`; changing the legacy Logo alone does not update this screen.
 - Validate UI in an isolated test application/profile, preserving the user's running session. See [desktop checks](../desktop/AGENTS.md) and [connection ownership](../desktop/src/main/megaladata/AGENTS.md).

@@ -4,11 +4,15 @@ export const DATE_TIME_OPERATIONS=Object.freeze(Object.fromEntries([
  ['year',4,'DoNumber','Year','Y','integer'],['quarter',5,'DoNumber','Quarter','Q','integer'],
  ['month',6,'DoNumber','Month','M','integer'],['day_of_month',10,'DoNumber','Day of month','DM','integer'],
  ['hour',12,'DoNumber','Hours','HRS','integer'],
+ ['minute',13,'DoNumber','Minutes','MIN','integer'],['second',14,'DoNumber','Seconds','SEC','integer'],
  ['year_start',4,'DoDateTimeFirst','Year','Y','datetime'],['year_end',4,'DoDateTimeLast','Year','Y','datetime'],
  ['quarter_start',0,'DoDateTimeFirst','Year + quarter','YQ','datetime'],['quarter_end',0,'DoDateTimeLast','Year + quarter','YQ','datetime'],
  ['month_start',1,'DoDateTimeFirst','Year + month','YM','datetime'],['month_end',1,'DoDateTimeLast','Year + month','YM','datetime'],
  ['date',16,'DoDateTimeFirst','Date','D','datetime'],
-].map(([operation,func,flag,label,suffix,type])=>[operation,Object.freeze({operation,func,flag,label,suffix,type})])));
+ ['iso_year',4,'DoNumber','Year','Y','integer',true],['iso_week',7,'DoNumber','Week','WY','integer',true],
+ ['iso_week_start',2,'DoDateTimeFirst','Year + week','YW','datetime',true],
+ ['day_of_week',11,'DoNumber','Day of week','DW','integer'],
+].map(([operation,func,flag,label,suffix,type,iso=false])=>[operation,Object.freeze({operation,func,flag,label,suffix,type,iso})])));
 const need=(v,m)=>{if(!v)throw Error('Date/time: '+m);};
 export function validateDateTimeParameters(p,mode,request){
  need(mode==='calendar','unsupported mode');
