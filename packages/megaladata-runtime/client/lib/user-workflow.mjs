@@ -73,6 +73,8 @@ export function createUserWorkflowBindings() {
       if(artifact&&outcome?.status==='SUCCEEDED'&&outcome.cleanup_complete===true&&outcome.upload_completion_verified===true
         &&typeof outcome.destination==='string'&&outcome.destination.startsWith('/'))
         uploads.set(result.upload_operation_id,{artifact_id:artifact,destination:outcome.destination});
+        if(result.operation_id&&result.operation_id!==result.upload_operation_id)
+          uploads.set(result.operation_id,{artifact_id:artifact,destination:outcome.destination});
     },
     remember({ document_id, workflow_ref }) {
       if (typeof document_id !== 'string' || !workflow_ref?.workflow_id || !Array.isArray(workflow_ref.navigation_path)) return;
@@ -101,7 +103,7 @@ export function createUserWorkflowBindings() {
       if(request.target.kind==='new'&&request.target.type==='exports.text'&&parameters&&typeof parameters==='object'&&!Array.isArray(parameters))
         parameters={...exportCreationDefaults,...parameters};
       if(request.target.kind==='new'&&request.target.type==='imports.text'&&parameters?.settings&&parameters.preview_only!==true){
-        const settings=parameters.settings,upload=uploads.get(parameters.source?.upload_operation_id);
+        const settings=parameters.settings,uploadId=parameters.source?.upload_operation_id,upload=uploads.get(uploadId)??uploads.get(uploadId+':upload');
         parameters={...parameters,settings:{...settings,
           source:{encoding:'UTF-8',rows_to_skip:0,first_line_as_title:true,
             ...(upload&&upload.artifact_id===parameters.source?.artifact_id?{source_path:upload.destination}:{}),...settings.source},

@@ -88,14 +88,18 @@ export function verifyTextImportSource(parameters,uploads,uploadHistory,storageP
     validateTextImportPatch({source:{source_path:storageProof.destination}});
     return verified({source:structuredClone(storageProof)});
   }
-  const u=one(uploads.filter(u=>u.operation_id===s.upload_operation_id),'Verified upload operation is missing or ambiguous');
+  const requested=s.upload_operation_id;
+  const exact=uploads.filter(u=>u.operation_id===requested);
+  // dock_artifact_deliver reports its own operation_id; the upload receipt is `<id>:upload`.
+  const matched=exact.length?exact:uploads.filter(u=>u.operation_id===requested+':upload');
+  const u=one(matched,'Verified upload operation is missing or ambiguous');
   const proof=verifiedLocalDelivery(u.artifact,u.outcome);
-  requireValue(u.outcome.operation_id===s.upload_operation_id&&u.artifact.artifact_id===s.artifact_id
+  requireValue(u.outcome.operation_id===u.operation_id&&u.artifact.artifact_id===s.artifact_id
     &&proof.destination===(parameters.settings.source?.source_path??proof.destination)
     &&(s.bytes===undefined||s.bytes===proof.bytes)&&(s.sha256===undefined||s.sha256===proof.sha256),
     'Upload bytes, digest, artifact or exact destination do not match the source');
   validateTextImportPatch({source:{source_path:proof.destination}});
-  const source={...s,...proof};
+  const source={...s,...proof,upload_operation_id:u.operation_id};
   if(uploadHistory)source.lineage=verifyUploadLineage(source,uploadHistory);
   return verified({source});
   } catch(error) {

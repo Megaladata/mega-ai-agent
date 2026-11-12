@@ -111,7 +111,8 @@ renames or exclusions, use output `mappings.changes`; Dock keeps the other
 fields. `mappings.fields` is the complete list of every field. Both forms at
 once are forbidden; a node's required fields cannot be excluded. For a new
 Text File import (`imports.text`), `source_path` may be omitted after a
-successful delivery: Dock takes the exact path from `upload_operation_id`.
+successful delivery: Dock takes the exact path from the delivery `operation_id`
+or from its returned `upload_operation_id`.
 The default is UTF-8, a header on the first row, skip 0 rows, comma separator,
 decimal point, empty NULL, and a double quote; explicit values are kept. You
 set the column types and names. A new Text File export (`exports.text`)
