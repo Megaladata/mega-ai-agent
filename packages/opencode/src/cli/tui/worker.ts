@@ -11,7 +11,7 @@ import { AppRuntime } from "@/effect/app-runtime"
 import { Effect } from "effect"
 import { disposeAllInstancesAndEmitGlobalDisposed } from "@/server/global-lifecycle"
 import { HttpApiApp } from "@/server/routes/instance/httpapi/server"
-import { MegaladataHost } from "@megaladata-ai-agent/megaladata-host/adapter"
+import { MegaladataHost } from "@mega-ai-agent/megaladata-host/adapter"
 import { workerMegaladataBridge } from "./megaladata-bridge"
 
 const megaladata = workerMegaladataBridge((data) => Rpc.emit("megaladata.request", data))

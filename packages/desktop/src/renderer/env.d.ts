@@ -3,7 +3,7 @@ import type { ElectronAPI } from "../preload/types"
 declare global {
   interface Window {
     api: ElectronAPI
-    __MEGALADATA_AI_AGENT__?: {
+    __MEGA_AI_AGENT__?: {
       deepLinks?: string[]
     }
   }

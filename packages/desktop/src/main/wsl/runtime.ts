@@ -265,7 +265,7 @@ export async function installWslDistro(name: string, opts?: RunWslOptions) {
 }
 
 export async function installWslOpencode(version: string, distro: string, opts?: RunWslOptions): ReturnType<typeof runInteractiveCommand> {
-  throw new Error("Install Megaladata AI Agent in the WSL distribution manually. Bundled Linux desktop does not install WSL backends.")
+  throw new Error("Install Mega AI Agent in the WSL distribution manually. Bundled Linux desktop does not install WSL backends.")
 }
 
 export async function probeWslDistro(name: string, opts?: RunWslOptions): Promise<WslDistroProbe> {
@@ -303,7 +303,7 @@ export async function resolveWslOpencode(distro: string, opts?: RunWslOptions) {
   return firstLine(
     (
       await runWslSh(
-        'if [ -x "$HOME/.megaladata-ai-agent/bin/opencode" ]; then printf "%s\\n" "$HOME/.megaladata-ai-agent/bin/opencode"; fi',
+        'if [ -x "$HOME/.mega-ai-agent/bin/opencode" ]; then printf "%s\\n" "$HOME/.mega-ai-agent/bin/opencode"; fi',
         distro,
         opts,
       )

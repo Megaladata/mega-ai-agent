@@ -23,17 +23,17 @@ import { skillSource } from "@/product/skill-source"
 const CLAUDE_EXTERNAL_DIR = ".claude"
 const AGENTS_EXTERNAL_DIR = ".agents"
 const EXTERNAL_SKILL_PATTERN = "skills/**/SKILL.md"
-const MEGALADATA_AI_AGENT_SKILL_PATTERN = "{skill,skills}/**/SKILL.md"
+const MEGA_AI_AGENT_SKILL_PATTERN = "{skill,skills}/**/SKILL.md"
 const SKILL_PATTERN = "**/SKILL.md"
 
 // Built-in skill that ships with opencode. The model's intuition for what an
-// megaladata-ai-agent.json should look like is often wrong, and opencode hard-fails on
+// mega-ai-agent.json should look like is often wrong, and opencode hard-fails on
 // invalid config, so users hit cryptic startup errors. Loading this skill
 // when the model is asked to touch opencode's own config files gives it the
 // actual schemas instead of guesses.
 const CUSTOMIZE_OPENCODE_SKILL_NAME = "customize-opencode"
 const CUSTOMIZE_OPENCODE_SKILL_DESCRIPTION =
-  "Use ONLY when the user is editing or creating opencode's own configuration: megaladata-ai-agent.json, megaladata-ai-agent.jsonc, files under .megaladata-ai-agent/, or files under ~/.config/opencode/. Also use when creating or fixing opencode agents, subagents, skills, plugins, MCP servers, or permission rules. Do not use for the user's own application code, or for any project that is not configuring opencode itself."
+  "Use ONLY when the user is editing or creating opencode's own configuration: mega-ai-agent.json, mega-ai-agent.jsonc, files under .mega-ai-agent/, or files under ~/.config/opencode/. Also use when creating or fixing opencode agents, subagents, skills, plugins, MCP servers, or permission rules. Do not use for the user's own application code, or for any project that is not configuring opencode itself."
 const CUSTOMIZE_OPENCODE_SKILL_BODY = SkillPlugin.CustomizeOpencodeContent
 
 export const Info = Schema.Struct({
@@ -222,7 +222,7 @@ const discoverSkills = Effect.fnUntraced(function* (
 
   const configDirs = yield* config.directories()
   for (const dir of configDirs) {
-    yield* scan(state, dir, MEGALADATA_AI_AGENT_SKILL_PATTERN)
+    yield* scan(state, dir, MEGA_AI_AGENT_SKILL_PATTERN)
   }
 
   const cfg = yield* config.get()

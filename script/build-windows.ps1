@@ -71,7 +71,7 @@ if (-not $SkipInstall) {
     "--linker", "hoisted",
     "--ignore-scripts",
     "--filter", "@opencode-ai/desktop",
-    "--filter", "@megaladata-ai-agent/megaladata-host",
+    "--filter", "@mega-ai-agent/megaladata-host",
     "--filter", "opencode"
   )
 
@@ -86,13 +86,13 @@ if (-not $SkipInstall) {
   Invoke-Bun -WorkingDirectory (Join-Path $repo "packages/core") -Arguments @("run", "fix-node-pty")
 }
 
-$previousChannel = $env:MEGALADATA_AI_AGENT_CHANNEL
-$previousNode = $env:MEGALADATA_AI_AGENT_NODE_SOURCE
-$previousBrowser = $env:MEGALADATA_AI_AGENT_BROWSER_SOURCE
+$previousChannel = $env:MEGA_AI_AGENT_CHANNEL
+$previousNode = $env:MEGA_AI_AGENT_NODE_SOURCE
+$previousBrowser = $env:MEGA_AI_AGENT_BROWSER_SOURCE
 try {
-  $env:MEGALADATA_AI_AGENT_CHANNEL = $Channel
-  $env:MEGALADATA_AI_AGENT_NODE_SOURCE = $node
-  $env:MEGALADATA_AI_AGENT_BROWSER_SOURCE = $browsers
+  $env:MEGA_AI_AGENT_CHANNEL = $Channel
+  $env:MEGA_AI_AGENT_NODE_SOURCE = $node
+  $env:MEGA_AI_AGENT_BROWSER_SOURCE = $browsers
 
   if ($Product -in @("Desktop", "Both")) {
     $desktopOutput = Join-Path $output "desktop"
@@ -113,7 +113,7 @@ try {
   }
 }
 finally {
-  $env:MEGALADATA_AI_AGENT_CHANNEL = $previousChannel
-  $env:MEGALADATA_AI_AGENT_NODE_SOURCE = $previousNode
-  $env:MEGALADATA_AI_AGENT_BROWSER_SOURCE = $previousBrowser
+  $env:MEGA_AI_AGENT_CHANNEL = $previousChannel
+  $env:MEGA_AI_AGENT_NODE_SOURCE = $previousNode
+  $env:MEGA_AI_AGENT_BROWSER_SOURCE = $previousBrowser
 }

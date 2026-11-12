@@ -18,7 +18,7 @@ opencode web
 สิ่งนี้จะเริ่มต้นเซิร์ฟเวอร์ท้องถิ่นบน `127.0.0.1` ด้วยพอร์ตที่มีอยู่แบบสุ่มและเปิด OpenCode โดยอัตโนมัติในเบราว์เซอร์เริ่มต้นของคุณ
 
 :::caution
-หากไม่ได้ตั้งค่า `MEGALADATA_AI_AGENT_SERVER_PASSWORD` เซิร์ฟเวอร์จะไม่ปลอดภัย นี่เป็นเรื่องปกติสำหรับการใช้งานภายในเครื่อง แต่ควรตั้งค่าสำหรับการเข้าถึงเครือข่าย
+หากไม่ได้ตั้งค่า `MEGA_AI_AGENT_SERVER_PASSWORD` เซิร์ฟเวอร์จะไม่ปลอดภัย นี่เป็นเรื่องปกติสำหรับการใช้งานภายในเครื่อง แต่ควรตั้งค่าสำหรับการเข้าถึงเครือข่าย
 :::
 
 :::tip[ผู้ใช้ Windows]
@@ -80,13 +80,13 @@ opencode web --cors https://example.com
 
 ### การรับรองความถูกต้อง
 
-เพื่อป้องกันการเข้าถึง ให้ตั้งรหัสผ่านโดยใช้ตัวแปรสภาพแวดล้อม `MEGALADATA_AI_AGENT_SERVER_PASSWORD`:
+เพื่อป้องกันการเข้าถึง ให้ตั้งรหัสผ่านโดยใช้ตัวแปรสภาพแวดล้อม `MEGA_AI_AGENT_SERVER_PASSWORD`:
 
 ```bash
-MEGALADATA_AI_AGENT_SERVER_PASSWORD=secret opencode web
+MEGA_AI_AGENT_SERVER_PASSWORD=secret opencode web
 ```
 
-ชื่อผู้ใช้มีค่าเริ่มต้นเป็น `opencode` แต่สามารถเปลี่ยนได้ด้วย `MEGALADATA_AI_AGENT_SERVER_USERNAME`
+ชื่อผู้ใช้มีค่าเริ่มต้นเป็น `opencode` แต่สามารถเปลี่ยนได้ด้วย `MEGA_AI_AGENT_SERVER_USERNAME`
 
 ---
 
@@ -126,7 +126,7 @@ opencode attach http://localhost:4096
 
 ## ไฟล์กำหนดค่า
 
-คุณยังสามารถกำหนดการตั้งค่าเซิร์ฟเวอร์ในไฟล์กำหนดค่า `megaladata-ai-agent.json` ของคุณได้:
+คุณยังสามารถกำหนดการตั้งค่าเซิร์ฟเวอร์ในไฟล์กำหนดค่า `mega-ai-agent.json` ของคุณได้:
 
 ```json
 {

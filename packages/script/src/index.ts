@@ -18,27 +18,27 @@ if (!semver.satisfies(process.versions.bun, expectedBunVersionRange)) {
 }
 
 const env = {
-  MEGALADATA_AI_AGENT_CHANNEL: process.env["MEGALADATA_AI_AGENT_CHANNEL"],
-  MEGALADATA_AI_AGENT_BUMP: process.env["MEGALADATA_AI_AGENT_BUMP"],
-  MEGALADATA_AI_AGENT_VERSION: process.env["MEGALADATA_AI_AGENT_VERSION"],
-  MEGALADATA_AI_AGENT_RELEASE: process.env["MEGALADATA_AI_AGENT_RELEASE"],
-  MEGALADATA_AI_AGENT_BROWSER_RECOVERY: process.env["MEGALADATA_AI_AGENT_BROWSER_RECOVERY"],
+  MEGA_AI_AGENT_CHANNEL: process.env["MEGA_AI_AGENT_CHANNEL"],
+  MEGA_AI_AGENT_BUMP: process.env["MEGA_AI_AGENT_BUMP"],
+  MEGA_AI_AGENT_VERSION: process.env["MEGA_AI_AGENT_VERSION"],
+  MEGA_AI_AGENT_RELEASE: process.env["MEGA_AI_AGENT_RELEASE"],
+  MEGA_AI_AGENT_BROWSER_RECOVERY: process.env["MEGA_AI_AGENT_BROWSER_RECOVERY"],
 }
 const CHANNEL = await (async () => {
-  if (env.MEGALADATA_AI_AGENT_CHANNEL) return env.MEGALADATA_AI_AGENT_CHANNEL
-  if (env.MEGALADATA_AI_AGENT_BUMP) return "prod"
-  if (env.MEGALADATA_AI_AGENT_VERSION && !env.MEGALADATA_AI_AGENT_VERSION.startsWith("0.0.0-")) return "prod"
+  if (env.MEGA_AI_AGENT_CHANNEL) return env.MEGA_AI_AGENT_CHANNEL
+  if (env.MEGA_AI_AGENT_BUMP) return "prod"
+  if (env.MEGA_AI_AGENT_VERSION && !env.MEGA_AI_AGENT_VERSION.startsWith("0.0.0-")) return "prod"
   return await $`git branch --show-current`.text().then((x) => x.trim())
 })()
 const IS_PREVIEW = CHANNEL !== "latest" && CHANNEL !== "prod"
 
 const VERSION = await (async () => {
-  if (env.MEGALADATA_AI_AGENT_VERSION) return env.MEGALADATA_AI_AGENT_VERSION
+  if (env.MEGA_AI_AGENT_VERSION) return env.MEGA_AI_AGENT_VERSION
   if (IS_PREVIEW) return `0.0.0-${CHANNEL}-${new Date().toISOString().slice(0, 16).replace(/[-:T]/g, "")}`
   const version = rootPkg.version
-  if (!env.MEGALADATA_AI_AGENT_BUMP) return version
+  if (!env.MEGA_AI_AGENT_BUMP) return version
   const [major, minor, patch] = version.split(".").map((x: string) => Number(x) || 0)
-  const t = env.MEGALADATA_AI_AGENT_BUMP?.toLowerCase()
+  const t = env.MEGA_AI_AGENT_BUMP?.toLowerCase()
   if (t === "major") return `${major + 1}.0.0`
   if (t === "minor") return `${major}.${minor + 1}.0`
   return `${major}.${minor}.${patch + 1}`
@@ -65,10 +65,10 @@ export const Script = {
     return IS_PREVIEW
   },
   get release(): boolean {
-    return !!env.MEGALADATA_AI_AGENT_RELEASE
+    return !!env.MEGA_AI_AGENT_RELEASE
   },
   get browserRecovery(): boolean {
-    return env.MEGALADATA_AI_AGENT_BROWSER_RECOVERY === "1"
+    return env.MEGA_AI_AGENT_BROWSER_RECOVERY === "1"
   },
   get team() {
     return team

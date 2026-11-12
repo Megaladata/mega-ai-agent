@@ -19,14 +19,14 @@ const paths = Object.fromEntries(
 )
 await Promise.all(Object.values(paths).map((path) => mkdir(path)))
 // Skip legacy migration only in this fresh sandbox; never import the real user profile.
-await mkdir(join(paths["app-data"], "com.megaladata.aiagent.dev"))
+await mkdir(join(paths["app-data"], "com.mega.aiagent.dev"))
 await writeFile(
-  join(paths["app-data"], "com.megaladata.aiagent.dev/megaladata-ai-agent.settings"),
+  join(paths["app-data"], "com.mega.aiagent.dev/mega-ai-agent.settings"),
   JSON.stringify({ tauriMigrated: true }),
 )
-await mkdir(join(paths.config, "megaladata-ai-agent-dev"))
+await mkdir(join(paths.config, "mega-ai-agent-dev"))
 await writeFile(
-  join(paths.config, "megaladata-ai-agent-dev/megaladata-ai-agent.json"),
+  join(paths.config, "mega-ai-agent-dev/mega-ai-agent.json"),
   JSON.stringify({
     provider: {
       test: {
@@ -51,7 +51,7 @@ for (const [phase, source] of [
 ]) {
   const parent = join(root, phase)
   await mkdir(parent)
-  const application = join(parent, "Megaladata AI Agent Dev.app")
+  const application = join(parent, "Mega AI Agent Dev.app")
   execFileSync("/usr/bin/ditto", [resolve(source), application])
   execFileSync("/usr/bin/codesign", ["--verify", "--deep", "--strict", application])
   const plist = JSON.parse(
@@ -120,10 +120,10 @@ for (const [phase, source] of [
     const page = await until(() => browser.contexts()[0]?.pages()[0], "WINDOW_NOT_AVAILABLE")
     await page.waitForFunction(() => !!window.api, null, { timeout: 120000 })
     const isolation = await inspector.evaluate(
-      `({ userData: ${electron}.app.getPath("userData"), appData: ${electron}.app.getPath("appData"), dbOverride: process.env.MEGALADATA_AI_AGENT_DB ?? null, data: process.env.XDG_DATA_HOME, config: process.env.XDG_CONFIG_HOME, version: ${electron}.app.getVersion(), safeStorage: ${electron}.safeStorage.isEncryptionAvailable(), onboardingTest: process.env.MEGALADATA_AI_AGENT_TEST_ONBOARDING ?? null })`,
+      `({ userData: ${electron}.app.getPath("userData"), appData: ${electron}.app.getPath("appData"), dbOverride: process.env.MEGA_AI_AGENT_DB ?? null, data: process.env.XDG_DATA_HOME, config: process.env.XDG_CONFIG_HOME, version: ${electron}.app.getVersion(), safeStorage: ${electron}.safeStorage.isEncryptionAvailable(), onboardingTest: process.env.MEGA_AI_AGENT_TEST_ONBOARDING ?? null })`,
     )
     if (
-      isolation.userData !== join(paths["app-data"], "com.megaladata.aiagent.dev") ||
+      isolation.userData !== join(paths["app-data"], "com.mega.aiagent.dev") ||
       isolation.data !== paths.data ||
       isolation.config !== paths.config ||
       isolation.dbOverride === ":memory:" ||
@@ -147,7 +147,7 @@ for (const [phase, source] of [
     }
     if (phase === "before") {
       await page.evaluate(
-        (value) => window.api.storeSet("megaladata-ai-agent.settings", "upgradeAcceptance", value),
+        (value) => window.api.storeSet("mega-ai-agent.settings", "upgradeAcceptance", value),
         marker,
       )
       const session = await request("/session", "POST", { title: marker })
@@ -164,7 +164,7 @@ for (const [phase, source] of [
       if (Buffer.from(ciphertext, "base64").includes(Buffer.from(marker))) throw Error("PLAINTEXT_SECRET_STORAGE")
       await writeFile(join(root, "synthetic-secret.encrypted"), Buffer.from(ciphertext, "base64"), { mode: 0o600 })
     } else {
-      if ((await page.evaluate(() => window.api.storeGet("megaladata-ai-agent.settings", "upgradeAcceptance"))) !== marker)
+      if ((await page.evaluate(() => window.api.storeGet("mega-ai-agent.settings", "upgradeAcceptance"))) !== marker)
         throw Error("SETTINGS_NOT_PRESERVED")
       const session = await request(`/session/${sessionID}`)
       if (session.title !== marker) throw Error("SESSION_NOT_PRESERVED")
@@ -202,7 +202,7 @@ for (const [phase, source] of [
       new Promise((_, reject) => setTimeout(() => reject(Error("DESKTOP_EXIT_TIMEOUT")), 30000)),
     ])
     if (end.code !== 0 || end.signal) throw Error("DESKTOP_UNCLEAN_EXIT")
-    const db = join(paths.data, "megaladata-ai-agent-dev/megaladata-ai-agent.db")
+    const db = join(paths.data, "mega-ai-agent-dev/mega-ai-agent.db")
     if ((await stat(db)).size === 0) throw Error("DISK_DATABASE_MISSING")
     if (phase === "before")
       await writeFile(join(root, "before-summary.json"), JSON.stringify(evidence[0], null, 2) + "\n")

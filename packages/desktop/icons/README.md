@@ -1,4 +1,4 @@
-# Megaladata AI Agent icons
+# Mega AI Agent icons
 
 The artwork is the supplied PNG masters in `masters/`: `mark-512.png` for every
 size except 16, and `mark-16.png` for the 16px frames. Larger and smaller

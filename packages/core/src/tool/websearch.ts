@@ -73,11 +73,11 @@ export class ConfigService extends Context.Service<ConfigService, Config>()("@op
 export const defaultConfigLayer = Layer.sync(ConfigService, () =>
   ConfigService.of({
     provider:
-      process.env.MEGALADATA_AI_AGENT_WEBSEARCH_PROVIDER === "exa" || process.env.MEGALADATA_AI_AGENT_WEBSEARCH_PROVIDER === "parallel"
-        ? process.env.MEGALADATA_AI_AGENT_WEBSEARCH_PROVIDER
+      process.env.MEGA_AI_AGENT_WEBSEARCH_PROVIDER === "exa" || process.env.MEGA_AI_AGENT_WEBSEARCH_PROVIDER === "parallel"
+        ? process.env.MEGA_AI_AGENT_WEBSEARCH_PROVIDER
         : undefined,
-    enableExa: truthy("MEGALADATA_AI_AGENT_EXPERIMENTAL") || truthy("MEGALADATA_AI_AGENT_ENABLE_EXA") || truthy("MEGALADATA_AI_AGENT_EXPERIMENTAL_EXA"),
-    enableParallel: truthy("MEGALADATA_AI_AGENT_ENABLE_PARALLEL") || truthy("MEGALADATA_AI_AGENT_EXPERIMENTAL_PARALLEL"),
+    enableExa: truthy("MEGA_AI_AGENT_EXPERIMENTAL") || truthy("MEGA_AI_AGENT_ENABLE_EXA") || truthy("MEGA_AI_AGENT_EXPERIMENTAL_EXA"),
+    enableParallel: truthy("MEGA_AI_AGENT_ENABLE_PARALLEL") || truthy("MEGA_AI_AGENT_EXPERIMENTAL_PARALLEL"),
     exaApiKey: process.env.EXA_API_KEY,
     parallelApiKey: process.env.PARALLEL_API_KEY,
   }),

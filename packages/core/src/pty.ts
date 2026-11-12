@@ -171,7 +171,7 @@ const layer = Layer.effect(
         ...process.env,
         ...input.env,
         TERM: "xterm-256color",
-        MEGALADATA_AI_AGENT_TERMINAL: "1",
+        MEGA_AI_AGENT_TERMINAL: "1",
       } as Record<string, string>
       if (process.platform === "win32") {
         env.LC_ALL = "C.UTF-8"

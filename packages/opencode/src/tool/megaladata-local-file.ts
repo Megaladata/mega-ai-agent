@@ -2,7 +2,7 @@ import {
   attachmentReceiptID,
   readAttachmentReceipt,
   verifyAttachmentReceipt,
-} from "@megaladata-ai-agent/megaladata-host/attachment-receipt"
+} from "@mega-ai-agent/megaladata-host/attachment-receipt"
 import { Cause, Effect, Option, Schema } from "effect"
 import { createHash } from "node:crypto"
 import { basename, dirname, join, relative, resolve } from "node:path"
@@ -18,13 +18,13 @@ import { TaskScope } from "@/session/task-scope"
 import { Tool } from "./tool"
 import { assertExternalDirectoryEffect } from "./external-directory"
 import { fileSnapshot } from "@/util/file-snapshot"
-import { fileError, hostErrorText } from "@megaladata-ai-agent/megaladata-host/errors"
+import { fileError, hostErrorText } from "@mega-ai-agent/megaladata-host/errors"
 import { Global } from "@opencode-ai/core/global"
 import {
   inspectReferenceFile,
   type FileReference,
   type ReferenceSnapshot,
-} from "@megaladata-ai-agent/megaladata-host/file-reference"
+} from "@mega-ai-agent/megaladata-host/file-reference"
 import { exactFileDigest } from "./megaladata-file-profile-core"
 
 const sampleReceipt = Schema.decodeUnknownOption(

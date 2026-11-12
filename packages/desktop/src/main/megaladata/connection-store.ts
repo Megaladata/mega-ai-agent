@@ -1,1 +1,1 @@
-export * from "@megaladata-ai-agent/megaladata-host/connection/connection-store"
+export * from "@mega-ai-agent/megaladata-host/connection/connection-store"

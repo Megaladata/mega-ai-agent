@@ -7,12 +7,12 @@ Removal of unused code is finished; every required check passed.
 Results are in the [completed plan](docs/superpowers/plans/2026-10-16-evals-parallel.md).
 
 The [contract](evals/docs/parallel-users-contract.md) is normative, in particular
-sections 20/24/26/33. Commands are in the [runbook](docs/testing/megaladata-ai-agent/parallel-evals.md).
+sections 20/24/26/33. Commands are in the [runbook](docs/testing/mega-ai-agent/parallel-evals.md).
 Closed refusals and the original evidence are kept in the
 [history](docs/archive/2026-10-16-evals-parallel-history.md).
 
 Older stands and incidents, including A00yuH, are kept according to the
-[single list](docs/testing/megaladata-ai-agent/2026-10-16-evals-parallel-retained.md).
+[single list](docs/testing/mega-ai-agent/2026-10-16-evals-parallel-retained.md).
 Deleting them is a separate owner decision. Known limit after a crash:
 `SESSION_NOT_IDLE` for a new admin leaves the slot in quarantine; the action is contract section 24.
 

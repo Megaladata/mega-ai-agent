@@ -84,8 +84,8 @@ opencode attach http://10.20.30.40:4096
 | <nobr><code>{"--continue"}</code></nobr> | `-c` | Fortsett siste økt                                                                                 |
 | <nobr><code>{"--session"}</code></nobr>  | `-s` | Økt ID for å fortsette                                                                             |
 | <nobr><code>{"--fork"}</code></nobr>     |      | Forgren økten ved fortsettelse (bruk med `--continue` eller `--session`)                           |
-| <nobr><code>{"--password"}</code></nobr> | `-p` | Passord for grunnleggende autentisering (standard: `MEGALADATA_AI_AGENT_SERVER_PASSWORD`)                     |
-| <nobr><code>{"--username"}</code></nobr> | `-u` | Brukernavn for grunnleggende autentisering (standard: `MEGALADATA_AI_AGENT_SERVER_USERNAME` eller `opencode`) |
+| <nobr><code>{"--password"}</code></nobr> | `-p` | Passord for grunnleggende autentisering (standard: `MEGA_AI_AGENT_SERVER_PASSWORD`)                     |
+| <nobr><code>{"--username"}</code></nobr> | `-u` | Brukernavn for grunnleggende autentisering (standard: `MEGA_AI_AGENT_SERVER_USERNAME` eller `opencode`) |
 
 ---
 
@@ -352,8 +352,8 @@ opencode run --attach http://localhost:4096 "Explain async/await in JavaScript"
 | <nobr><code>{"--format"}</code></nobr>   |      | Format: standard (formatert) eller json (rå JSON hendelser)                                        |
 | <nobr><code>{"--title"}</code></nobr>    |      | Tittel for økten (bruker avkortet ledetekst hvis ingen verdi er oppgitt)                           |
 | <nobr><code>{"--attach"}</code></nobr>   |      | Koble til en kjørende OpenCode-server (f.eks. http://localhost:4096)                               |
-| <nobr><code>{"--password"}</code></nobr> | `-p` | Passord for grunnleggende autentisering (standard: `MEGALADATA_AI_AGENT_SERVER_PASSWORD`)                     |
-| <nobr><code>{"--username"}</code></nobr> | `-u` | Brukernavn for grunnleggende autentisering (standard: `MEGALADATA_AI_AGENT_SERVER_USERNAME` eller `opencode`) |
+| <nobr><code>{"--password"}</code></nobr> | `-p` | Passord for grunnleggende autentisering (standard: `MEGA_AI_AGENT_SERVER_PASSWORD`)                     |
+| <nobr><code>{"--username"}</code></nobr> | `-u` | Brukernavn for grunnleggende autentisering (standard: `MEGA_AI_AGENT_SERVER_USERNAME` eller `opencode`) |
 | <nobr><code>{"--dir"}</code></nobr>      |      | Katalog å kjøre i, eller sti på fjernserveren ved tilkobling                                       |
 | <nobr><code>{"--variant"}</code></nobr>  |      | Modellvariant (leverandørspesifikk resonneringsinnsats)                                            |
 | <nobr><code>{"--thinking"}</code></nobr> |      | Vis tenkeblokker                                                                                   |
@@ -369,7 +369,7 @@ Start en headless OpenCode-server for API-tilgang. Sjekk ut [server-dokumentene]
 opencode serve
 ```
 
-Dette starter en HTTP-server som gir API tilgang til OpenCode-funksjonalitet uten TUI-grensesnittet. Sett `MEGALADATA_AI_AGENT_SERVER_PASSWORD` for å aktivere HTTP grunnleggende autentisering (brukernavn er standard til `opencode`).
+Dette starter en HTTP-server som gir API tilgang til OpenCode-funksjonalitet uten TUI-grensesnittet. Sett `MEGA_AI_AGENT_SERVER_PASSWORD` for å aktivere HTTP grunnleggende autentisering (brukernavn er standard til `opencode`).
 
 #### Flagg
 
@@ -465,7 +465,7 @@ Start en headless OpenCode-server med et webgrensesnitt.
 opencode web
 ```
 
-Dette starter en HTTP-server og åpner en nettleser for å få tilgang til OpenCode via et nettgrensesnitt. Sett `MEGALADATA_AI_AGENT_SERVER_PASSWORD` for å aktivere HTTP grunnleggende autentisering (brukernavn er standard til `opencode`).
+Dette starter en HTTP-server og åpner en nettleser for å få tilgang til OpenCode via et nettgrensesnitt. Sett `MEGA_AI_AGENT_SERVER_PASSWORD` for å aktivere HTTP grunnleggende autentisering (brukernavn er standard til `opencode`).
 
 #### Flagg
 
@@ -564,30 +564,30 @@ OpenCode kan konfigureres ved hjelp av miljøvariabler.
 
 | Variabel                              | Type   | Beskrivelse                                                           |
 | ------------------------------------- | ------ | --------------------------------------------------------------------- |
-| `MEGALADATA_AI_AGENT_AUTO_SHARE`                 | boolsk | Del økter automatisk                                                  |
-| `MEGALADATA_AI_AGENT_GIT_BASH_PATH`              | streng | Bane til Git Bash-kjørbar på Windows                                  |
-| `MEGALADATA_AI_AGENT_CONFIG`                     | streng | Bane til konfigurasjonsfil                                            |
-| `MEGALADATA_AI_AGENT_TUI_CONFIG`                 | streng | Bane til TUI-konfigurasjonsfil                                        |
-| `MEGALADATA_AI_AGENT_CONFIG_DIR`                 | streng | Bane til konfigurasjonskatalog                                        |
-| `MEGALADATA_AI_AGENT_CONFIG_CONTENT`             | streng | Innebygd json-konfigurasjonsinnhold                                   |
-| `MEGALADATA_AI_AGENT_DISABLE_AUTOUPDATE`         | boolsk | Deaktiver automatiske oppdateringskontroller                          |
-| `MEGALADATA_AI_AGENT_DISABLE_PRUNE`              | boolsk | Deaktiver beskjæring av gamle data                                    |
-| `MEGALADATA_AI_AGENT_DISABLE_TERMINAL_TITLE`     | boolsk | Deaktiver automatiske terminaltitteloppdateringer                     |
-| `MEGALADATA_AI_AGENT_PERMISSION`                 | streng | Innebygd json-tillatelseskonfigurasjon                                |
-| `MEGALADATA_AI_AGENT_DISABLE_DEFAULT_PLUGINS`    | boolsk | Deaktiver standard plugins                                            |
-| `MEGALADATA_AI_AGENT_DISABLE_LSP_DOWNLOAD`       | boolsk | Deaktiver automatiske LSP servernedlastinger                          |
-| `MEGALADATA_AI_AGENT_ENABLE_EXPERIMENTAL_MODELS` | boolsk | Aktiver eksperimentelle modeller                                      |
-| `MEGALADATA_AI_AGENT_DISABLE_AUTOCOMPACT`        | boolsk | Deaktiver automatisk kontekstkomprimering                             |
-| `MEGALADATA_AI_AGENT_DISABLE_CLAUDE_CODE`        | boolsk | Deaktiver lesing fra `.claude` (spørsmål + ferdigheter)               |
-| `MEGALADATA_AI_AGENT_DISABLE_CLAUDE_CODE_PROMPT` | boolsk | Deaktiver lesing `~/.claude/CLAUDE.md`                                |
-| `MEGALADATA_AI_AGENT_DISABLE_CLAUDE_CODE_SKILLS` | boolsk | Deaktiver innlasting av `.claude/skills`                              |
-| `MEGALADATA_AI_AGENT_DISABLE_MODELS_FETCH`       | boolsk | Deaktiver henting av modeller fra eksterne kilder                     |
-| `MEGALADATA_AI_AGENT_FAKE_VCS`                   | streng | Falsk VCS-leverandør for testformål                                   |
-| `MEGALADATA_AI_AGENT_CLIENT`                     | streng | Klientidentifikator (standard til `cli`)                              |
-| `MEGALADATA_AI_AGENT_ENABLE_EXA`                 | boolsk | Aktiver Exa-nettsøkeverktøy                                           |
-| `MEGALADATA_AI_AGENT_SERVER_PASSWORD`            | streng | Aktiver grunnleggende autentisering for `serve`/`web`                 |
-| `MEGALADATA_AI_AGENT_SERVER_USERNAME`            | streng | Overstyr grunnleggende autentiseringsbrukernavn (standard `opencode`) |
-| `MEGALADATA_AI_AGENT_MODELS_URL`                 | streng | Egendefinert URL for henting av modellkonfigurasjon                   |
+| `MEGA_AI_AGENT_AUTO_SHARE`                 | boolsk | Del økter automatisk                                                  |
+| `MEGA_AI_AGENT_GIT_BASH_PATH`              | streng | Bane til Git Bash-kjørbar på Windows                                  |
+| `MEGA_AI_AGENT_CONFIG`                     | streng | Bane til konfigurasjonsfil                                            |
+| `MEGA_AI_AGENT_TUI_CONFIG`                 | streng | Bane til TUI-konfigurasjonsfil                                        |
+| `MEGA_AI_AGENT_CONFIG_DIR`                 | streng | Bane til konfigurasjonskatalog                                        |
+| `MEGA_AI_AGENT_CONFIG_CONTENT`             | streng | Innebygd json-konfigurasjonsinnhold                                   |
+| `MEGA_AI_AGENT_DISABLE_AUTOUPDATE`         | boolsk | Deaktiver automatiske oppdateringskontroller                          |
+| `MEGA_AI_AGENT_DISABLE_PRUNE`              | boolsk | Deaktiver beskjæring av gamle data                                    |
+| `MEGA_AI_AGENT_DISABLE_TERMINAL_TITLE`     | boolsk | Deaktiver automatiske terminaltitteloppdateringer                     |
+| `MEGA_AI_AGENT_PERMISSION`                 | streng | Innebygd json-tillatelseskonfigurasjon                                |
+| `MEGA_AI_AGENT_DISABLE_DEFAULT_PLUGINS`    | boolsk | Deaktiver standard plugins                                            |
+| `MEGA_AI_AGENT_DISABLE_LSP_DOWNLOAD`       | boolsk | Deaktiver automatiske LSP servernedlastinger                          |
+| `MEGA_AI_AGENT_ENABLE_EXPERIMENTAL_MODELS` | boolsk | Aktiver eksperimentelle modeller                                      |
+| `MEGA_AI_AGENT_DISABLE_AUTOCOMPACT`        | boolsk | Deaktiver automatisk kontekstkomprimering                             |
+| `MEGA_AI_AGENT_DISABLE_CLAUDE_CODE`        | boolsk | Deaktiver lesing fra `.claude` (spørsmål + ferdigheter)               |
+| `MEGA_AI_AGENT_DISABLE_CLAUDE_CODE_PROMPT` | boolsk | Deaktiver lesing `~/.claude/CLAUDE.md`                                |
+| `MEGA_AI_AGENT_DISABLE_CLAUDE_CODE_SKILLS` | boolsk | Deaktiver innlasting av `.claude/skills`                              |
+| `MEGA_AI_AGENT_DISABLE_MODELS_FETCH`       | boolsk | Deaktiver henting av modeller fra eksterne kilder                     |
+| `MEGA_AI_AGENT_FAKE_VCS`                   | streng | Falsk VCS-leverandør for testformål                                   |
+| `MEGA_AI_AGENT_CLIENT`                     | streng | Klientidentifikator (standard til `cli`)                              |
+| `MEGA_AI_AGENT_ENABLE_EXA`                 | boolsk | Aktiver Exa-nettsøkeverktøy                                           |
+| `MEGA_AI_AGENT_SERVER_PASSWORD`            | streng | Aktiver grunnleggende autentisering for `serve`/`web`                 |
+| `MEGA_AI_AGENT_SERVER_USERNAME`            | streng | Overstyr grunnleggende autentiseringsbrukernavn (standard `opencode`) |
+| `MEGA_AI_AGENT_MODELS_URL`                 | streng | Egendefinert URL for henting av modellkonfigurasjon                   |
 
 ---
 
@@ -597,21 +597,21 @@ Disse miljøvariablene muliggjør eksperimentelle funksjoner som kan endres elle
 
 | Variabel                                        | Type   | Beskrivelse                                           |
 | ----------------------------------------------- | ------ | ----------------------------------------------------- |
-| `MEGALADATA_AI_AGENT_EXPERIMENTAL`                         | boolsk | Aktiver eksperimentelle funksjoner under samleflagget |
-| `MEGALADATA_AI_AGENT_EXPERIMENTAL_ICON_DISCOVERY`          | boolsk | Aktiver ikonoppdagelse                                |
-| `MEGALADATA_AI_AGENT_EXPERIMENTAL_DISABLE_COPY_ON_SELECT`  | boolsk | Deaktiver kopi ved valg i TUI                         |
-| `MEGALADATA_AI_AGENT_EXPERIMENTAL_BASH_DEFAULT_TIMEOUT_MS` | tall   | Standard tidsavbrudd for bash-kommandoer i ms         |
-| `MEGALADATA_AI_AGENT_EXPERIMENTAL_OUTPUT_TOKEN_MAX`        | tall   | Maks Output Tokens for LLM-svar                       |
-| `MEGALADATA_AI_AGENT_EXPERIMENTAL_FILEWATCHER`             | boolsk | Aktiver filovervåker for hele dir                     |
-| `MEGALADATA_AI_AGENT_EXPERIMENTAL_OXFMT`                   | boolsk | Aktiver oxfmt formatter                               |
-| `MEGALADATA_AI_AGENT_EXPERIMENTAL_LSP_TOOL`                | boolsk | Aktiver eksperimentelt LSP-verktøy                    |
-| `MEGALADATA_AI_AGENT_EXPERIMENTAL_DISABLE_FILEWATCHER`     | boolsk | Deaktiver filovervåking                               |
-| `MEGALADATA_AI_AGENT_EXPERIMENTAL_EXA`                     | boolsk | Aktiver eksperimentelle Exa-funksjoner                |
-| `MEGALADATA_AI_AGENT_EXPERIMENTAL_LSP_TY`                  | boolsk | Aktiver TY LSP for python-filer                       |
-| `MEGALADATA_AI_AGENT_EXPERIMENTAL_PLAN_MODE`               | boolsk | Aktiver planmodus                                     |
-| `MEGALADATA_AI_AGENT_EXPERIMENTAL_BACKGROUND_SUBAGENTS`    | boolsk | Aktiver bakgrunnsoppgaver for subagenter              |
-| `MEGALADATA_AI_AGENT_EXPERIMENTAL_EVENT_SYSTEM`            | boolsk | Aktiver eksperimentelt hendelsessystem                |
-| `MEGALADATA_AI_AGENT_EXPERIMENTAL_NATIVE_LLM`              | boolsk | Aktiver innebygd LLM-forespørselsvei                  |
-| `MEGALADATA_AI_AGENT_EXPERIMENTAL_PARALLEL`                | boolsk | Aktiver parallell kjøring av websøk                   |
-| `MEGALADATA_AI_AGENT_EXPERIMENTAL_SCOUT`                   | boolsk | Aktiver Scout-subagent                                |
-| `MEGALADATA_AI_AGENT_EXPERIMENTAL_WORKSPACES`              | boolsk | Aktiver arbeidsområde-støtte                          |
+| `MEGA_AI_AGENT_EXPERIMENTAL`                         | boolsk | Aktiver eksperimentelle funksjoner under samleflagget |
+| `MEGA_AI_AGENT_EXPERIMENTAL_ICON_DISCOVERY`          | boolsk | Aktiver ikonoppdagelse                                |
+| `MEGA_AI_AGENT_EXPERIMENTAL_DISABLE_COPY_ON_SELECT`  | boolsk | Deaktiver kopi ved valg i TUI                         |
+| `MEGA_AI_AGENT_EXPERIMENTAL_BASH_DEFAULT_TIMEOUT_MS` | tall   | Standard tidsavbrudd for bash-kommandoer i ms         |
+| `MEGA_AI_AGENT_EXPERIMENTAL_OUTPUT_TOKEN_MAX`        | tall   | Maks Output Tokens for LLM-svar                       |
+| `MEGA_AI_AGENT_EXPERIMENTAL_FILEWATCHER`             | boolsk | Aktiver filovervåker for hele dir                     |
+| `MEGA_AI_AGENT_EXPERIMENTAL_OXFMT`                   | boolsk | Aktiver oxfmt formatter                               |
+| `MEGA_AI_AGENT_EXPERIMENTAL_LSP_TOOL`                | boolsk | Aktiver eksperimentelt LSP-verktøy                    |
+| `MEGA_AI_AGENT_EXPERIMENTAL_DISABLE_FILEWATCHER`     | boolsk | Deaktiver filovervåking                               |
+| `MEGA_AI_AGENT_EXPERIMENTAL_EXA`                     | boolsk | Aktiver eksperimentelle Exa-funksjoner                |
+| `MEGA_AI_AGENT_EXPERIMENTAL_LSP_TY`                  | boolsk | Aktiver TY LSP for python-filer                       |
+| `MEGA_AI_AGENT_EXPERIMENTAL_PLAN_MODE`               | boolsk | Aktiver planmodus                                     |
+| `MEGA_AI_AGENT_EXPERIMENTAL_BACKGROUND_SUBAGENTS`    | boolsk | Aktiver bakgrunnsoppgaver for subagenter              |
+| `MEGA_AI_AGENT_EXPERIMENTAL_EVENT_SYSTEM`            | boolsk | Aktiver eksperimentelt hendelsessystem                |
+| `MEGA_AI_AGENT_EXPERIMENTAL_NATIVE_LLM`              | boolsk | Aktiver innebygd LLM-forespørselsvei                  |
+| `MEGA_AI_AGENT_EXPERIMENTAL_PARALLEL`                | boolsk | Aktiver parallell kjøring av websøk                   |
+| `MEGA_AI_AGENT_EXPERIMENTAL_SCOUT`                   | boolsk | Aktiver Scout-subagent                                |
+| `MEGA_AI_AGENT_EXPERIMENTAL_WORKSPACES`              | boolsk | Aktiver arbeidsområde-støtte                          |

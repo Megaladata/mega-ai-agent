@@ -57,9 +57,9 @@ Desktop uygulamasi acilista cokuyorsa, takiliyorsa veya garip davranislar goster
 
 Global config dosyanizi acin ve `plugin` anahtarini arayin.
 
-- **macOS/Linux**: `~/.config/opencode/megaladata-ai-agent.jsonc` (veya `~/.config/opencode/megaladata-ai-agent.json`)
-- **macOS/Linux** (eski kurulumlar): `~/.local/share/opencode/megaladata-ai-agent.jsonc`
-- **Windows**: `WIN+R` tuslayip `%USERPROFILE%\.config\opencode\megaladata-ai-agent.jsonc` yapistirin
+- **macOS/Linux**: `~/.config/opencode/mega-ai-agent.jsonc` (veya `~/.config/opencode/mega-ai-agent.json`)
+- **macOS/Linux** (eski kurulumlar): `~/.local/share/opencode/mega-ai-agent.jsonc`
+- **Windows**: `WIN+R` tuslayip `%USERPROFILE%\.config\opencode\mega-ai-agent.jsonc` yapistirin
 
 Plugin tanimliysa anahtari kaldirarak veya bos bir diziye cekerek gecici olarak devre disi birakin:
 
@@ -78,7 +78,7 @@ opencode diskten yerel plugin de yukleyebilir. Bu dizinleri gecici olarak tasiyi
   - **macOS/Linux**: `~/.config/opencode/plugins/`
   - **Windows**: `WIN+R` tuslayip `%USERPROFILE%\.config\opencode\plugins` yapistirin
 - **Project plugins** (sadece proje bazli config kullaniyorsaniz)
-  - `<your-project>/.megaladata-ai-agent/plugins/`
+  - `<your-project>/.mega-ai-agent/plugins/`
 
 Uygulama duzelirse soruna neden olan plugini bulmak icin pluginleri tek tek yeniden etkinlestirin.
 
@@ -111,13 +111,13 @@ Ana ekranda sunucu adina (durum noktali) tiklayarak Server secicisini acin. **De
 
 #### Config'ten `server.port` / `server.hostname` kaldirin
 
-`megaladata-ai-agent.json(c)` dosyanizda `server` bolumu varsa gecici olarak kaldirin ve desktop uygulamasini yeniden baslatin.
+`mega-ai-agent.json(c)` dosyanizda `server` bolumu varsa gecici olarak kaldirin ve desktop uygulamasini yeniden baslatin.
 
 #### Ortam degiskenlerini kontrol edin
 
-Ortamda `MEGALADATA_AI_AGENT_PORT` ayarliysa desktop uygulamasi yerel sunucu icin o portu kullanmaya calisir.
+Ortamda `MEGA_AI_AGENT_PORT` ayarliysa desktop uygulamasi yerel sunucu icin o portu kullanmaya calisir.
 
-- `MEGALADATA_AI_AGENT_PORT` degerini kaldirin (veya bos bir port secin) ve yeniden baslatin
+- `MEGA_AI_AGENT_PORT` degerini kaldirin (veya bos bir port secin) ve yeniden baslatin
 
 ---
 
@@ -158,7 +158,7 @@ Uygulama acilmiyorsa ve ayarlari arayuz icinden temizleyemiyorsaniz, desktop uyg
 1. opencode Desktop'u kapatin
 2. Su dosyalari bulun ve silin (opencode Desktop uygulama veri dizininde yer alirlar):
 
-- `megaladata-ai-agent.settings.dat` (desktop varsayilan sunucu URL'si)
+- `mega-ai-agent.settings.dat` (desktop varsayilan sunucu URL'si)
 - `opencode.global.dat` ve `opencode.workspace.*.dat` (son sunucular/projeler gibi UI durumu)
 
 Dizini hizlica bulmak icin:

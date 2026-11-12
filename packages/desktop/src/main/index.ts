@@ -9,7 +9,7 @@ import { isAbsolute, join } from "node:path"
 import { getCACertificates, setDefaultCACertificates } from "node:tls"
 import type { Event } from "electron"
 import { app, BrowserWindow, dialog, session } from "electron"
-import { Product, productName } from "@megaladata-ai-agent/product"
+import { Product, productName } from "@mega-ai-agent/product"
 
 import { Cause, Deferred, Effect, Fiber } from "effect"
 import contextMenu from "electron-context-menu"
@@ -66,8 +66,8 @@ import { startBackgroundCli } from "./background-cli"
 import { setNativeTranslations } from "./native-translations"
 import { createQuitHandler } from "./shutdown"
 
-const TEST_ONBOARDING = process.env.MEGALADATA_AI_AGENT_TEST_ONBOARDING === "1"
-const SIDECAR_VERSION = process.env.MEGALADATA_AI_AGENT_SIDECAR_V2 === "1" ? "v2" : "v1"
+const TEST_ONBOARDING = process.env.MEGA_AI_AGENT_TEST_ONBOARDING === "1"
+const SIDECAR_VERSION = process.env.MEGA_AI_AGENT_SIDECAR_V2 === "1" ? "v2" : "v1"
 const jsCallStackFeature = "DocumentPolicyIncludeJSCallStacksInCrashReports"
 
 let logger: ReturnType<typeof initLogging>
@@ -103,7 +103,7 @@ function ensureLoopbackNoProxy() {
 }
 
 function systemProxyEnabled() {
-  const flag = process.env.MEGALADATA_AI_AGENT_SYSTEM_PROXY
+  const flag = process.env.MEGA_AI_AGENT_SYSTEM_PROXY
   if (typeof flag === "string" && ["off", "0", "false"].includes(flag.trim().toLowerCase())) return false
   try {
     return getStore().get(SYSTEM_PROXY_ENABLED_KEY) !== false
@@ -120,19 +120,19 @@ const main = Effect.gen(function* () {
     process.chdir(homedir())
   } catch {}
 
-  process.env.MEGALADATA_AI_AGENT_DISABLE_EMBEDDED_WEB_UI = "true"
-  process.env.MEGALADATA_AI_AGENT_CHANNEL = CHANNEL
+  process.env.MEGA_AI_AGENT_DISABLE_EMBEDDED_WEB_UI = "true"
+  process.env.MEGA_AI_AGENT_CHANNEL = CHANNEL
 
   const appId = app.isPackaged ? Product.channels[CHANNEL] : Product.channels.dev
   const onboardingTestRoot = ((): string | undefined => {
     if (!TEST_ONBOARDING) return
 
-    const root = process.env.MEGALADATA_AI_AGENT_TEST_ROOT ?? join(tmpdir(), `megaladata-ai-agent-onboarding-${randomUUID()}`)
+    const root = process.env.MEGA_AI_AGENT_TEST_ROOT ?? join(tmpdir(), `mega-ai-agent-onboarding-${randomUUID()}`)
     if (!isAbsolute(root)) throw new Error("Test profile must be absolute")
     ;["data", "config", "cache", "state", "desktop", "session"].forEach((dir) =>
       mkdirSync(join(root, dir), { recursive: true }),
     )
-    process.env.MEGALADATA_AI_AGENT_DB = ":memory:"
+    process.env.MEGA_AI_AGENT_DB = ":memory:"
     process.env.XDG_DATA_HOME = join(root, "data")
     process.env.XDG_CONFIG_HOME = join(root, "config")
     process.env.XDG_CACHE_HOME = join(root, "cache")
@@ -228,7 +228,7 @@ const main = Effect.gen(function* () {
     }
   })
   app.on("second-instance", (_event: Event, argv: string[]) => {
-    const urls = argv.filter((arg: string) => arg.startsWith("megaladata-ai-agent://"))
+    const urls = argv.filter((arg: string) => arg.startsWith("mega-ai-agent://"))
     if (urls.length) {
       logger.log("deep link received via second-instance", { urls })
       emitDeepLinks(urls)
@@ -392,7 +392,7 @@ const main = Effect.gen(function* () {
     }
 
     const port = yield* Effect.gen(function* () {
-      const fromEnv = process.env.MEGALADATA_AI_AGENT_PORT
+      const fromEnv = process.env.MEGA_AI_AGENT_PORT
       if (fromEnv) {
         const parsed = Number.parseInt(fromEnv, 10)
         if (!Number.isNaN(parsed)) return parsed
@@ -420,7 +420,7 @@ const main = Effect.gen(function* () {
 
     if (stopping) return
     let attempt = 0
-    const testSidecarProxy = TEST_ONBOARDING ? process.env.MEGALADATA_AI_AGENT_TEST_SIDECAR_PROXY : undefined
+    const testSidecarProxy = TEST_ONBOARDING ? process.env.MEGA_AI_AGENT_TEST_SIDECAR_PROXY : undefined
     logger.log("spawning sidecar", { url })
     const started = yield* Effect.promise(() =>
       startWithProxyFallback({
@@ -460,7 +460,7 @@ const main = Effect.gen(function* () {
     }
     yield* Deferred.succeed(serverReady, {
       url,
-      username: "megaladata-ai-agent",
+      username: "mega-ai-agent",
       password,
     })
 
@@ -532,7 +532,7 @@ function exitFailedStartup(cause: Cause.Cause<unknown>) {
   try {
     if (app.isPackaged) {
       dialog.showErrorBox(
-        "Megaladata AI Agent",
+        "Mega AI Agent",
         "The application could not start. Details were written to the log.",
       )
     }

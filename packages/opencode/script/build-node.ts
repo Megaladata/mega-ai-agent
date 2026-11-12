@@ -20,9 +20,9 @@ await Bun.build({
   sourcemap: "linked",
   external: ["jsonc-parser", "@lydell/node-pty"],
   define: {
-    MEGALADATA_AI_AGENT_MODELS_DEV: generated.modelsData,
-    MEGALADATA_AI_AGENT_VERSION: `'${Script.version}'`,
-    MEGALADATA_AI_AGENT_CHANNEL: `'${Script.channel}'`,
+    MEGA_AI_AGENT_MODELS_DEV: generated.modelsData,
+    MEGA_AI_AGENT_VERSION: `'${Script.version}'`,
+    MEGA_AI_AGENT_CHANNEL: `'${Script.channel}'`,
   },
   files: {
     "opencode-web-ui.gen.ts": "",

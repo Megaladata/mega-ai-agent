@@ -1,7 +1,7 @@
 import { onCleanup } from "solid-js"
 import { createStore, reconcile } from "solid-js/store"
 import type { Megaladata } from "@opencode-ai/schema/megaladata"
-import { Product } from "@megaladata-ai-agent/product"
+import { Product } from "@mega-ai-agent/product"
 
 export function megaladataError(value: unknown) {
   const code = value instanceof Error ? value.message.match(/MEGALADATA_[A-Z_]+/)?.[0] : undefined

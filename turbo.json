@@ -1,7 +1,7 @@
 {
   "$schema": "https://v2-8-13.turborepo.dev/schema.json",
-  "globalEnv": ["CI", "MEGALADATA_AI_AGENT_DISABLE_SHARE"],
-  "globalPassThroughEnv": ["CI", "MEGALADATA_AI_AGENT_DISABLE_SHARE"],
+  "globalEnv": ["CI", "MEGA_AI_AGENT_DISABLE_SHARE"],
+  "globalPassThroughEnv": ["CI", "MEGA_AI_AGENT_DISABLE_SHARE"],
   "tasks": {
     "typecheck": {},
     "build": {
@@ -17,11 +17,11 @@
       "outputs": [],
       "passThroughEnv": ["*"]
     },
-    "@megaladata-ai-agent/megaladata-host#test": {
+    "@mega-ai-agent/megaladata-host#test": {
       "outputs": [],
-      "passThroughEnv": ["MEGALADATA_AI_AGENT_TEST_NODE", "MEGALADATA_AI_AGENT_TEST_BROWSERS"]
+      "passThroughEnv": ["MEGA_AI_AGENT_TEST_NODE", "MEGA_AI_AGENT_TEST_BROWSERS"]
     },
-    "@megaladata-ai-agent/product#test": {
+    "@mega-ai-agent/product#test": {
       "outputs": []
     },
     "@opencode-ai/core#test": {

@@ -1,4 +1,4 @@
-import { probeProxyUrl, resolveSystemProxy, type SystemProxyResult } from "@megaladata-ai-agent/megaladata-host/system-proxy"
+import { probeProxyUrl, resolveSystemProxy, type SystemProxyResult } from "@mega-ai-agent/megaladata-host/system-proxy"
 
 const toastCodes = new Set([
   "read-failed",

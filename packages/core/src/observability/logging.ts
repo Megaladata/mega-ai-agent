@@ -46,7 +46,7 @@ function format(input: unknown) {
   return /^[^\s="\\]+$/.test(value) ? value : JSON.stringify(value)
 }
 
-export function fileLogger(file = path.join(Global.Path.log, "megaladata-ai-agent.log"), id: string = runID) {
+export function fileLogger(file = path.join(Global.Path.log, "mega-ai-agent.log"), id: string = runID) {
   // Do not set batchWindow to 0; it causes high idle CPU usage.
   return Logger.toFile(formatter(id), file, { flag: "a" })
 }
@@ -54,7 +54,7 @@ export function fileLogger(file = path.join(Global.Path.log, "megaladata-ai-agen
 const stderrLogger = Logger.make((options) => process.stderr.write(formatter().log(options) + "\n"))
 
 export function minimumLogLevel() {
-  const value = process.env.MEGALADATA_AI_AGENT_LOG_LEVEL?.toUpperCase()
+  const value = process.env.MEGA_AI_AGENT_LOG_LEVEL?.toUpperCase()
   const levels = {
     DEBUG: "Debug",
     INFO: "Info",
@@ -65,8 +65,8 @@ export function minimumLogLevel() {
 }
 
 export function loggers() {
-  const file = process.env.MEGALADATA_AI_AGENT_DISABLE_LOG_FILE === "1" ? [] : [fileLogger()]
-  return process.env.MEGALADATA_AI_AGENT_PRINT_LOGS === "1" ? [...file, stderrLogger] : file
+  const file = process.env.MEGA_AI_AGENT_DISABLE_LOG_FILE === "1" ? [] : [fileLogger()]
+  return process.env.MEGA_AI_AGENT_PRINT_LOGS === "1" ? [...file, stderrLogger] : file
 }
 
 export * as Logging from "./logging"

@@ -1,7 +1,7 @@
-import { productChannel } from "@megaladata-ai-agent/product"
+import { productChannel } from "@mega-ai-agent/product"
 
 export type Channel = "dev" | "beta" | "prod"
 
 export function resolveChannel(): Channel {
-  return productChannel(Bun.env.MEGALADATA_AI_AGENT_CHANNEL)
+  return productChannel(Bun.env.MEGA_AI_AGENT_CHANNEL)
 }

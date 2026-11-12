@@ -23,7 +23,7 @@ const secrets = [
   ...(input.connection?.password ? [input.connection.password] : []),
   ...(input.auth.type === "api" ? [input.auth.key] : [input.auth.access, input.auth.refresh]),
 ]
-const executable = join(input.artifact, "megaladata-ai-agent-linux-x86_64.AppImage")
+const executable = join(input.artifact, "mega-ai-agent-linux-x86_64.AppImage")
 const require = createRequire(join(input.resources, "runtime/client/package.json"))
 const { _electron } = require("playwright-core")
 const providerID = input.model.slice(0, input.model.indexOf("/"))
@@ -89,7 +89,7 @@ for (const testcase of input.cases) {
         cwd: workspace,
         timeout: 120000,
         env: {
-          ...Object.fromEntries(Object.entries(process.env).filter(([key]) => !key.startsWith("MEGALADATA_AI_AGENT_"))),
+          ...Object.fromEntries(Object.entries(process.env).filter(([key]) => !key.startsWith("MEGA_AI_AGENT_"))),
           APPIMAGE_EXTRACT_AND_RUN: "1",
           HOME: home,
           XDG_CONFIG_HOME: join(home, "config"),
@@ -98,14 +98,14 @@ for (const testcase of input.cases) {
           TMPDIR: temporary,
           TMP: temporary,
           TEMP: temporary,
-          MEGALADATA_AI_AGENT_TEST_ONBOARDING: "1",
-          MEGALADATA_AI_AGENT_TEST_ROOT: profile,
-          ...(input.headless ? { MEGALADATA_AI_AGENT_TEST_HEADLESS: "1" } : {}),
-          MEGALADATA_AI_AGENT_PURE: "1",
-          MEGALADATA_AI_AGENT_DISABLE_MODELS_FETCH: "1",
-          ...(input.modelsPath ? { MEGALADATA_AI_AGENT_MODELS_PATH: input.modelsPath } : {}),
-          MEGALADATA_AI_AGENT_DISABLE_PROJECT_CONFIG: "1",
-          MEGALADATA_AI_AGENT_CONFIG_CONTENT: JSON.stringify({ model: input.model, enabled_providers: [providerID] }),
+          MEGA_AI_AGENT_TEST_ONBOARDING: "1",
+          MEGA_AI_AGENT_TEST_ROOT: profile,
+          ...(input.headless ? { MEGA_AI_AGENT_TEST_HEADLESS: "1" } : {}),
+          MEGA_AI_AGENT_PURE: "1",
+          MEGA_AI_AGENT_DISABLE_MODELS_FETCH: "1",
+          ...(input.modelsPath ? { MEGA_AI_AGENT_MODELS_PATH: input.modelsPath } : {}),
+          MEGA_AI_AGENT_DISABLE_PROJECT_CONFIG: "1",
+          MEGA_AI_AGENT_CONFIG_CONTENT: JSON.stringify({ model: input.model, enabled_providers: [providerID] }),
         },
       })
       const page = await application.firstWindow()
@@ -168,7 +168,7 @@ for (const testcase of input.cases) {
         const route = "/" + Buffer.from(workspace).toString("base64url") + "/session/" + sessionID
         await page.evaluate(async (route) => {
           const id = await window.api.getWindowID()
-          localStorage.setItem(`megaladata-ai-agent.desktop.window.${id}.last-active-url`, route)
+          localStorage.setItem(`mega-ai-agent.desktop.window.${id}.last-active-url`, route)
         }, route)
         const agentsReady = page.waitForResponse(
           (response) => {

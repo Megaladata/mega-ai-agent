@@ -8,9 +8,9 @@ import { inputStore } from "../src/inputs"
 
 // Source/runtime acceptance. Uses the public compact Dock tools through the
 // real private Host transport; no browser calls, manufactured receipts or LLM.
-const configPath = process.env.MEGALADATA_AI_AGENT_TEST_CONFIG
-const resourcesPath = process.env.MEGALADATA_AI_AGENT_TEST_RESOURCES
-assert.ok(configPath && resourcesPath, "Set MEGALADATA_AI_AGENT_TEST_CONFIG and MEGALADATA_AI_AGENT_TEST_RESOURCES")
+const configPath = process.env.MEGA_AI_AGENT_TEST_CONFIG
+const resourcesPath = process.env.MEGA_AI_AGENT_TEST_RESOURCES
+assert.ok(configPath && resourcesPath, "Set MEGA_AI_AGENT_TEST_CONFIG and MEGA_AI_AGENT_TEST_RESOURCES")
 const config = JSON.parse(await readFile(configPath, "utf8"))
 const login = config.megaladata ?? {
   api_key: config.api_key,
@@ -21,9 +21,9 @@ const login = config.megaladata ?? {
 assert.ok(typeof login.api_key === "string" && login.api_key.length > 0, "Test credentials required")
 const resources = resolve(resourcesPath)
 const manifest = JSON.parse(await readFile(join(resources, "resource-manifest.json"), "utf8"))
-const url = process.env.MEGALADATA_AI_AGENT_TEST_URL ?? login.url
-const username = process.env.MEGALADATA_AI_AGENT_TEST_USER ?? login.username
-const deliveryBudget = Number(process.env.MEGALADATA_AI_AGENT_TEST_DELIVERY_BUDGET_MS ?? 120000)
+const url = process.env.MEGA_AI_AGENT_TEST_URL ?? login.url
+const username = process.env.MEGA_AI_AGENT_TEST_USER ?? login.username
+const deliveryBudget = Number(process.env.MEGA_AI_AGENT_TEST_DELIVERY_BUDGET_MS ?? 120000)
 assert.ok(Number.isSafeInteger(deliveryBudget) && deliveryBudget > 0, "Positive delivery budget required")
 assert.ok(typeof url === "string" && typeof username === "string", "Explicit Megaladata URL and account required")
 const directory = await mkdtemp(join(tmpdir(), "megaladata-artifact-acceptance-"))

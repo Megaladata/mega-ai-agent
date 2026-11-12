@@ -12,8 +12,8 @@ export const ServeCommand = effectCmd({
   instance: false,
   handler: Effect.fn("Cli.serve")(function* (args) {
     const { Server } = yield* Effect.promise(() => import("../../server/server"))
-    if (!Flag.MEGALADATA_AI_AGENT_SERVER_PASSWORD) {
-      console.log("Warning: MEGALADATA_AI_AGENT_SERVER_PASSWORD is not set; server is unsecured.")
+    if (!Flag.MEGA_AI_AGENT_SERVER_PASSWORD) {
+      console.log("Warning: MEGA_AI_AGENT_SERVER_PASSWORD is not set; server is unsecured.")
     }
     const opts = yield* resolveNetworkOptions(args)
     const server = yield* Effect.promise(() => Server.listen(opts))

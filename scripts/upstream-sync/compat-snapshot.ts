@@ -4,7 +4,7 @@
  *
  * Captures everything outside code that must not change when internal names move:
  * product identity, resolved electron-builder configuration per platform and channel,
- * MEGALADATA_AI_AGENT_* literals, OPENCODE_* reads, third-party-visible strings, the
+ * MEGA_AI_AGENT_* literals, OPENCODE_* reads, third-party-visible strings, the
  * @opencode-ai/plugin resolution, CI triggers, turbo task graph, workspace manifests
  * and content hashes of resource directories.
  *
@@ -53,7 +53,7 @@ const envLiterals = new Set<string>()
 const opencodeEnvFiles = new Set<string>()
 for (const path of sourceFiles) {
   const text = read(path)
-  for (const match of text.matchAll(/MEGALADATA_AI_AGENT_[A-Z0-9_]+/g)) envLiterals.add(match[0])
+  for (const match of text.matchAll(/MEGA_AI_AGENT_[A-Z0-9_]+/g)) envLiterals.add(match[0])
   if (/\bOPENCODE_[A-Z_]+/.test(text)) opencodeEnvFiles.add(path)
 }
 
@@ -165,7 +165,7 @@ for (const platform of ["linux", "darwin", "win32"]) {
   for (const channel of ["prod", "beta", "dev"]) {
     const out = sh(process.execPath, ["-e", builderProbe, platform], join(repo, "packages/desktop"), {
       ...process.env,
-      MEGALADATA_AI_AGENT_CHANNEL: channel,
+      MEGA_AI_AGENT_CHANNEL: channel,
       GITHUB_ACTIONS: "",
     })
     // Paths inside the checkout are recorded relative to it so that snapshots of different checkouts compare.
@@ -226,4 +226,4 @@ const snapshot = {
   resources,
 }
 await Bun.write(args.out, JSON.stringify(snapshot, null, 2) + "\n")
-console.log(`snapshot: ${args.out} (${snapshot.envLiterals.length} MEGALADATA_AI_AGENT_* names, ${workflowFiles.length} workflow files)`)
+console.log(`snapshot: ${args.out} (${snapshot.envLiterals.length} MEGA_AI_AGENT_* names, ${workflowFiles.length} workflow files)`)

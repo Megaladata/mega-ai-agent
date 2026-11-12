@@ -222,7 +222,7 @@ function locale(value: string) {
 }
 
 export const DESKTOP_NATIVE_ENGLISH = {
-  "desktop.menu.app": "Megaladata AI Agent",
+  "desktop.menu.app": "Mega AI Agent",
   "desktop.menu.file": "File",
   "desktop.menu.edit": "Edit",
   "desktop.menu.view": "View",
@@ -262,11 +262,11 @@ export const DESKTOP_NATIVE_ENGLISH = {
   "desktop.menu.nextProject": "Next Project",
   "desktop.menu.minimize": "Minimize",
   "desktop.menu.maximize": "Maximize",
-  "desktop.menu.documentation": "Megaladata AI Agent Documentation",
+  "desktop.menu.documentation": "Mega AI Agent Documentation",
   "desktop.menu.supportForum": "Support Forum",
   "desktop.menu.shareFeedback": "Share Feedback",
   "desktop.menu.reportBug": "Report a Bug",
-  "desktop.menu.ariaLabel": "Megaladata AI Agent menu",
+  "desktop.menu.ariaLabel": "Mega AI Agent menu",
 
   "desktop.updater.dialog.checkFailed.message": "Update check failed.",
   "desktop.updater.dialog.checkFailed.title": "Update Error",
@@ -281,9 +281,9 @@ export const DESKTOP_NATIVE_ENGLISH = {
   "desktop.recovery.action.exportLogs": "Export Logs",
   "desktop.recovery.action.keepWaiting": "Keep Waiting",
   "desktop.recovery.action.quit": "Quit",
-  "desktop.recovery.loadFailed": "Megaladata AI Agent failed to load",
-  "desktop.recovery.terminated": "Megaladata AI Agent window terminated unexpectedly",
-  "desktop.recovery.unresponsive": "Megaladata AI Agent is not responding",
+  "desktop.recovery.loadFailed": "Mega AI Agent failed to load",
+  "desktop.recovery.terminated": "Mega AI Agent window terminated unexpectedly",
+  "desktop.recovery.unresponsive": "Mega AI Agent is not responding",
   "desktop.recovery.unresponsive.detail": "You can relaunch the app, open the logs, or keep waiting.",
   "desktop.recovery.loadFailed.detail": "Window: {{window}}\nURL: {{url}}\nError: {{code}} {{description}}",
   "desktop.recovery.terminated.detail": "Window: {{window}}\nReason: {{reason}}\nCode: {{code}}",
@@ -302,13 +302,13 @@ export const DESKTOP_NATIVE_ENGLISH = {
   "desktop.wsl.error.executeDistro": "Cannot execute commands in distro",
   "desktop.wsl.error.installWsl": "WSL installation failed",
   "desktop.wsl.error.installDistro": "Failed to install distro: {{distro}}",
-  "desktop.wsl.error.installOpencode": "Megaladata AI Agent installation failed",
+  "desktop.wsl.error.installOpencode": "Mega AI Agent installation failed",
   "desktop.wsl.error.alreadyAdded": "{{distro}} is already added",
   "desktop.wsl.error.opencodeMissing": "opencode is not installed in this distro",
   "desktop.wsl.error.opencodeCannotRun": "opencode is installed but could not run",
-  "desktop.wsl.error.opencodeNotInstalled": "Megaladata AI Agent is not installed in {{distro}}",
+  "desktop.wsl.error.opencodeNotInstalled": "Mega AI Agent is not installed in {{distro}}",
   "desktop.wsl.error.updateVersion":
-    "Megaladata AI Agent update finished but {{distro}} still reports {{installed}}; expected {{expected}}",
+    "Mega AI Agent update finished but {{distro}} still reports {{installed}}; expected {{expected}}",
   "desktop.wsl.error.noVersion": "no version",
   "desktop.wsl.error.serverExited": "WSL server exited after startup (code={{code}} signal={{signal}})",
   "desktop.wsl.error.serverExitedBeforeHealthy":

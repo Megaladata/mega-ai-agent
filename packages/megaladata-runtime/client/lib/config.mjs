@@ -9,7 +9,7 @@ import { storageDirectories, storagePath } from './storage-policy.mjs';
 const SHA256 = /^[a-f0-9]{64}$/;
 
 export async function loadConfig({ configPath, stateDir, agent, adapterRevision, mode,
-  resources = process.env.MEGALADATA_AI_AGENT_RESOURCES,
+  resources = process.env.MEGA_AI_AGENT_RESOURCES,
   actionManifestUri = null, actionManifestSha256 = null, replayBootstrap = false, replayLoginUser = null, replayMegaladataUrl = null,
   acceptanceCleanupPackage = null }) {
   if (!configPath) throw new Error('An explicit Dock config path is required');

@@ -76,8 +76,8 @@ jobs:
       - name: Setup git committer
         uses: ./.github/actions/setup-git-committer
         with:
-          opencode-app-id: ${{ vars.MEGALADATA_AI_AGENT_APP_ID }}
-          opencode-app-secret: ${{ secrets.MEGALADATA_AI_AGENT_APP_SECRET }}
+          opencode-app-id: ${{ vars.MEGA_AI_AGENT_APP_ID }}
+          opencode-app-secret: ${{ secrets.MEGA_AI_AGENT_APP_SECRET }}
 
       - name: Set version
         id: version
@@ -187,10 +187,10 @@ jobs:
       run:
         shell: bash
     env:
-      MEGALADATA_AI_AGENT_VERSION: ${{ needs.verify.outputs.version }}
-      MEGALADATA_AI_AGENT_CHANNEL: ${{ needs.verify.outputs.channel }}
+      MEGA_AI_AGENT_VERSION: ${{ needs.verify.outputs.version }}
+      MEGA_AI_AGENT_CHANNEL: ${{ needs.verify.outputs.channel }}
       # Release builds bake temporary browser recovery for prod; beta and dev stay without it.
-      MEGALADATA_AI_AGENT_BROWSER_RECOVERY: ${{ needs.verify.outputs.channel == 'prod' && '1' || '0' }}
+      MEGA_AI_AGENT_BROWSER_RECOVERY: ${{ needs.verify.outputs.channel == 'prod' && '1' || '0' }}
       MEGALADATA_MCP_API_KEY: ${{ secrets.MEGALADATA_MCP_API_KEY }}
     steps:
       - name: Checkout repository
@@ -226,7 +226,7 @@ jobs:
       - name: Build CLI
         run: |
           mkdir -p "$RUNNER_TEMP/cli"
-          bun packages/megaladata-host/script/build-cli.ts "$RUNNER_TEMP/cli/megaladata-ai-agent-cli-linux-x64"
+          bun packages/megaladata-host/script/build-cli.ts "$RUNNER_TEMP/cli/mega-ai-agent-cli-linux-x64"
 
       # write-manifest.ts runs node_modules/electron/dist/electron as Node to record the bundled
       # Electron versions; bun install does not leave that binary behind, and electron-builder
@@ -243,11 +243,11 @@ jobs:
             git status --porcelain --untracked-files=all
             exit 1
           fi
-          git archive --format=tar.gz --output="packages/desktop/dist/megaladata-ai-agent-${MEGALADATA_AI_AGENT_VERSION}-source.tar.gz" HEAD
+          git archive --format=tar.gz --output="packages/desktop/dist/mega-ai-agent-${MEGA_AI_AGENT_VERSION}-source.tar.gz" HEAD
           cd packages/desktop
-          bun scripts/release/write-manifest.ts --target linux-x64 --version "$MEGALADATA_AI_AGENT_VERSION" --channel "$MEGALADATA_AI_AGENT_CHANNEL" --dist dist --resources resources/megaladata --output dist/release-manifest.json
-          bun scripts/release/verify-artifact.ts --manifest dist/release-manifest.json --artifact dist/megaladata-ai-agent-linux-amd64.deb --report dist/static-deb.json
-          bun scripts/release/verify-artifact.ts --manifest dist/release-manifest.json --artifact dist/megaladata-ai-agent-linux-x86_64.AppImage --report dist/static-appimage.json
+          bun scripts/release/write-manifest.ts --target linux-x64 --version "$MEGA_AI_AGENT_VERSION" --channel "$MEGA_AI_AGENT_CHANNEL" --dist dist --resources resources/megaladata --output dist/release-manifest.json
+          bun scripts/release/verify-artifact.ts --manifest dist/release-manifest.json --artifact dist/mega-ai-agent-linux-amd64.deb --report dist/static-deb.json
+          bun scripts/release/verify-artifact.ts --manifest dist/release-manifest.json --artifact dist/mega-ai-agent-linux-x86_64.AppImage --report dist/static-appimage.json
 
       # Flatten installers, reports and CLI archives so downloads have predictable top-level names.
       - name: Collect artifacts
@@ -274,10 +274,10 @@ jobs:
       run:
         shell: pwsh
     env:
-      MEGALADATA_AI_AGENT_VERSION: ${{ needs.verify.outputs.version }}
-      MEGALADATA_AI_AGENT_CHANNEL: ${{ needs.verify.outputs.channel }}
+      MEGA_AI_AGENT_VERSION: ${{ needs.verify.outputs.version }}
+      MEGA_AI_AGENT_CHANNEL: ${{ needs.verify.outputs.channel }}
       # Release builds bake temporary browser recovery for prod; beta and dev stay without it.
-      MEGALADATA_AI_AGENT_BROWSER_RECOVERY: ${{ needs.verify.outputs.channel == 'prod' && '1' || '0' }}
+      MEGA_AI_AGENT_BROWSER_RECOVERY: ${{ needs.verify.outputs.channel == 'prod' && '1' || '0' }}
       MEGALADATA_MCP_API_KEY: ${{ secrets.MEGALADATA_MCP_API_KEY }}
       CSC_IDENTITY_AUTO_DISCOVERY: "false"
       NODE_OPTIONS: --max-old-space-size=6144
@@ -294,7 +294,7 @@ jobs:
       - name: Build both Windows products
         timeout-minutes: 60
         run: |
-          & ./script/build-windows.ps1 -Product Both -OutputDirectory "$env:RUNNER_TEMP/windows" -NodeSource $env:MEGALADATA_AI_AGENT_NODE_SOURCE -BrowserSource $env:MEGALADATA_AI_AGENT_BROWSER_SOURCE -BunPath (Get-Command bun).Source -Channel $env:MEGALADATA_AI_AGENT_CHANNEL
+          & ./script/build-windows.ps1 -Product Both -OutputDirectory "$env:RUNNER_TEMP/windows" -NodeSource $env:MEGA_AI_AGENT_NODE_SOURCE -BrowserSource $env:MEGA_AI_AGENT_BROWSER_SOURCE -BunPath (Get-Command bun).Source -Channel $env:MEGA_AI_AGENT_CHANNEL
       - name: Verify Windows source and packaging
         working-directory: packages/desktop
         run: |
@@ -313,17 +313,17 @@ jobs:
       - name: Write Windows manifest and verify installer
         run: |
           $dist = "$env:RUNNER_TEMP/windows/desktop"
-          git archive --format=tar.gz "--output=$dist/megaladata-ai-agent-$env:MEGALADATA_AI_AGENT_VERSION-windows-source.tar.gz" HEAD
+          git archive --format=tar.gz "--output=$dist/mega-ai-agent-$env:MEGA_AI_AGENT_VERSION-windows-source.tar.gz" HEAD
           if ($LASTEXITCODE -ne 0) { throw "Source archive failed" }
-          bun packages/desktop/scripts/release/write-manifest.ts --target win32-x64 --version $env:MEGALADATA_AI_AGENT_VERSION --channel $env:MEGALADATA_AI_AGENT_CHANNEL --dist $dist --resources "$dist/win-unpacked/resources/megaladata" --output "$dist/windows-release-manifest.json"
+          bun packages/desktop/scripts/release/write-manifest.ts --target win32-x64 --version $env:MEGA_AI_AGENT_VERSION --channel $env:MEGA_AI_AGENT_CHANNEL --dist $dist --resources "$dist/win-unpacked/resources/megaladata" --output "$dist/windows-release-manifest.json"
           if ($LASTEXITCODE -ne 0) { throw "Manifest failed" }
-          bun packages/desktop/scripts/release/verify-artifact.ts --manifest "$dist/windows-release-manifest.json" --artifact "$dist/megaladata-ai-agent-win-x64.exe" --unpacked "$dist/win-unpacked" --report "$dist/static-nsis.json"
+          bun packages/desktop/scripts/release/verify-artifact.ts --manifest "$dist/windows-release-manifest.json" --artifact "$dist/mega-ai-agent-win-x64.exe" --unpacked "$dist/win-unpacked" --report "$dist/static-nsis.json"
           if ($LASTEXITCODE -ne 0) { throw "Installer verification failed" }
-          if ((Get-AuthenticodeSignature -LiteralPath "$dist/megaladata-ai-agent-win-x64.exe").Status -ne "NotSigned") { throw "Expected unsigned Windows candidate" }
+          if ((Get-AuthenticodeSignature -LiteralPath "$dist/mega-ai-agent-win-x64.exe").Status -ne "NotSigned") { throw "Expected unsigned Windows candidate" }
       - name: Collect Windows artifacts
         run: |
           $upload = New-Item -ItemType Directory -Path "$env:RUNNER_TEMP/windows-upload"
-          Copy-Item -Path "$env:RUNNER_TEMP/windows/desktop/*-win-x64.exe", "$env:RUNNER_TEMP/windows/desktop/*-source.tar.gz", "$env:RUNNER_TEMP/windows/desktop/windows-release-manifest.json*", "$env:RUNNER_TEMP/windows/desktop/static-nsis.json", "$env:RUNNER_TEMP/windows/megaladata-ai-agent-cli-*.zip*" -Destination $upload.FullName
+          Copy-Item -Path "$env:RUNNER_TEMP/windows/desktop/*-win-x64.exe", "$env:RUNNER_TEMP/windows/desktop/*-source.tar.gz", "$env:RUNNER_TEMP/windows/desktop/windows-release-manifest.json*", "$env:RUNNER_TEMP/windows/desktop/static-nsis.json", "$env:RUNNER_TEMP/windows/mega-ai-agent-cli-*.zip*" -Destination $upload.FullName
       - name: Upload Windows artifacts
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
@@ -339,10 +339,10 @@ jobs:
     runs-on: macos-15
     timeout-minutes: 120
     env:
-      MEGALADATA_AI_AGENT_VERSION: ${{ needs.verify.outputs.version }}
-      MEGALADATA_AI_AGENT_CHANNEL: ${{ needs.verify.outputs.channel }}
+      MEGA_AI_AGENT_VERSION: ${{ needs.verify.outputs.version }}
+      MEGA_AI_AGENT_CHANNEL: ${{ needs.verify.outputs.channel }}
       # Release builds bake temporary browser recovery for prod; beta and dev stay without it.
-      MEGALADATA_AI_AGENT_BROWSER_RECOVERY: ${{ needs.verify.outputs.channel == 'prod' && '1' || '0' }}
+      MEGA_AI_AGENT_BROWSER_RECOVERY: ${{ needs.verify.outputs.channel == 'prod' && '1' || '0' }}
       MEGALADATA_MCP_API_KEY: ${{ secrets.MEGALADATA_MCP_API_KEY }}
       CSC_IDENTITY_AUTO_DISCOVERY: "false"
       NODE_OPTIONS: --max-old-space-size=6144
@@ -360,13 +360,13 @@ jobs:
       - name: Install locked macOS dependencies
         run: |
           test "$(uname -m)" = arm64
-          bun install --frozen-lockfile --filter megaladata-ai-agent --filter '@opencode-ai/desktop' --filter 'opencode' --filter '@megaladata-ai-agent/megaladata-host' --filter '@megaladata-ai-agent/product'
+          bun install --frozen-lockfile --filter mega-ai-agent --filter '@opencode-ai/desktop' --filter 'opencode' --filter '@mega-ai-agent/megaladata-host' --filter '@mega-ai-agent/product'
           node packages/desktop/node_modules/electron/install.js
       - name: Verify macOS source
         run: bun packages/desktop/scripts/check-macos.ts "$RUNNER_TEMP/macos-source-checks.json"
       - name: Build, verify and offline-smoke both macOS products
         timeout-minutes: 75
-        run: bun packages/desktop/scripts/build-macos.ts --output "$RUNNER_TEMP/macos" --version "$MEGALADATA_AI_AGENT_VERSION"
+        run: bun packages/desktop/scripts/build-macos.ts --output "$RUNNER_TEMP/macos" --version "$MEGA_AI_AGENT_VERSION"
       - name: Collect platform-specific metadata
         run: |
           mv "$RUNNER_TEMP/macos/release-manifest.json" "$RUNNER_TEMP/macos/macos-release-manifest.json"

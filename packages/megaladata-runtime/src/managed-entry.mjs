@@ -148,7 +148,7 @@ async function handle(message) {
         // Preparation must bind to the same canonical path used by private login.
         megaladataUrl: megaladataAddress(input.connection.url),
         stateDir: input.stateDir,
-        agent: "megaladata-ai-agent",
+        agent: "mega-ai-agent",
         adapterRevision: "1",
         mode: "executor-replay",
         resultProfile: "user-v1",
@@ -188,7 +188,7 @@ async function handle(message) {
             [input.connection.apiKey, input.connection.password, input.connection.username]) })
         } } })
       const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair()
-      state.client = new Client({ name: "megaladata-ai-agent-host", version: "0.1.0" })
+      state.client = new Client({ name: "mega-ai-agent-host", version: "0.1.0" })
       await state.bridge.server.connect(serverTransport)
       await state.client.connect(clientTransport)
       send({

@@ -55,9 +55,9 @@
     "typescript": "~5.6.2",
     "vite": "catalog:",
     "zod-openapi": "5.4.6",
-    "@megaladata-ai-agent/product": "workspace:*",
+    "@mega-ai-agent/product": "workspace:*",
     "@opencode-ai/schema": "workspace:*",
-    "@megaladata-ai-agent/megaladata-host": "workspace:*"
+    "@mega-ai-agent/megaladata-host": "workspace:*"
   },
   "optionalDependencies": {
     "@lydell/node-pty-darwin-arm64": "1.2.0-beta.12",
@@ -76,5 +76,5 @@
     "@parcel/watcher-win32-x64": "2.5.1"
   },
   "homepage": "https://megaladata.ru/",
-  "description": "Megaladata AI Agent — desktop assistant for Megaladata workflows"
+  "description": "Mega AI Agent — desktop assistant for Megaladata workflows"
 }

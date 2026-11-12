@@ -41,7 +41,7 @@ const matrix = await report("linux-matrix.json")
 const matrixNames = ["ubuntu22", "ubuntu24", "ubuntu26", "debian12", "debian13"]
 const matrixPassed =
   !!matrix &&
-  matrix.artifactHash === hashes.get("megaladata-ai-agent-linux-amd64.deb") &&
+  matrix.artifactHash === hashes.get("mega-ai-agent-linux-amd64.deb") &&
   matrix.reports?.length === 5 &&
   matrixNames.every((name) =>
     matrix.reports.some((entry: { name: string; status: string }) => entry.name === name && entry.status === "PASS"),
@@ -70,33 +70,33 @@ if (!withoutMacos)
 const macos: [file: string, status: string][] = withoutMacos
   ? []
   : [
-      ["megaladata-ai-agent-mac-arm64.dmg", `${await staticStatus("static-dmg.json")}; offline smoke PASS; ad-hoc signed`],
-      ["megaladata-ai-agent-mac-arm64.zip", `${await staticStatus("static-zip.json")}; offline smoke PASS; ad-hoc signed`],
-      [`megaladata-ai-agent-cli-${version}-darwin-arm64.tar.gz`, "archive verification and offline smoke PASS; ad-hoc signed"],
-      [`megaladata-ai-agent-${version}-macos-source.tar.gz`, "macOS corresponding source"],
+      ["mega-ai-agent-mac-arm64.dmg", `${await staticStatus("static-dmg.json")}; offline smoke PASS; ad-hoc signed`],
+      ["mega-ai-agent-mac-arm64.zip", `${await staticStatus("static-zip.json")}; offline smoke PASS; ad-hoc signed`],
+      [`mega-ai-agent-cli-${version}-darwin-arm64.tar.gz`, "archive verification and offline smoke PASS; ad-hoc signed"],
+      [`mega-ai-agent-${version}-macos-source.tar.gz`, "macOS corresponding source"],
       ["macos-release-manifest.json", "macOS release manifest (ad-hoc signed app; not notarized)"],
     ]
 const expected: [file: string, status: string][] = [
   [
-    "megaladata-ai-agent-linux-amd64.deb",
+    "mega-ai-agent-linux-amd64.deb",
     matrixPassed ? `${await staticStatus("static-deb.json")} + ${matrixStatus}` : await staticStatus("static-deb.json"),
   ],
   [
-    "megaladata-ai-agent-linux-x86_64.AppImage",
+    "mega-ai-agent-linux-x86_64.AppImage",
     matrixPassed
       ? `${await staticStatus("static-appimage.json")}; Docker matrix covers the DEB only`
       : await staticStatus("static-appimage.json"),
   ],
   [
-    `megaladata-ai-agent-cli-${version}-linux-x64.tar.gz`,
+    `mega-ai-agent-cli-${version}-linux-x64.tar.gz`,
     matrixPassed
       ? "static verify PASS (cli-manifest); Docker matrix covers the DEB only"
       : "static verify PASS (cli-manifest)",
   ],
-  ["megaladata-ai-agent-win-x64.exe", `${await staticStatus("static-nsis.json")}; unsigned`],
-  [`megaladata-ai-agent-cli-${version}-win32-x64.zip`, "archive manifest verification PASS; unsigned"],
-  [`megaladata-ai-agent-${version}-source.tar.gz`, "source archive (git archive HEAD)"],
-  [`megaladata-ai-agent-${version}-windows-source.tar.gz`, "Windows corresponding source"],
+  ["mega-ai-agent-win-x64.exe", `${await staticStatus("static-nsis.json")}; unsigned`],
+  [`mega-ai-agent-cli-${version}-win32-x64.zip`, "archive manifest verification PASS; unsigned"],
+  [`mega-ai-agent-${version}-source.tar.gz`, "source archive (git archive HEAD)"],
+  [`mega-ai-agent-${version}-windows-source.tar.gz`, "Windows corresponding source"],
   ["release-manifest.json", "Linux release manifest (unsigned)"],
   ["windows-release-manifest.json", "Windows release manifest (unsigned)"],
   ...macos,
@@ -117,7 +117,7 @@ const narrativeFile = Bun.file(path.join(import.meta.dir, "release-notes", `${ve
 const narrative = (await narrativeFile.exists()) ? (await narrativeFile.text()).trim() : ""
 const notes = [
   ...(narrative ? [narrative, ""] : []),
-  `# Megaladata AI Agent ${args.tag}`,
+  `# Mega AI Agent ${args.tag}`,
   "",
   `- Version: ${version}`,
   `- Channel: ${args.channel}`,

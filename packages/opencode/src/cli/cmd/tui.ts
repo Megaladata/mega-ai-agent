@@ -16,7 +16,7 @@ import { writeHeapSnapshot } from "v8"
 import { ServerAuth } from "@/server/auth"
 import { InvalidSessionError, validateSession } from "../tui/validate-session"
 import { win32InstallCtrlCGuard } from "@opencode-ai/tui/terminal-win32"
-import type { Port } from "@megaladata-ai-agent/megaladata-host/transport"
+import type { Port } from "@mega-ai-agent/megaladata-host/transport"
 import { parentMegaladataBridge } from "../tui/megaladata-bridge"
 
 const megaladata = { port: undefined as Port | undefined }
@@ -30,7 +30,7 @@ export function setTuiStartupWarning(warning?: string) {
 }
 
 declare global {
-  const MEGALADATA_AI_AGENT_WORKER_PATH: string
+  const MEGA_AI_AGENT_WORKER_PATH: string
 }
 
 type RpcClient = ReturnType<typeof Rpc.client<typeof rpc>>
@@ -100,7 +100,7 @@ function createUpdater(latest: () => Promise<UpdateNotice | undefined>): UpdateS
 }
 
 async function target() {
-  if (typeof MEGALADATA_AI_AGENT_WORKER_PATH !== "undefined") return MEGALADATA_AI_AGENT_WORKER_PATH
+  if (typeof MEGA_AI_AGENT_WORKER_PATH !== "undefined") return MEGA_AI_AGENT_WORKER_PATH
   const dist = new URL("./cli/tui/worker.js", import.meta.url)
   if (await Filesystem.exists(fileURLToPath(dist))) return dist
   return new URL("../tui/worker.ts", import.meta.url)
@@ -282,7 +282,7 @@ export const TuiThreadCommand = cmd({
         process.off("SIGUSR2", reload)
         try {
           await withTimeout(client.call("shutdown", undefined), 5000).catch((error) => {
-            if (process.env.MEGALADATA_AI_AGENT_CLI_ROOT) throw new Error("MEGALADATA_TUI_CLEANUP_FAILED")
+            if (process.env.MEGA_AI_AGENT_CLI_ROOT) throw new Error("MEGALADATA_TUI_CLEANUP_FAILED")
           })
         } finally {
           bridge?.close()
@@ -323,7 +323,7 @@ export const TuiThreadCommand = cmd({
             headers,
           })
         } catch (error) {
-          const invalid = process.env.MEGALADATA_AI_AGENT_CLI_ROOT && error instanceof InvalidSessionError
+          const invalid = process.env.MEGA_AI_AGENT_CLI_ROOT && error instanceof InvalidSessionError
           UI.error(invalid ? "CLI_ARGUMENT_INVALID" : errorMessage(error))
           process.exitCode = invalid ? 2 : 1
           return
@@ -369,7 +369,7 @@ export const TuiThreadCommand = cmd({
         unguard?.()
       } catch {}
     }
-    if (!process.env.MEGALADATA_AI_AGENT_CLI_ROOT) process.exit()
+    if (!process.env.MEGA_AI_AGENT_CLI_ROOT) process.exit()
   },
 })
 // scratch

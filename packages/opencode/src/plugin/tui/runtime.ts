@@ -253,9 +253,9 @@ function createThemeInstaller(
     const name = path.basename(src, path.extname(src))
     const source_dir = path.dirname(meta.source)
     const local_dir =
-      path.basename(source_dir) === ".megaladata-ai-agent"
+      path.basename(source_dir) === ".mega-ai-agent"
         ? path.join(source_dir, "themes")
-        : path.join(source_dir, ".megaladata-ai-agent", "themes")
+        : path.join(source_dir, ".mega-ai-agent", "themes")
     const dest_dir = meta.scope === "local" ? local_dir : path.join(Global.Path.config, "themes")
     const dest = path.join(dest_dir, `${name}.json`)
     const stat = await Filesystem.statAsync(src)
@@ -814,7 +814,7 @@ function defaultPluginOrigin(state: RuntimeState, spec: string): ConfigPlugin.Or
   return {
     spec,
     scope: "local",
-    source: state.api.state.path.config || path.join(state.directory, ".megaladata-ai-agent", "tui.json"),
+    source: state.api.state.path.config || path.join(state.directory, ".mega-ai-agent", "tui.json"),
   }
 }
 
@@ -1086,8 +1086,8 @@ async function load(input: {
       }).pipe(Effect.provide(AppNodeBuilder.build(RuntimeFlags.node))),
     )
     const pluginOrigins = config.plugin_origins ?? (await TuiConfig.pluginOrigins())
-    const records = Flag.MEGALADATA_AI_AGENT_PURE ? [] : pluginOrigins
-    if (Flag.MEGALADATA_AI_AGENT_PURE && pluginOrigins.length) {
+    const records = Flag.MEGA_AI_AGENT_PURE ? [] : pluginOrigins
+    if (Flag.MEGA_AI_AGENT_PURE && pluginOrigins.length) {
     }
 
     for (const item of internalTuiPlugins(flags)) {

@@ -56,9 +56,9 @@ const layer = Layer.effect(
     const decode = Schema.decodeUnknownOption(Info)
 
     const all = Effect.fn("Auth.all")(function* () {
-      if (process.env.MEGALADATA_AI_AGENT_AUTH_CONTENT) {
+      if (process.env.MEGA_AI_AGENT_AUTH_CONTENT) {
         try {
-          return JSON.parse(process.env.MEGALADATA_AI_AGENT_AUTH_CONTENT)
+          return JSON.parse(process.env.MEGA_AI_AGENT_AUTH_CONTENT)
         } catch (err) {}
       }
 

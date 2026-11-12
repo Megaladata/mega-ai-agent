@@ -2,7 +2,7 @@
 """Gives the fork's external names to text that arrived from upstream.
 
 Upstream spells the product identity as OPENCODE_* variables, `.opencode` directories, `opencode.json(c)` and
-`opencode.db`. The fork ships MEGALADATA_AI_AGENT_*, `.megaladata-ai-agent`, `megaladata-ai-agent.json(c)` and `megaladata-ai-agent.db`
+`opencode.db`. The fork ships MEGA_AI_AGENT_*, `.mega-ai-agent`, `mega-ai-agent.json(c)` and `mega-ai-agent.db`
 (external names, never reverted; see docs/upstream-sync/adr-0001-modular-integration.md). After a merge, new upstream code
 and tests still carry the upstream spelling; this applies the fork's spelling to them. Third-party provider keys
 (OPENCODE_API_KEY, OPENCODE_GO_API_KEY) are not product names and stay. Visible brand text ("OpenCode" in UI strings and
@@ -36,10 +36,10 @@ def wants(path):
 
 
 def transform(text):
-    text = re.sub(r"\bOPENCODE_[A-Z0-9_]+", lambda m: m.group(0) if m.group(0) in PROVIDER_KEYS else "MEGALADATA_AI_AGENT_" + m.group(0)[len("OPENCODE_"):], text)
-    text = re.sub(r"(?<![a-zA-Z0-9])\.opencode(?=[/\\\s\"'`)]|$)", ".megaladata-ai-agent", text)
-    for source, target in (("opencode.json", "megaladata-ai-agent.json"), ("opencode.db", "megaladata-ai-agent.db"),
-                           ("opencode.settings", "megaladata-ai-agent.settings"), ("opencode.updater", "megaladata-ai-agent.updater")):
+    text = re.sub(r"\bOPENCODE_[A-Z0-9_]+", lambda m: m.group(0) if m.group(0) in PROVIDER_KEYS else "MEGA_AI_AGENT_" + m.group(0)[len("OPENCODE_"):], text)
+    text = re.sub(r"(?<![a-zA-Z0-9])\.opencode(?=[/\\\s\"'`)]|$)", ".mega-ai-agent", text)
+    for source, target in (("opencode.json", "mega-ai-agent.json"), ("opencode.db", "mega-ai-agent.db"),
+                           ("opencode.settings", "mega-ai-agent.settings"), ("opencode.updater", "mega-ai-agent.updater")):
         text = text.replace(source, target)
     return text
 

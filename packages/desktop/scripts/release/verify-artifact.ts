@@ -6,7 +6,7 @@ import { mkdtemp, rm, readFile } from "node:fs/promises"
 import { tmpdir } from "node:os"
 import { $ } from "bun"
 import { decodeManifest, fileHash, verifyResourceTree, verifyWindowsApplication } from "./manifest"
-import { Product, productName, productSlug } from "@megaladata-ai-agent/product"
+import { Product, productName, productSlug } from "@mega-ai-agent/product"
 
 const args = parseArgs({
   args: process.argv.slice(2),

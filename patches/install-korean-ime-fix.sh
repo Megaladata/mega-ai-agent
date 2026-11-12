@@ -18,8 +18,8 @@ ORANGE='\033[38;5;214m'
 MUTED='\033[0;2m'
 NC='\033[0m'
 
-MEGALADATA_AI_AGENT_DIR="${MEGALADATA_AI_AGENT_DIR:-$HOME/.opencode}"
-MEGALADATA_AI_AGENT_SRC="${MEGALADATA_AI_AGENT_SRC:-$HOME/.opencode-src}"
+MEGA_AI_AGENT_DIR="${MEGA_AI_AGENT_DIR:-$HOME/.opencode}"
+MEGA_AI_AGENT_SRC="${MEGA_AI_AGENT_SRC:-$HOME/.opencode-src}"
 FORK_REPO="${FORK_REPO:-https://github.com/claudianus/opencode.git}"
 FORK_BRANCH="${FORK_BRANCH:-fix-zhipuai-coding-plan-thinking}"
 
@@ -39,18 +39,18 @@ need git
 need bun
 
 # ── 1. Clone or update fork ────────────────────────────────────────────
-if [ -d "$MEGALADATA_AI_AGENT_SRC/.git" ]; then
-  info "Updating existing source at $MEGALADATA_AI_AGENT_SRC ..."
-  git -C "$MEGALADATA_AI_AGENT_SRC" fetch origin "$FORK_BRANCH"
-  git -C "$MEGALADATA_AI_AGENT_SRC" checkout "$FORK_BRANCH"
-  git -C "$MEGALADATA_AI_AGENT_SRC" reset --hard "origin/$FORK_BRANCH"
+if [ -d "$MEGA_AI_AGENT_SRC/.git" ]; then
+  info "Updating existing source at $MEGA_AI_AGENT_SRC ..."
+  git -C "$MEGA_AI_AGENT_SRC" fetch origin "$FORK_BRANCH"
+  git -C "$MEGA_AI_AGENT_SRC" checkout "$FORK_BRANCH"
+  git -C "$MEGA_AI_AGENT_SRC" reset --hard "origin/$FORK_BRANCH"
 else
-  info "Cloning fork (shallow) to $MEGALADATA_AI_AGENT_SRC ..."
-  git clone --depth 1 --branch "$FORK_BRANCH" "$FORK_REPO" "$MEGALADATA_AI_AGENT_SRC"
+  info "Cloning fork (shallow) to $MEGA_AI_AGENT_SRC ..."
+  git clone --depth 1 --branch "$FORK_BRANCH" "$FORK_REPO" "$MEGA_AI_AGENT_SRC"
 fi
 
 # ── 2. Verify the IME fix is present in source ────────────────────────
-PROMPT_FILE="$MEGALADATA_AI_AGENT_SRC/packages/opencode/src/cli/cmd/tui/component/prompt/index.tsx"
+PROMPT_FILE="$MEGA_AI_AGENT_SRC/packages/opencode/src/cli/cmd/tui/component/prompt/index.tsx"
 if [ ! -f "$PROMPT_FILE" ]; then
   err "Prompt file not found: $PROMPT_FILE"
   exit 1
@@ -72,16 +72,16 @@ fi
 
 # ── 3. Install dependencies ────────────────────────────────────────────
 info "Installing dependencies (this may take a minute) ..."
-cd "$MEGALADATA_AI_AGENT_SRC"
+cd "$MEGA_AI_AGENT_SRC"
 bun install --frozen-lockfile 2>/dev/null || bun install
 
 # ── 4. Build (current platform only) ──────────────────────────────────
 info "Building opencode for current platform ..."
-cd "$MEGALADATA_AI_AGENT_SRC/packages/opencode"
+cd "$MEGA_AI_AGENT_SRC/packages/opencode"
 bun run build --single
 
 # ── 5. Install binary ──────────────────────────────────────────────────
-mkdir -p "$MEGALADATA_AI_AGENT_DIR/bin"
+mkdir -p "$MEGA_AI_AGENT_DIR/bin"
 
 PLATFORM=$(uname -s | tr '[:upper:]' '[:lower:]')
 ARCH=$(uname -m)
@@ -90,23 +90,23 @@ ARCH=$(uname -m)
 [ "$PLATFORM" = "darwin" ] && true
 [ "$PLATFORM" = "linux" ] && true
 
-BUILT_BINARY="$MEGALADATA_AI_AGENT_SRC/packages/opencode/dist/opencode-${PLATFORM}-${ARCH}/bin/opencode"
+BUILT_BINARY="$MEGA_AI_AGENT_SRC/packages/opencode/dist/opencode-${PLATFORM}-${ARCH}/bin/opencode"
 
 if [ ! -f "$BUILT_BINARY" ]; then
-  BUILT_BINARY=$(find "$MEGALADATA_AI_AGENT_SRC/packages/opencode/dist" -name "opencode" -type f -executable 2>/dev/null | head -1)
+  BUILT_BINARY=$(find "$MEGA_AI_AGENT_SRC/packages/opencode/dist" -name "opencode" -type f -executable 2>/dev/null | head -1)
 fi
 
 if [ -f "$BUILT_BINARY" ]; then
-  if [ -f "$MEGALADATA_AI_AGENT_DIR/bin/opencode" ]; then
-    cp "$MEGALADATA_AI_AGENT_DIR/bin/opencode" "$MEGALADATA_AI_AGENT_DIR/bin/opencode.bak.$(date +%Y%m%d%H%M%S)"
+  if [ -f "$MEGA_AI_AGENT_DIR/bin/opencode" ]; then
+    cp "$MEGA_AI_AGENT_DIR/bin/opencode" "$MEGA_AI_AGENT_DIR/bin/opencode.bak.$(date +%Y%m%d%H%M%S)"
   fi
-  cp "$BUILT_BINARY" "$MEGALADATA_AI_AGENT_DIR/bin/opencode"
-  chmod +x "$MEGALADATA_AI_AGENT_DIR/bin/opencode"
-  ok "Installed to $MEGALADATA_AI_AGENT_DIR/bin/opencode"
+  cp "$BUILT_BINARY" "$MEGA_AI_AGENT_DIR/bin/opencode"
+  chmod +x "$MEGA_AI_AGENT_DIR/bin/opencode"
+  ok "Installed to $MEGA_AI_AGENT_DIR/bin/opencode"
 else
   err "Build failed - binary not found in dist/"
   info "Try running manually:"
-  echo "  cd $MEGALADATA_AI_AGENT_SRC/packages/opencode && bun run build --single"
+  echo "  cd $MEGA_AI_AGENT_SRC/packages/opencode && bun run build --single"
   exit 1
 fi
 

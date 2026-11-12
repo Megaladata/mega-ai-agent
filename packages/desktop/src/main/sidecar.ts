@@ -1,4 +1,4 @@
-import type { HostPort } from "@megaladata-ai-agent/megaladata-host/host-port"
+import type { HostPort } from "@mega-ai-agent/megaladata-host/host-port"
 import { assignProxyEnvironment, loopbackNoProxy } from "./proxy-env"
 import { exitOnFatalErrors } from "./fatal-exit"
 import * as http from "node:http"
@@ -66,7 +66,7 @@ async function start(command: StartCommand, megaladataPort?: HostPort) {
     ensureLoopbackNoProxy()
     useSystemCertificates()
     useEnvProxy()
-    const { Server, MegaladataHost } = await import("virtual:megaladata-ai-agent-server")
+    const { Server, MegaladataHost } = await import("virtual:mega-ai-agent-server")
     if (megaladataPort)
       MegaladataHost.connect({
         postMessage: (value) => megaladataPort.postMessage(value),
@@ -78,9 +78,9 @@ async function start(command: StartCommand, megaladataPort?: HostPort) {
     listener = await Server.listen({
       port: command.port,
       hostname: command.hostname,
-      username: "megaladata-ai-agent",
+      username: "mega-ai-agent",
       password: command.password,
-      cors: ["megaladata-ai-agent-app://renderer"],
+      cors: ["mega-ai-agent-app://renderer"],
     })
     parentPort.postMessage({ type: "ready" })
   } catch (error) {
@@ -101,11 +101,11 @@ async function stop() {
 
 function prepareSidecarEnv(password: string, userDataPath: string) {
   Object.assign(process.env, {
-    MEGALADATA_AI_AGENT_SERVER_USERNAME: "megaladata-ai-agent",
-    MEGALADATA_AI_AGENT_SERVER_PASSWORD: password,
+    MEGA_AI_AGENT_SERVER_USERNAME: "mega-ai-agent",
+    MEGA_AI_AGENT_SERVER_PASSWORD: password,
     XDG_STATE_HOME: process.env.XDG_STATE_HOME ?? userDataPath,
-    MEGALADATA_AI_AGENT_PRINT_LOGS: "1",
-    MEGALADATA_AI_AGENT_DISABLE_LOG_FILE: "1",
+    MEGA_AI_AGENT_PRINT_LOGS: "1",
+    MEGA_AI_AGENT_DISABLE_LOG_FILE: "1",
   })
 }
 

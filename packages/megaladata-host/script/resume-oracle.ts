@@ -8,8 +8,8 @@ import { cliOracleTransport } from "./cli-oracle-transport"
 const original = process.argv[2]
 const inverse = process.argv[3] === "--inverse"
 if (process.argv[3] && !inverse) throw Error("RESUME_ORACLE_ARGUMENT_INVALID")
-const executable = process.env.MEGALADATA_AI_AGENT_TEST_CLI_EXECUTABLE
-const configPath = process.env.MEGALADATA_AI_AGENT_TEST_CONFIG
+const executable = process.env.MEGA_AI_AGENT_TEST_CLI_EXECUTABLE
+const configPath = process.env.MEGA_AI_AGENT_TEST_CONFIG
 if (!original || !executable || !configPath)
   throw Error("Provide original oracle root, TEST_CLI_EXECUTABLE and TEST_CONFIG")
 const names = (await readdir(join(original, "cli"))).filter((name) => name.endsWith("-A"))
@@ -21,7 +21,7 @@ const config = await Bun.file(configPath).json()
 if (config.workflow_profile?.passwordless_login !== true) throw Error("TEST_PASSWORD_UNAVAILABLE")
 const evidence = await mkdtemp(join(tmpdir(), "megaladata-live-resume-"))
 console.log(`Private resume evidence: ${evidence}`)
-const db = new Database(join(profile, "data/megaladata-ai-agent.db"), { readonly: true })
+const db = new Database(join(profile, "data/mega-ai-agent.db"), { readonly: true })
 try {
   const sessions = db.query("select id from session").all() as { id: string }[]
   if (sessions.length !== 1) throw Error("RESUME_ORACLE_SESSION_AMBIGUOUS")

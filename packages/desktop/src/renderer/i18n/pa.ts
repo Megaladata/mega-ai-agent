@@ -9,17 +9,17 @@ export const dict = {
   "desktop.updater.checkFailed.title": "اپ ڈیٹ دی پڑتال ناکام ہو گئی",
   "desktop.updater.checkFailed.message": "اپ ڈیٹاں دی پڑتال نئیں ہو سکی",
   "desktop.updater.none.title": "کوئی اپ ڈیٹ دستیاب نئیں",
-  "desktop.updater.none.message": "تسی پہلے ای Megaladata AI Agent دا تازہ ترین ورژن استعمال کر رئے او",
+  "desktop.updater.none.message": "تسی پہلے ای Mega AI Agent دا تازہ ترین ورژن استعمال کر رئے او",
   "desktop.updater.downloadFailed.title": "اپ ڈیٹ ناکام ہو گئی",
   "desktop.updater.downloadFailed.message": "اپ ڈیٹ ڈاؤن لوڈ نئیں ہو سکی",
   "desktop.updater.downloaded.title": "اپ ڈیٹ ڈاؤن لوڈ ہو گئی",
   "desktop.updater.downloaded.prompt":
-    "Megaladata AI Agent دا ورژن {{version}} ڈاؤن لوڈ کر دتا گیا اے، کی تسی اینوں انسٹال کرنا تے دوبارہ لانچ کرنا چاہندے او؟",
+    "Mega AI Agent دا ورژن {{version}} ڈاؤن لوڈ کر دتا گیا اے، کی تسی اینوں انسٹال کرنا تے دوبارہ لانچ کرنا چاہندے او؟",
   "desktop.updater.installFailed.title": "اپ ڈیٹ ناکام ہو گئی",
   "desktop.updater.installFailed.message": "اپ ڈیٹ انسٹال نئیں ہو سکی",
   "desktop.cli.installed.title": "CLI انسٹال ہو گیا",
   "desktop.cli.installed.message":
-    "CLI {{path}} تے انسٹال کیتا گیا\n\n'megaladata-ai-agent' کمانڈ ورتن لئی اپنے ٹرمینل نوں دوبارہ شروع کرو۔",
+    "CLI {{path}} تے انسٹال کیتا گیا\n\n'mega-ai-agent' کمانڈ ورتن لئی اپنے ٹرمینل نوں دوبارہ شروع کرو۔",
   "desktop.cli.failed.title": "تنصیب ناکام ہو گئی",
   "desktop.cli.failed.message": "CLI انسٹال نئیں ہو سکی: {{error}}",
 

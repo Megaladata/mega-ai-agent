@@ -1,8 +1,8 @@
 name: "Setup Megaladata inputs"
 description: >-
   Provision the pinned official Node distribution and the pinned Playwright Chromium from
-  packages/product/megaladata-release.json, cache both, and export MEGALADATA_AI_AGENT_NODE_SOURCE,
-  MEGALADATA_AI_AGENT_TEST_NODE, MEGALADATA_AI_AGENT_BROWSER_SOURCE and PLAYWRIGHT_BROWSERS_PATH as absolute paths.
+  packages/product/megaladata-release.json, cache both, and export MEGA_AI_AGENT_NODE_SOURCE,
+  MEGA_AI_AGENT_TEST_NODE, MEGA_AI_AGENT_BROWSER_SOURCE and PLAYWRIGHT_BROWSERS_PATH as absolute paths.
 outputs:
   node:
     description: "Absolute path of the pinned Node executable inside the full distribution"
@@ -146,10 +146,10 @@ runs:
           exit 1
         fi
         {
-          echo "MEGALADATA_AI_AGENT_NODE_SOURCE=$NODE"
-          echo "MEGALADATA_AI_AGENT_TEST_NODE=$NODE"
-          echo "MEGALADATA_AI_AGENT_TEST_BROWSERS=$BROWSERS"
-          echo "MEGALADATA_AI_AGENT_BROWSER_SOURCE=$BROWSERS"
+          echo "MEGA_AI_AGENT_NODE_SOURCE=$NODE"
+          echo "MEGA_AI_AGENT_TEST_NODE=$NODE"
+          echo "MEGA_AI_AGENT_TEST_BROWSERS=$BROWSERS"
+          echo "MEGA_AI_AGENT_BROWSER_SOURCE=$BROWSERS"
           echo "PLAYWRIGHT_BROWSERS_PATH=$BROWSERS"
         } >> "$GITHUB_ENV"
         echo "Pinned Node $actual at $NODE; Chromium $CHROMIUM under $BROWSERS"

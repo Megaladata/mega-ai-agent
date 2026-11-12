@@ -1,4 +1,4 @@
-import { Product } from "@megaladata-ai-agent/product"
+import { Product } from "@mega-ai-agent/product"
 import { logo, wordmarkAccentAnsi } from "../logo"
 
 const reset = "\x1b[0m"

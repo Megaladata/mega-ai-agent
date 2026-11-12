@@ -9,17 +9,17 @@ export const dict = {
   "desktop.updater.checkFailed.title": "اپ ڈیٹ کی جانچ ناکام ہو گئی",
   "desktop.updater.checkFailed.message": "اپ ڈیٹس چیک کرنے میں ناکام",
   "desktop.updater.none.title": "کوئی اپ ڈیٹ دستیاب نہیں",
-  "desktop.updater.none.message": "آپ پہلے ہی Megaladata AI Agent کا تازہ ترین ورژن استعمال کر رہے ہیں۔",
+  "desktop.updater.none.message": "آپ پہلے ہی Mega AI Agent کا تازہ ترین ورژن استعمال کر رہے ہیں۔",
   "desktop.updater.downloadFailed.title": "اپ ڈیٹ ناکام ہو گیا۔",
   "desktop.updater.downloadFailed.message": "اپ ڈیٹ ڈاؤن لوڈ کرنے میں ناکام",
   "desktop.updater.downloaded.title": "اپ ڈیٹ ڈاؤن لوڈ ہو گیا۔",
   "desktop.updater.downloaded.prompt":
-    "Megaladata AI Agent کا ورژن {{version}} ڈاؤن لوڈ ہو چکا ہے، کیا آپ اسے انسٹال کر کے دوبارہ لانچ کرنا چاہیں گے؟",
+    "Mega AI Agent کا ورژن {{version}} ڈاؤن لوڈ ہو چکا ہے، کیا آپ اسے انسٹال کر کے دوبارہ لانچ کرنا چاہیں گے؟",
   "desktop.updater.installFailed.title": "اپ ڈیٹ ناکام ہو گیا۔",
   "desktop.updater.installFailed.message": "اپ ڈیٹ انسٹال کرنے میں ناکام",
   "desktop.cli.installed.title": "CLI انسٹال ہو گئی",
   "desktop.cli.installed.message":
-    "CLI کو {{path}} پر انسٹال کر دیا گیا۔\n\n'megaladata-ai-agent' کمانڈ استعمال کرنے کے لیے اپنا ٹرمینل دوبارہ شروع کریں۔",
+    "CLI کو {{path}} پر انسٹال کر دیا گیا۔\n\n'mega-ai-agent' کمانڈ استعمال کرنے کے لیے اپنا ٹرمینل دوبارہ شروع کریں۔",
   "desktop.cli.failed.title": "تنصیب ناکام ہو گئی۔",
   "desktop.cli.failed.message": "CLI انسٹال کرنے میں ناکام: {{error}}",
 

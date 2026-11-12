@@ -1,5 +1,5 @@
-import { MegaladataHost } from "@megaladata-ai-agent/megaladata-host/adapter"
-import { hostErrorText } from "@megaladata-ai-agent/megaladata-host/errors"
+import { MegaladataHost } from "@mega-ai-agent/megaladata-host/adapter"
+import { hostErrorText } from "@mega-ai-agent/megaladata-host/errors"
 import { CallToolResultSchema, ListToolsResultSchema } from "@modelcontextprotocol/sdk/types.js"
 import { type Tool as AITool, type JSONSchema7, tool, jsonSchema, type ToolExecutionOptions } from "ai"
 import { Effect } from "effect"

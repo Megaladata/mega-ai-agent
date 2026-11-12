@@ -527,9 +527,9 @@ const layer = Layer.effect(
         .pipe(Effect.orDie)
 
       const env = {
-        MEGALADATA_AI_AGENT_AUTH_CONTENT: JSON.stringify(yield* auth.all()),
-        MEGALADATA_AI_AGENT_WORKSPACE_ID: config.id,
-        MEGALADATA_AI_AGENT_EXPERIMENTAL_WORKSPACES: "true",
+        MEGA_AI_AGENT_AUTH_CONTENT: JSON.stringify(yield* auth.all()),
+        MEGA_AI_AGENT_WORKSPACE_ID: config.id,
+        MEGA_AI_AGENT_EXPERIMENTAL_WORKSPACES: "true",
         OTEL_EXPORTER_OTLP_HEADERS: process.env.OTEL_EXPORTER_OTLP_HEADERS,
         OTEL_EXPORTER_OTLP_ENDPOINT: process.env.OTEL_EXPORTER_OTLP_ENDPOINT,
         OTEL_RESOURCE_ATTRIBUTES: process.env.OTEL_RESOURCE_ATTRIBUTES,

@@ -8,7 +8,7 @@ import {
   resolveSystemProxy,
   type SystemProxyResult,
   type SystemProxySnapshot,
-} from "@megaladata-ai-agent/megaladata-host/system-proxy"
+} from "@mega-ai-agent/megaladata-host/system-proxy"
 
 export { loopbackNoProxy, sidecarEnvironment } from "./proxy-env"
 
@@ -120,7 +120,7 @@ async function loadSnapshot(
 }
 
 function disabled(environment: NodeJS.ProcessEnv) {
-  const flag = environment.MEGALADATA_AI_AGENT_SYSTEM_PROXY
+  const flag = environment.MEGA_AI_AGENT_SYSTEM_PROXY
   if (typeof flag !== "string") return false
   return ["off", "0", "false"].includes(flag.trim().toLowerCase())
 }

@@ -1,5 +1,5 @@
-import { MegaladataHost } from "@megaladata-ai-agent/megaladata-host/adapter"
-import { hostErrorText } from "@megaladata-ai-agent/megaladata-host/errors"
+import { MegaladataHost } from "@mega-ai-agent/megaladata-host/adapter"
+import { hostErrorText } from "@mega-ai-agent/megaladata-host/errors"
 import { Effect } from "effect"
 import type { Agent } from "@/agent/agent"
 import { Permission } from "@/permission"

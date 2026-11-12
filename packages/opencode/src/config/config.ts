@@ -138,7 +138,7 @@ export class Service extends Context.Service<Service, Interface>()("@opencode/Co
 export const use = serviceUse(Service)
 
 function globalConfigFile() {
-  const candidates = ["megaladata-ai-agent.jsonc", "megaladata-ai-agent.json", "config.json"].map((file) =>
+  const candidates = ["mega-ai-agent.jsonc", "mega-ai-agent.json", "config.json"].map((file) =>
     path.join(Global.Path.config, file),
   )
   for (const file of candidates) {
@@ -243,8 +243,8 @@ const layer = Layer.effect(
 
       yield* Effect.promise(() => resolveLoadedPlugins(data, options.path))
       if (!data.$schema) {
-        data.$schema = "urn:megaladata-ai-agent:config"
-        const updated = text.replace(/^\s*\{/, '{\n  "$schema": "urn:megaladata-ai-agent:config",')
+        data.$schema = "urn:mega-ai-agent:config"
+        const updated = text.replace(/^\s*\{/, '{\n  "$schema": "urn:mega-ai-agent:config",')
         yield* fs.writeFileString(options.path, updated).pipe(Effect.catch(() => Effect.void))
       }
       return data
@@ -261,17 +261,17 @@ const layer = Layer.effect(
       let result: Info = {}
       // Seed the default global config with the schema for editor completion, but avoid writing when the user
       // explicitly routes config through env-provided paths or content.
-      if (!Flag.MEGALADATA_AI_AGENT_CONFIG && !Flag.MEGALADATA_AI_AGENT_CONFIG_DIR && !Flag.MEGALADATA_AI_AGENT_CONFIG_CONTENT) {
+      if (!Flag.MEGA_AI_AGENT_CONFIG && !Flag.MEGA_AI_AGENT_CONFIG_DIR && !Flag.MEGA_AI_AGENT_CONFIG_CONTENT) {
         const file = globalConfigFile()
         if (!existsSync(file)) {
           yield* fs
-            .writeWithDirs(file, JSON.stringify({ $schema: "urn:megaladata-ai-agent:config" }, null, 2))
+            .writeWithDirs(file, JSON.stringify({ $schema: "urn:mega-ai-agent:config" }, null, 2))
             .pipe(Effect.catch(() => Effect.void))
         }
       }
       result = mergeConfig(result, yield* loadFile(path.join(Global.Path.config, "config.json"), env))
-      result = mergeConfig(result, yield* loadFile(path.join(Global.Path.config, "megaladata-ai-agent.json"), env))
-      result = mergeConfig(result, yield* loadFile(path.join(Global.Path.config, "megaladata-ai-agent.jsonc"), env))
+      result = mergeConfig(result, yield* loadFile(path.join(Global.Path.config, "mega-ai-agent.json"), env))
+      result = mergeConfig(result, yield* loadFile(path.join(Global.Path.config, "mega-ai-agent.jsonc"), env))
 
       const legacy = path.join(Global.Path.config, "config")
       if (existsSync(legacy)) {
@@ -280,7 +280,7 @@ const layer = Layer.effect(
             .then(async (mod) => {
               const { provider, model, ...rest } = mod.default
               if (provider && model) result.model = `${provider}/${model}`
-              result["$schema"] = "urn:megaladata-ai-agent:config"
+              result["$schema"] = "urn:mega-ai-agent:config"
               result = mergeConfig(result, rest)
               await fsNode.writeFile(path.join(Global.Path.config, "config.json"), JSON.stringify(result, null, 2))
               await fsNode.unlink(legacy)
@@ -336,7 +336,7 @@ const layer = Layer.effect(
 
         const pluginScopeForSource = Effect.fnUntraced(function* (source: string) {
           if (source.startsWith("http://") || source.startsWith("https://")) return "global"
-          if (source === "MEGALADATA_AI_AGENT_CONFIG_CONTENT") return "local"
+          if (source === "MEGA_AI_AGENT_CONFIG_CONTENT") return "local"
           if (containsPath(source, ctx)) return "local"
           return "global"
         })
@@ -371,7 +371,7 @@ const layer = Layer.effect(
           if (value.type === "wellknown") {
             const url = key.replace(/\/+$/, "")
             authEnv[value.key] = value.token
-            const wellknownURL = `${url}/.well-known/megaladata-ai-agent`
+            const wellknownURL = `${url}/.well-known/mega-ai-agent`
             yield* Effect.logDebug("fetching remote config", { url: wellknownURL })
             const wellknown = yield* fetchRemoteJson(wellknownURL, undefined, ConfigV1.WellKnown, url)
             const remote = yield* Effect.promise(() =>
@@ -394,7 +394,7 @@ const layer = Layer.effect(
                 })
               : {}
             const remoteConfig = mergeConfig(isRecord(wellknown.config) ? wellknown.config : {}, fetchedConfig)
-            if (!remoteConfig.$schema) remoteConfig.$schema = "urn:megaladata-ai-agent:config"
+            if (!remoteConfig.$schema) remoteConfig.$schema = "urn:mega-ai-agent:config"
             const source = wellknownURL
             const next = yield* loadConfig(
               JSON.stringify(remoteConfig),
@@ -412,13 +412,13 @@ const layer = Layer.effect(
         const global = Object.keys(authEnv).length ? yield* loadGlobal(authEnv) : yield* getGlobal()
         yield* merge(Global.Path.config, global, "global")
 
-        if (Flag.MEGALADATA_AI_AGENT_CONFIG) {
-          yield* merge(Flag.MEGALADATA_AI_AGENT_CONFIG, yield* loadFile(Flag.MEGALADATA_AI_AGENT_CONFIG, authEnv))
-          yield* Effect.logDebug("loaded custom config", { path: Flag.MEGALADATA_AI_AGENT_CONFIG })
+        if (Flag.MEGA_AI_AGENT_CONFIG) {
+          yield* merge(Flag.MEGA_AI_AGENT_CONFIG, yield* loadFile(Flag.MEGA_AI_AGENT_CONFIG, authEnv))
+          yield* Effect.logDebug("loaded custom config", { path: Flag.MEGA_AI_AGENT_CONFIG })
         }
 
-        if (!Flag.MEGALADATA_AI_AGENT_DISABLE_PROJECT_CONFIG) {
-          for (const file of yield* ConfigPaths.files("megaladata-ai-agent", ctx.directory, ctx.worktree).pipe(Effect.orDie)) {
+        if (!Flag.MEGA_AI_AGENT_DISABLE_PROJECT_CONFIG) {
+          for (const file of yield* ConfigPaths.files("mega-ai-agent", ctx.directory, ctx.worktree).pipe(Effect.orDie)) {
             yield* merge(file, yield* loadFile(file, authEnv), "local")
           }
         }
@@ -429,15 +429,15 @@ const layer = Layer.effect(
 
         const directories = yield* ConfigPaths.directories(ctx.directory, ctx.worktree)
 
-        if (Flag.MEGALADATA_AI_AGENT_CONFIG_DIR) {
-          yield* Effect.logDebug("loading config from MEGALADATA_AI_AGENT_CONFIG_DIR", { path: Flag.MEGALADATA_AI_AGENT_CONFIG_DIR })
+        if (Flag.MEGA_AI_AGENT_CONFIG_DIR) {
+          yield* Effect.logDebug("loading config from MEGA_AI_AGENT_CONFIG_DIR", { path: Flag.MEGA_AI_AGENT_CONFIG_DIR })
         }
 
         const deps: Fiber.Fiber<void>[] = []
 
         for (const dir of directories) {
-          if (dir.endsWith(".megaladata-ai-agent") || dir === Flag.MEGALADATA_AI_AGENT_CONFIG_DIR) {
-            for (const file of ["megaladata-ai-agent.json", "megaladata-ai-agent.jsonc"]) {
+          if (dir.endsWith(".mega-ai-agent") || dir === Flag.MEGA_AI_AGENT_CONFIG_DIR) {
+            for (const file of ["mega-ai-agent.json", "mega-ai-agent.jsonc"]) {
               const source = path.join(dir, file)
               yield* Effect.logDebug(`loading config from ${source}`)
               yield* merge(source, yield* loadFile(source, authEnv))
@@ -466,20 +466,20 @@ const layer = Layer.effect(
           result.command = mergeDeep(result.command ?? {}, yield* Effect.promise(() => ConfigCommand.load(dir)))
           result.agent = mergeDeep(result.agent ?? {}, yield* Effect.promise(() => ConfigAgent.load(dir)))
           result.agent = mergeDeep(result.agent ?? {}, yield* Effect.promise(() => ConfigAgent.loadMode(dir)))
-          // Auto-discovered plugins under `.megaladata-ai-agent/plugin(s)` are already local files, so ConfigPlugin.load
+          // Auto-discovered plugins under `.mega-ai-agent/plugin(s)` are already local files, so ConfigPlugin.load
           // returns normalized Specs and we only need to attach origin metadata here.
           const list = yield* Effect.promise(() => ConfigPlugin.load(dir))
           yield* mergePluginOrigins(dir, list)
         }
 
-        if (process.env.MEGALADATA_AI_AGENT_CONFIG_CONTENT) {
-          const source = "MEGALADATA_AI_AGENT_CONFIG_CONTENT"
-          const next = yield* loadConfig(process.env.MEGALADATA_AI_AGENT_CONFIG_CONTENT, {
+        if (process.env.MEGA_AI_AGENT_CONFIG_CONTENT) {
+          const source = "MEGA_AI_AGENT_CONFIG_CONTENT"
+          const next = yield* loadConfig(process.env.MEGA_AI_AGENT_CONFIG_CONTENT, {
             dir: ctx.directory,
             source,
           })
           yield* merge(source, next, "local")
-          yield* Effect.logDebug("loaded custom config from MEGALADATA_AI_AGENT_CONFIG_CONTENT")
+          yield* Effect.logDebug("loaded custom config from MEGA_AI_AGENT_CONFIG_CONTENT")
         }
 
         const activeAccount = Option.getOrUndefined(
@@ -495,8 +495,8 @@ const layer = Layer.effect(
               { concurrency: 2 },
             )
             if (Option.isSome(tokenOpt)) {
-              process.env["MEGALADATA_AI_AGENT_CONSOLE_TOKEN"] = tokenOpt.value
-              yield* env.set("MEGALADATA_AI_AGENT_CONSOLE_TOKEN", tokenOpt.value)
+              process.env["MEGA_AI_AGENT_CONSOLE_TOKEN"] = tokenOpt.value
+              yield* env.set("MEGA_AI_AGENT_CONSOLE_TOKEN", tokenOpt.value)
             }
 
             if (Option.isSome(configOpt)) {
@@ -522,7 +522,7 @@ const layer = Layer.effect(
 
         const managedDir = ConfigManaged.managedConfigDir()
         if (existsSync(managedDir)) {
-          for (const file of ["megaladata-ai-agent.json", "megaladata-ai-agent.jsonc"]) {
+          for (const file of ["mega-ai-agent.json", "mega-ai-agent.jsonc"]) {
             const source = path.join(managedDir, file)
             yield* merge(source, yield* loadFile(source), "global")
           }
@@ -549,11 +549,11 @@ const layer = Layer.effect(
           })
         }
 
-        if (Flag.MEGALADATA_AI_AGENT_PERMISSION) {
+        if (Flag.MEGA_AI_AGENT_PERMISSION) {
           try {
-            result.permission = mergeDeep(result.permission ?? {}, JSON.parse(Flag.MEGALADATA_AI_AGENT_PERMISSION))
+            result.permission = mergeDeep(result.permission ?? {}, JSON.parse(Flag.MEGA_AI_AGENT_PERMISSION))
           } catch (err) {
-            yield* Effect.logWarning("MEGALADATA_AI_AGENT_PERMISSION contains invalid JSON, skipping", { err })
+            yield* Effect.logWarning("MEGA_AI_AGENT_PERMISSION contains invalid JSON, skipping", { err })
           }
         }
 
@@ -583,10 +583,10 @@ const layer = Layer.effect(
           result.share = "auto"
         }
 
-        if (Flag.MEGALADATA_AI_AGENT_DISABLE_AUTOCOMPACT) {
+        if (Flag.MEGA_AI_AGENT_DISABLE_AUTOCOMPACT) {
           result.compaction = { ...result.compaction, auto: false }
         }
-        if (Flag.MEGALADATA_AI_AGENT_DISABLE_PRUNE) {
+        if (Flag.MEGA_AI_AGENT_DISABLE_PRUNE) {
           result.compaction = { ...result.compaction, prune: false }
         }
 

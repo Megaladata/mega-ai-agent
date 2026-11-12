@@ -18,7 +18,7 @@ opencode web
 Esto inicia un servidor local en `127.0.0.1` con un puerto disponible aleatorio y abre automáticamente OpenCode en su navegador predeterminado.
 
 :::caution
-Si no se establece `MEGALADATA_AI_AGENT_SERVER_PASSWORD`, el servidor no será seguro. Esto está bien para uso local, pero debe configurarse para acceso a la red.
+Si no se establece `MEGA_AI_AGENT_SERVER_PASSWORD`, el servidor no será seguro. Esto está bien para uso local, pero debe configurarse para acceso a la red.
 :::
 
 :::tip[Windows Usuarios]
@@ -80,13 +80,13 @@ opencode web --cors https://example.com
 
 ### Autenticación
 
-Para proteger el acceso, establezca una contraseña utilizando la variable de entorno `MEGALADATA_AI_AGENT_SERVER_PASSWORD`:
+Para proteger el acceso, establezca una contraseña utilizando la variable de entorno `MEGA_AI_AGENT_SERVER_PASSWORD`:
 
 ```bash
-MEGALADATA_AI_AGENT_SERVER_PASSWORD=secret opencode web
+MEGA_AI_AGENT_SERVER_PASSWORD=secret opencode web
 ```
 
-El nombre de usuario predeterminado es `opencode` pero se puede cambiar con `MEGALADATA_AI_AGENT_SERVER_USERNAME`.
+El nombre de usuario predeterminado es `opencode` pero se puede cambiar con `MEGA_AI_AGENT_SERVER_USERNAME`.
 
 ---
 
@@ -126,7 +126,7 @@ Esto le permite utilizar la interfaz web y el terminal simultáneamente, compart
 
 ## Archivo de configuración
 
-También puede configurar los ajustes del servidor en su archivo de configuración `megaladata-ai-agent.json`:
+También puede configurar los ajustes del servidor en su archivo de configuración `mega-ai-agent.json`:
 
 ```json
 {

@@ -7,7 +7,7 @@ import { Global } from "../global"
 import { Flag } from "../flag/flag"
 import { isAbsolute, join } from "path"
 import { DatabaseMigration } from "./migration"
-import { Product } from "@megaladata-ai-agent/product"
+import { Product } from "@mega-ai-agent/product"
 import { makeGlobalNode } from "../effect/app-node"
 
 const makeDatabase = EffectDrizzleSqlite.makeWithDefaults()
@@ -41,9 +41,9 @@ export function layerFromPath(filename: string) {
 }
 
 export function path() {
-  if (Flag.MEGALADATA_AI_AGENT_DB) {
-    if (Flag.MEGALADATA_AI_AGENT_DB === ":memory:" || isAbsolute(Flag.MEGALADATA_AI_AGENT_DB)) return Flag.MEGALADATA_AI_AGENT_DB
-    return join(Global.Path.data, Flag.MEGALADATA_AI_AGENT_DB)
+  if (Flag.MEGA_AI_AGENT_DB) {
+    if (Flag.MEGA_AI_AGENT_DB === ":memory:" || isAbsolute(Flag.MEGA_AI_AGENT_DB)) return Flag.MEGA_AI_AGENT_DB
+    return join(Global.Path.data, Flag.MEGA_AI_AGENT_DB)
   }
   return join(Global.Path.data, Product.database)
 }

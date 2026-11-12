@@ -82,10 +82,10 @@ IDREPO=$W/identity; mkdir -p "$IDREPO/packages/core/src"; git init -q "$IDREPO"
 printf 'const a = process.env.OPENCODE_NEW_FLAG\nconst k = process.env.OPENCODE_API_KEY\nconst d = ".opencode/agent"\nconst c = "opencode.json"\n' >"$IDREPO/packages/core/src/x.ts"
 git -C "$IDREPO" add -A; git -C "$IDREPO" commit -q -m x
 python3 -I "$HERE/apply-identity.py" --repo "$IDREPO" >/dev/null 2>&1
-grep -q 'process.env.MEGALADATA_AI_AGENT_NEW_FLAG' "$IDREPO/packages/core/src/x.ts" || fail "OPENCODE_NEW_FLAG was not renamed"
+grep -q 'process.env.MEGA_AI_AGENT_NEW_FLAG' "$IDREPO/packages/core/src/x.ts" || fail "OPENCODE_NEW_FLAG was not renamed"
 grep -q 'process.env.OPENCODE_API_KEY' "$IDREPO/packages/core/src/x.ts" || fail "provider key was renamed"
-grep -q '".megaladata-ai-agent/agent"' "$IDREPO/packages/core/src/x.ts" || fail "directory was not renamed"
-grep -q '"megaladata-ai-agent.json"' "$IDREPO/packages/core/src/x.ts" || fail "config file was not renamed"
+grep -q '".mega-ai-agent/agent"' "$IDREPO/packages/core/src/x.ts" || fail "directory was not renamed"
+grep -q '"mega-ai-agent.json"' "$IDREPO/packages/core/src/x.ts" || fail "config file was not renamed"
 python3 -I "$HERE/apply-identity.py" --repo "$IDREPO" --check >/dev/null 2>&1 || fail "apply-identity is not idempotent"
 # --- behavior tests of apply-identity.py and verify-accepted.py on synthetic merges (one test per counterexample)
 python3 -I "$HERE/test_tools.py" >"$W/test_tools.log" 2>&1 || { cat "$W/test_tools.log" >&2; fail "test_tools.py failed"; }

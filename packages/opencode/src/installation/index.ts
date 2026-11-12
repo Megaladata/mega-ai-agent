@@ -1,4 +1,4 @@
-import { Product } from "@megaladata-ai-agent/product"
+import { Product } from "@mega-ai-agent/product"
 import { installationNode } from "@/product/installation"
 import { LayerNode } from "@opencode-ai/core/effect/layer-node"
 import { AppNodeBuilder } from "@opencode-ai/core/effect/app-node-builder"
@@ -189,7 +189,7 @@ const layer: Layer.Layer<Service, never, HttpClient.HttpClient | AppProcess.Serv
 
     const majorUpgrade = Effect.fnUntraced(function* (m: Method) {
       if (m === "curl") {
-        // The V2 installer writes to the same ~/.megaladata-ai-agent/bin/opencode path, replacing V1 in place.
+        // The V2 installer writes to the same ~/.mega-ai-agent/bin/opencode path, replacing V1 in place.
         const response = yield* httpOk
           .execute(HttpClientRequest.get("https://opencode.ai/v2/install"))
           .pipe(Effect.mapError(() => new UpgradeFailedError({ stderr: upgradeFailure("curl") })))
@@ -259,7 +259,7 @@ const layer: Layer.Layer<Service, never, HttpClient.HttpClient | AppProcess.Serv
         }
       }),
       method: Effect.fn("Installation.method")(function* () {
-        if (process.execPath.includes(path.join(".megaladata-ai-agent", "bin"))) return "curl" as Method
+        if (process.execPath.includes(path.join(".mega-ai-agent", "bin"))) return "curl" as Method
         if (process.execPath.includes(path.join(".local", "bin"))) return "curl" as Method
         const exec = process.execPath.toLowerCase()
 

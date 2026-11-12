@@ -69,7 +69,7 @@ export async function verifyCliManifest(root: string, expected: { platform: stri
     })
   )
     throw new Error("MEGALADATA_MANIFEST_PAYLOAD_MISMATCH")
-  const binary = info.platform === "win32" ? "bin/megaladata-ai-agent-cli.exe" : "bin/megaladata-ai-agent-cli"
+  const binary = info.platform === "win32" ? "bin/mega-ai-agent-cli.exe" : "bin/mega-ai-agent-cli"
   for (const required of [
     binary,
     ...(info.platform === "darwin" ? ["resources/megaladata/bin/megaladata-keychain"] : []),
@@ -125,7 +125,7 @@ async function verifyWindowsPayload(root: string, entries: Map<string, typeof fi
   if (resource.nodeSha256 !== node?.sha256 || resource.browserSha256 !== browser?.sha256)
     throw new Error("MEGALADATA_MANIFEST_RESOURCE_MISMATCH")
   await Promise.all(
-    ["bin/megaladata-ai-agent-cli.exe", `resources/megaladata/${resource.node}`, `resources/megaladata/${resource.browser}`].map(
+    ["bin/mega-ai-agent-cli.exe", `resources/megaladata/${resource.node}`, `resources/megaladata/${resource.browser}`].map(
       (path) => requirePeAmd64(join(root, path)),
     ),
   )

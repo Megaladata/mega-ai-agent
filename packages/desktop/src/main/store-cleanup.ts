@@ -74,8 +74,8 @@ export async function deleteStoreFileIfEmpty(userDataPath: string, name: string)
 }
 
 function storeKind(name: string): StoreKind | undefined {
-  if (/^megaladata-ai-agent\.draft\..+\.dat$/.test(name)) return "draft"
-  if (/^megaladata-ai-agent\.workspace\..+\.dat$/.test(name)) return "workspace"
+  if (/^mega-ai-agent\.draft\..+\.dat$/.test(name)) return "draft"
+  if (/^mega-ai-agent\.workspace\..+\.dat$/.test(name)) return "workspace"
 }
 
 async function isEmptyStore(file: string, size: number) {

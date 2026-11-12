@@ -130,7 +130,7 @@
     "which": "6.0.1",
     "xdg-basedir": "5.1.0",
     "zod": "catalog:",
-    "@megaladata-ai-agent/product": "workspace:*"
+    "@mega-ai-agent/product": "workspace:*"
   },
   "overrides": {
     "drizzle-orm": "catalog:"

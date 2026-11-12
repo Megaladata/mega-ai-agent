@@ -125,11 +125,11 @@ export function permissionInfo(request: PermissionRequest): PermissionInfo {
 
 export function permissionAlwaysLines(request: PermissionRequest): string[] {
   if (request.always.length === 1 && request.always[0] === "*") {
-    return [`This will allow ${request.permission} until Megaladata AI Agent is restarted.`]
+    return [`This will allow ${request.permission} until Mega AI Agent is restarted.`]
   }
 
   return [
-    "This will allow the following patterns until Megaladata AI Agent is restarted.",
+    "This will allow the following patterns until Mega AI Agent is restarted.",
     ...request.always.map((item) => `- ${item}`),
   ]
 }

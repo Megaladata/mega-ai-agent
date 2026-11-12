@@ -6,9 +6,9 @@ import { fileURLToPath } from "url"
 const theme = fileURLToPath(new URL("./public/oc-theme-preload.js", import.meta.url))
 
 const channel = (() => {
-  const raw = process.env.MEGALADATA_AI_AGENT_CHANNEL
+  const raw = process.env.MEGA_AI_AGENT_CHANNEL
   if (raw === "dev" || raw === "beta" || raw === "prod") return raw
-  if (process.env.MEGALADATA_AI_AGENT_CHANNEL === "latest") return "prod"
+  if (process.env.MEGA_AI_AGENT_CHANNEL === "latest") return "prod"
   return "dev"
 })()
 
@@ -26,7 +26,7 @@ export default [
           },
         },
         define: {
-          "import.meta.env.VITE_MEGALADATA_AI_AGENT_CHANNEL": JSON.stringify(channel),
+          "import.meta.env.VITE_MEGA_AI_AGENT_CHANNEL": JSON.stringify(channel),
         },
         worker: {
           format: "es",

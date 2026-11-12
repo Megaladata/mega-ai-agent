@@ -6,13 +6,13 @@ import { Context, Effect, Layer } from "effect"
 import { Flock } from "./util/flock"
 import { Flag } from "./flag/flag"
 import { makeGlobalNode } from "./effect/app-node"
-import { productChannel, productSlug } from "@megaladata-ai-agent/product"
-import { profilePaths } from "@megaladata-ai-agent/product/cli-profile"
+import { productChannel, productSlug } from "@mega-ai-agent/product"
+import { profilePaths } from "@mega-ai-agent/product/cli-profile"
 
-const app = productSlug(productChannel(process.env.MEGALADATA_AI_AGENT_CHANNEL ?? "prod"))
+const app = productSlug(productChannel(process.env.MEGA_AI_AGENT_CHANNEL ?? "prod"))
 // Only the standalone bootstrap sets CLI_ROOT, after acquiring its profile guard.
 // The public CLI_PROFILE selector has no effect on Desktop imports.
-const cli = process.env.MEGALADATA_AI_AGENT_CLI_ROOT ? profilePaths(process.env.MEGALADATA_AI_AGENT_CLI_ROOT) : undefined
+const cli = process.env.MEGA_AI_AGENT_CLI_ROOT ? profilePaths(process.env.MEGA_AI_AGENT_CLI_ROOT) : undefined
 const data = cli?.data ?? path.join(xdgData!, app)
 const cache = cli?.cache ?? path.join(xdgCache!, app)
 const config = cli?.config ?? path.join(xdgConfig!, app)
@@ -21,7 +21,7 @@ const tmp = cli?.tmp ?? path.join(os.tmpdir(), app)
 
 const paths = {
   get home() {
-    return process.env.MEGALADATA_AI_AGENT_TEST_HOME ?? os.homedir()
+    return process.env.MEGA_AI_AGENT_TEST_HOME ?? os.homedir()
   },
   data,
   bin: path.join(cache, "bin"),
@@ -66,7 +66,7 @@ export function make(input: Partial<Interface> = {}): Interface {
     home: Path.home,
     data: Path.data,
     cache: Path.cache,
-    config: Flag.MEGALADATA_AI_AGENT_CONFIG_DIR ?? Path.config,
+    config: Flag.MEGA_AI_AGENT_CONFIG_DIR ?? Path.config,
     state: Path.state,
     tmp: Path.tmp,
     bin: Path.bin,

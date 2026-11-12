@@ -45,9 +45,9 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   '';
 
   env.MODELS_DEV_API_JSON = "${models-dev}/dist/_api.json";
-  env.MEGALADATA_AI_AGENT_DISABLE_MODELS_FETCH = true;
-  env.MEGALADATA_AI_AGENT_VERSION = finalAttrs.version;
-  env.MEGALADATA_AI_AGENT_CHANNEL = "prod";
+  env.MEGA_AI_AGENT_DISABLE_MODELS_FETCH = true;
+  env.MEGA_AI_AGENT_VERSION = finalAttrs.version;
+  env.MEGA_AI_AGENT_CHANNEL = "prod";
 
   buildPhase = ''
     runHook preBuild
@@ -91,7 +91,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     writableTmpDirAsHomeHook
   ];
   doInstallCheck = true;
-  versionCheckKeepEnvironment = [ "HOME" "MEGALADATA_AI_AGENT_DISABLE_MODELS_FETCH" ];
+  versionCheckKeepEnvironment = [ "HOME" "MEGA_AI_AGENT_DISABLE_MODELS_FETCH" ];
   versionCheckProgramArg = "--version";
 
   passthru = {

@@ -4,7 +4,7 @@ import { join, resolve } from "node:path"
 import { observeBrowserWindows } from "./window-observer"
 
 if (process.platform !== "win32") throw Error("WINDOWS_ONLY_TEST")
-const browser = process.env.MEGALADATA_AI_AGENT_TEST_BROWSER
+const browser = process.env.MEGA_AI_AGENT_TEST_BROWSER
 if (!browser) throw Error("BROWSER_REQUIRED")
 const directory = await mkdtemp(join(tmpdir(), "megaladata-window-observer-"))
 const child = Bun.spawn(

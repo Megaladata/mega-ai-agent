@@ -9,17 +9,17 @@ export const dict = {
   "desktop.updater.checkFailed.title": "Updatecontrole mislukt",
   "desktop.updater.checkFailed.message": "Controleren op updates is mislukt",
   "desktop.updater.none.title": "Geen update beschikbaar",
-  "desktop.updater.none.message": "Je gebruikt al de nieuwste versie van Megaladata AI Agent",
+  "desktop.updater.none.message": "Je gebruikt al de nieuwste versie van Mega AI Agent",
   "desktop.updater.downloadFailed.title": "Update mislukt",
   "desktop.updater.downloadFailed.message": "Downloaden van update is mislukt",
   "desktop.updater.downloaded.title": "Update gedownload",
   "desktop.updater.downloaded.prompt":
-    "Versie {{version}} van Megaladata AI Agent is gedownload. Wil je deze installeren en Megaladata AI Agent opnieuw starten?",
+    "Versie {{version}} van Mega AI Agent is gedownload. Wil je deze installeren en Mega AI Agent opnieuw starten?",
   "desktop.updater.installFailed.title": "Update mislukt",
   "desktop.updater.installFailed.message": "Installeren van update is mislukt",
   "desktop.cli.installed.title": "CLI geïnstalleerd",
   "desktop.cli.installed.message":
-    "CLI geïnstalleerd op {{path}}\n\nStart je terminal opnieuw om de opdracht 'megaladata-ai-agent' te gebruiken.",
+    "CLI geïnstalleerd op {{path}}\n\nStart je terminal opnieuw om de opdracht 'mega-ai-agent' te gebruiken.",
   "desktop.cli.failed.title": "Installatie mislukt",
   "desktop.cli.failed.message": "Installeren van CLI is mislukt: {{error}}",
 

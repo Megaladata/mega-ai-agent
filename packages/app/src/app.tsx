@@ -268,7 +268,7 @@ function LayoutCompatibility(props: ParentProps) {
 
 declare global {
   interface Window {
-    __MEGALADATA_AI_AGENT__?: {
+    __MEGA_AI_AGENT__?: {
       deepLinks?: string[]
     }
     api?: {

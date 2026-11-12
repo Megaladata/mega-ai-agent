@@ -1,6 +1,6 @@
 import { EOL } from "os"
 import { Schema } from "effect"
-import { Product } from "@megaladata-ai-agent/product"
+import { Product } from "@mega-ai-agent/product"
 import { logo as glyphs, wordmarkAccentAnsi } from "./logo"
 
 export class CancelledError extends Schema.TaggedErrorClass<CancelledError>()("UICancelledError", {}) {}

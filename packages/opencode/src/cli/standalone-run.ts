@@ -1,9 +1,9 @@
 import { Option, Schema } from "effect"
 import { Megaladata } from "@opencode-ai/schema/megaladata"
-import { MegaladataHost } from "@megaladata-ai-agent/megaladata-host/adapter"
-import { launchNodeHost, NodeHostStartupError } from "@megaladata-ai-agent/megaladata-host/node-client"
-import type { cliProfile } from "@megaladata-ai-agent/product/cli-profile"
-import { Product } from "@megaladata-ai-agent/product"
+import { MegaladataHost } from "@mega-ai-agent/megaladata-host/adapter"
+import { launchNodeHost, NodeHostStartupError } from "@mega-ai-agent/megaladata-host/node-client"
+import type { cliProfile } from "@mega-ai-agent/product/cli-profile"
+import { Product } from "@mega-ai-agent/product"
 import { standaloneCancellation } from "./standalone-cancellation"
 import { standaloneBundle } from "./standalone-bundle"
 import { InstallationBrowserRecovery } from "@opencode-ai/core/installation/version"
@@ -52,7 +52,7 @@ export async function standaloneRun(args: string[], paths: ReturnType<typeof cli
     return undefined
   })
   if (!bundle) return
-  process.env.MEGALADATA_AI_AGENT_RESOURCES = bundle.resources
+  process.env.MEGA_AI_AGENT_RESOURCES = bundle.resources
   if (signal?.aborted) {
     failure("CLI_CANCELLED", 130)
     return
@@ -64,7 +64,7 @@ export async function standaloneRun(args: string[], paths: ReturnType<typeof cli
     root: paths.megaladata,
     headless,
     environment: process.env,
-    strictRecovery: process.env.MEGALADATA_AI_AGENT_STRICT_RECOVERY === "1",
+    strictRecovery: process.env.MEGA_AI_AGENT_STRICT_RECOVERY === "1",
     closeSavedPackageOnShutdown: mode === "run",
     browserRecovery: InstallationBrowserRecovery && bundle.verified,
   }).catch((error: unknown) => {
@@ -124,8 +124,8 @@ export async function standaloneRun(args: string[], paths: ReturnType<typeof cli
       }
     }
     // An ordinary request reaches the model before its Megaladata task profile is known.
-    process.env.MEGALADATA_AI_AGENT_DISABLE_AUTOUPDATE = "1"
-    process.env.MEGALADATA_AI_AGENT_DISABLE_MODELS_FETCH = "1"
+    process.env.MEGA_AI_AGENT_DISABLE_AUTOUPDATE = "1"
+    process.env.MEGA_AI_AGENT_DISABLE_MODELS_FETCH = "1"
     const { applyCliSystemProxy, systemProxyNoticeLine } = await import("./standalone-proxy")
     const systemProxy = await applyCliSystemProxy()
     MegaladataHost.connect(host.port)

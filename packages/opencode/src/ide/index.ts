@@ -30,7 +30,7 @@ export function ide() {
 }
 
 export function alreadyInstalled() {
-  return process.env["MEGALADATA_AI_AGENT_CALLER"] === "vscode" || process.env["MEGALADATA_AI_AGENT_CALLER"] === "vscode-insiders"
+  return process.env["MEGA_AI_AGENT_CALLER"] === "vscode" || process.env["MEGA_AI_AGENT_CALLER"] === "vscode-insiders"
 }
 
 export async function install(ide: (typeof SUPPORTED_IDES)[number]["name"]) {

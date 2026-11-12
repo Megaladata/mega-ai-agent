@@ -44,7 +44,7 @@ is disabled in both interfaces. For the current OpenAI runs use
 Comparing with earlier models does not replace a repeat of the required matrix.
 
 The CLI seed image must contain a full installed Linux build under
-`/home/tester/.local/share/megaladata-ai-agent-cli/<version>-<channel>`, the user
+`/home/tester/.local/share/mega-ai-agent-cli/<version>-<channel>`, the user
 `tester`, `/usr/bin/strace`, and an empty profile. First use the normal
 installer in its own build stage. Copy the installed tree into the final
 stage without `--chown`, keeping the root-owned `chrome-sandbox` at mode `4755`.

@@ -30,8 +30,8 @@ export type ServiceClass<Self, Id extends string, Service> = Context.ServiceClas
  * class ServerAuthConfig extends ConfigService.Service<ServerAuthConfig>()(
  *   "@opencode/ServerAuthConfig",
  *   {
- *     password: Config.string("MEGALADATA_AI_AGENT_SERVER_PASSWORD").pipe(Config.option),
- *     username: Config.string("MEGALADATA_AI_AGENT_SERVER_USERNAME").pipe(Config.withDefault("opencode")),
+ *     password: Config.string("MEGA_AI_AGENT_SERVER_PASSWORD").pipe(Config.option),
+ *     username: Config.string("MEGA_AI_AGENT_SERVER_USERNAME").pipe(Config.withDefault("opencode")),
  *   },
  * ) {}
  *

@@ -52,7 +52,7 @@ import { DialogSkill } from "../dialog-skill"
 import { DialogWorkspaceUnavailable } from "../dialog-workspace-unavailable"
 import { useArgs } from "../../context/args"
 import {
-  MEGALADATA_AI_AGENT_BASE_MODE,
+  MEGA_AI_AGENT_BASE_MODE,
   useBindings,
   useCommandShortcut,
   useLeaderActive,
@@ -543,7 +543,7 @@ export function Prompt(props: PromptProps) {
         desc: "Change the workspace for the session",
         name: "workspace.set",
         category: "Session",
-        enabled: Flag.MEGALADATA_AI_AGENT_EXPERIMENTAL_WORKSPACES,
+        enabled: Flag.MEGA_AI_AGENT_EXPERIMENTAL_WORKSPACES,
         slashName: "warp",
         run: () => {
           workspace.open()
@@ -570,7 +570,7 @@ export function Prompt(props: PromptProps) {
   }))
 
   useBindings(() => ({
-    mode: MEGALADATA_AI_AGENT_BASE_MODE,
+    mode: MEGA_AI_AGENT_BASE_MODE,
     bindings: tuiConfig.keybinds.gather("prompt.palette", [
       "prompt.submit",
       "prompt.editor",

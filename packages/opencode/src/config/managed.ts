@@ -5,7 +5,7 @@ import os from "os"
 import path from "path"
 import { Process } from "@/util/process"
 
-const MANAGED_PLIST_DOMAIN = "com.megaladata.aiagent.managed"
+const MANAGED_PLIST_DOMAIN = "com.mega.aiagent.managed"
 
 // Keys injected by macOS/MDM into the managed plist that are not OpenCode config
 const PLIST_META = new Set([
@@ -20,16 +20,16 @@ const PLIST_META = new Set([
 function systemManagedConfigDir(): string {
   switch (process.platform) {
     case "darwin":
-      return "/Library/Application Support/megaladata-ai-agent"
+      return "/Library/Application Support/mega-ai-agent"
     case "win32":
-      return path.join(process.env.ProgramData || "C:\\ProgramData", "megaladata-ai-agent")
+      return path.join(process.env.ProgramData || "C:\\ProgramData", "mega-ai-agent")
     default:
-      return "/etc/megaladata-ai-agent"
+      return "/etc/mega-ai-agent"
   }
 }
 
 export function managedConfigDir() {
-  return process.env.MEGALADATA_AI_AGENT_TEST_MANAGED_CONFIG_DIR || systemManagedConfigDir()
+  return process.env.MEGA_AI_AGENT_TEST_MANAGED_CONFIG_DIR || systemManagedConfigDir()
 }
 
 export function parseManagedPlist(json: string): string {

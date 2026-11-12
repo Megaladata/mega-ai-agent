@@ -12,10 +12,10 @@ import type { DesktopTheme } from "./types"
 export type ColorScheme = "light" | "dark" | "system"
 
 const STORAGE_KEYS = {
-  THEME_ID: "megaladata-ai-agent-theme-id",
-  COLOR_SCHEME: "megaladata-ai-agent-color-scheme",
-  THEME_CSS_LIGHT: "megaladata-ai-agent-theme-css-light",
-  THEME_CSS_DARK: "megaladata-ai-agent-theme-css-dark",
+  THEME_ID: "mega-ai-agent-theme-id",
+  COLOR_SCHEME: "mega-ai-agent-color-scheme",
+  THEME_CSS_LIGHT: "mega-ai-agent-theme-css-light",
+  THEME_CSS_DARK: "mega-ai-agent-theme-css-dark",
 } as const
 
 const THEME_STYLE_ID = "oc-theme"
@@ -69,7 +69,7 @@ const names: Record<string, string> = {
   nord: "Nord",
   "one-dark": "One Dark",
   onedarkpro: "One Dark Pro",
-  "megaladata-ai-agent": "Megaladata AI Agent",
+  "mega-ai-agent": "Mega AI Agent",
   orng: "Orng",
   "osaka-jade": "Osaka Jade",
   palenight: "Palenight",

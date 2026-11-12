@@ -1,6 +1,6 @@
 import { Option, Schema } from "effect"
 import { Megaladata } from "@opencode-ai/schema/megaladata"
-import type { launchNodeHost } from "@megaladata-ai-agent/megaladata-host/node-client"
+import type { launchNodeHost } from "@mega-ai-agent/megaladata-host/node-client"
 
 const setupSchema = Schema.Struct({
   url: Schema.optionalKey(Schema.String),

@@ -4,7 +4,7 @@ import { mockOpenCodeServer } from "../../utils/mock-server"
 import { expectAppVisible, expectSessionTitle } from "../../utils/waits"
 import { expect } from "../benchmark"
 
-const directory = "C:/Megaladata AI Agent/TimelineStateRegression"
+const directory = "C:/Mega AI Agent/TimelineStateRegression"
 const projectID = "proj_timeline_state_regression"
 const sessionID = "ses_timeline_state_regression"
 const userMessageID = "msg_user_regression"
@@ -494,7 +494,7 @@ function provider() {
     all: [
       {
         id: "opencode",
-        name: "Megaladata AI Agent",
+        name: "Mega AI Agent",
         models: { "claude-opus-4-6": { id: "claude-opus-4-6", name: "Claude Opus 4.6", limit: { context: 200_000 } } },
       },
     ],

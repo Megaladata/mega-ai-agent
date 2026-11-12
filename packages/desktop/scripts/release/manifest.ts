@@ -2,7 +2,7 @@ import { Schema } from "effect"
 import { createHash } from "node:crypto"
 import { lstat, readdir, readFile, readlink, realpath, stat } from "node:fs/promises"
 import { isAbsolute, join, relative, sep } from "node:path"
-import { verifyProductSkills } from "@megaladata-ai-agent/megaladata-host/bundled-skills"
+import { verifyProductSkills } from "@mega-ai-agent/megaladata-host/bundled-skills"
 
 const text = Schema.String
 const nullable = Schema.Union([text, Schema.Null])

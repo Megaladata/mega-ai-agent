@@ -4,15 +4,15 @@ import { mkdtemp, readdir } from "node:fs/promises"
 import { join } from "node:path"
 import { oracleProvider } from "./oracle-provider"
 
-const executable = process.env.MEGALADATA_AI_AGENT_TEST_CLI_EXECUTABLE
-const configPath = process.env.MEGALADATA_AI_AGENT_TEST_CONFIG
+const executable = process.env.MEGA_AI_AGENT_TEST_CLI_EXECUTABLE
+const configPath = process.env.MEGA_AI_AGENT_TEST_CONFIG
 if (!executable || !configPath) throw Error("PRIVATE_TEST_INPUTS_REQUIRED")
 const config = await Bun.file(configPath).json()
 if (config.workflow_profile?.passwordless_login !== true) throw Error("TEST_PASSWORD_UNAVAILABLE")
 const directory = await mkdtemp("/tmp/megaladata-tui-multichat-")
 console.log(`Private acceptance evidence: ${directory}`)
 const profile = join(directory, "profile")
-const env = { ...process.env, MEGALADATA_AI_AGENT_CLI_PROFILE: profile, MEGALADATA_AI_AGENT_PURE: "1" }
+const env = { ...process.env, MEGA_AI_AGENT_CLI_PROFILE: profile, MEGA_AI_AGENT_PURE: "1" }
 const setup = Bun.spawn([executable, "megaladata", "setup", "--stdin-json", "--format", "json"], {
   env,
   stdin: new Blob([
@@ -35,7 +35,7 @@ const provider = oracleProvider({
     finish.pending.resolve()
   },
 })
-await Bun.write(join(profile, "config/megaladata-ai-agent.json"), JSON.stringify(provider.config))
+await Bun.write(join(profile, "config/mega-ai-agent.json"), JSON.stringify(provider.config))
 const csv = ["amount\n10\n20\n25\n", "amount\n40\n60\n1\n"]
 await Bun.write(join(directory, "sales.csv"), csv[0])
 const child = Bun.spawn(
@@ -97,7 +97,7 @@ try {
     throw Error("TUI_CLEANUP_FAILED")
   for (const field of ["session", "artifact", "source", "sha256"] as const)
     if (!results[0][field] || results[0][field] === results[1][field]) throw Error(`COLLISION_${field}`)
-  const db = new Database(join(profile, "data/megaladata-ai-agent.db"), { readonly: true })
+  const db = new Database(join(profile, "data/mega-ai-agent.db"), { readonly: true })
   try {
     const sessions = db.query("select id from session").all() as { id: string }[]
     const tools = (db.query("select session_id, data from part").all() as { session_id: string; data: string }[])

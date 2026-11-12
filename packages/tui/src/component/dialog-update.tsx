@@ -1,6 +1,6 @@
 import { TextAttributes } from "@opentui/core"
 import { createEffect, createMemo, createResource, createSignal, For, Match, Show, Switch } from "solid-js"
-import { Product } from "@megaladata-ai-agent/product"
+import { Product } from "@mega-ai-agent/product"
 import { useTheme } from "../context/theme"
 import { isVersionGreater, type UpdateState, type UpdateTarget } from "../context/update-notification"
 import { useDialog } from "../ui/dialog"

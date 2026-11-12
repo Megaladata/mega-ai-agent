@@ -10,7 +10,7 @@ let lock = false
 let armed = true
 
 export function start() {
-  if (!Flag.MEGALADATA_AI_AGENT_AUTO_HEAP_SNAPSHOT) return
+  if (!Flag.MEGA_AI_AGENT_AUTO_HEAP_SNAPSHOT) return
   if (timer) return
 
   const run = async () => {

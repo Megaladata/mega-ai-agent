@@ -118,7 +118,7 @@ class ApplyIdentitySince(FixtureCase):
         code, out, _ = fx.identity("--since", fx.fork, "--check")
         self.assertEqual((code, out.split()), (1, ["packages/core/src/new.ts"]))
         fx.identity("--since", fx.fork)
-        self.assertIn("MEGALADATA_AI_AGENT_NEW_FLAG", (fx.dir / "packages/core/src/new.ts").read_text())
+        self.assertIn("MEGA_AI_AGENT_NEW_FLAG", (fx.dir / "packages/core/src/new.ts").read_text())
 
     def test_sees_the_same_files_after_the_merge_commit(self):
         fx = self.seed(lambda: self.fx.write("packages/core/src/new.ts", "export const f = process.env.OPENCODE_NEW_FLAG\n"))
@@ -157,7 +157,7 @@ class ApplyIdentitySince(FixtureCase):
         code, out, _ = fx.identity(self.DOC)
         self.assertEqual(out.split(), [self.DOC])
         text = (fx.dir / self.DOC).read_text()
-        self.assertIn("`MEGALADATA_AI_AGENT_CONFIG`", text)
+        self.assertIn("`MEGA_AI_AGENT_CONFIG`", text)
         self.assertIn("`OPENCODE_API_KEY`", text)
         self.assertIn("`ai.opencode.managed`", text)
 
@@ -188,7 +188,7 @@ class GateNewFiles(GateCase):
                              lambda: self.fx.write(self.PATH, self.NEW))
 
     def test_accepts_the_file_with_the_fork_names(self):
-        fx = self.seed(); fx.resolve({self.PATH: self.NEW.replace("OPENCODE_", "MEGALADATA_AI_AGENT_")})
+        fx = self.seed(); fx.resolve({self.PATH: self.NEW.replace("OPENCODE_", "MEGA_AI_AGENT_")})
         self.assertAccepted(fx)
 
     def test_rejects_the_file_with_upstream_names_where_the_oracle_maps_them(self):
@@ -433,7 +433,7 @@ class GateDocsIdentity(GateCase):
     a deviation, and the procedure asks for a record of it."""
 
     DOC = ApplyIdentitySince.DOC
-    NAMED = "| `MEGALADATA_AI_AGENT_CONFIG` | Path to a config file |\n"
+    NAMED = "| `MEGA_AI_AGENT_CONFIG` | Path to a config file |\n"
 
     def seed(self):
         return self.fx.start(lambda: self.fx.write("fork.txt", "fork\n"), lambda: self.fx.write("other.txt", "other\n"),
@@ -508,7 +508,7 @@ class OracleIsMechanical(FixtureCase):
             trees.append(out)
         self.assertEqual(trees[0], trees[1])
         shown = subprocess.run(["git", "-C", str(clone), "show", f"{trees[0]}:packages/core/src/a.ts"], capture_output=True, text=True, env=ENV).stdout
-        self.assertEqual(shown.count("MEGALADATA_AI_AGENT_FLAG"), 1)
+        self.assertEqual(shown.count("MEGA_AI_AGENT_FLAG"), 1)
 
     def test_applying_the_identity_to_the_oracle_again_changes_nothing(self):
         fx = self.fx.start(lambda: self.fx.write("packages/core/src/a.ts", BODY), lambda: self.fx.write("fork.txt", "f\n"),

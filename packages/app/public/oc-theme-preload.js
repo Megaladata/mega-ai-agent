@@ -1,15 +1,15 @@
 ;(function () {
-  var key = "megaladata-ai-agent-theme-id"
+  var key = "mega-ai-agent-theme-id"
   var themeId = localStorage.getItem(key) || "oc-2"
 
   if (themeId === "oc-1") {
     themeId = "oc-2"
     localStorage.setItem(key, themeId)
-    localStorage.removeItem("megaladata-ai-agent-theme-css-light")
-    localStorage.removeItem("megaladata-ai-agent-theme-css-dark")
+    localStorage.removeItem("mega-ai-agent-theme-css-light")
+    localStorage.removeItem("mega-ai-agent-theme-css-dark")
   }
 
-  var scheme = localStorage.getItem("megaladata-ai-agent-color-scheme") || "system"
+  var scheme = localStorage.getItem("mega-ai-agent-color-scheme") || "system"
   var isDark = scheme === "dark" || (scheme === "system" && matchMedia("(prefers-color-scheme: dark)").matches)
   var mode = isDark ? "dark" : "light"
 
@@ -23,7 +23,7 @@
 
   if (themeId === "oc-2") return
 
-  var css = localStorage.getItem("megaladata-ai-agent-theme-css-" + mode)
+  var css = localStorage.getItem("mega-ai-agent-theme-css-" + mode)
   if (css) {
     var style = document.createElement("style")
     style.id = "oc-theme-preload"

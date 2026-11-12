@@ -1,10 +1,10 @@
 import { standaloneCancellation } from "./standalone-cancellation"
-import { Product } from "@megaladata-ai-agent/product"
+import { Product } from "@mega-ai-agent/product"
 
 // Model credentials belong to the guarded CLI profile and do not require Megaladata.
 export async function standaloneModels(args: string[]) {
-  process.env.MEGALADATA_AI_AGENT_DISABLE_AUTOUPDATE = "1"
-  process.env.MEGALADATA_AI_AGENT_DISABLE_MODELS_FETCH = "1"
+  process.env.MEGA_AI_AGENT_DISABLE_AUTOUPDATE = "1"
+  process.env.MEGA_AI_AGENT_DISABLE_MODELS_FETCH = "1"
   const { applyCliSystemProxy } = await import("./standalone-proxy")
   await applyCliSystemProxy()
   const { AppRuntime } = await import("../effect/app-runtime")

@@ -24,9 +24,9 @@ const archMap = {
 
 const platform = platformMap[os.platform()] ?? os.platform()
 const arch = archMap[os.arch()] ?? os.arch()
-const base = `megaladata-ai-agent-${platform}-${arch}`
-const sourceBinary = platform === "windows" ? "megaladata-ai-agent.exe" : "megaladata-ai-agent"
-const targetBinary = path.join(__dirname, "bin", "megaladata-ai-agent.exe")
+const base = `mega-ai-agent-${platform}-${arch}`
+const sourceBinary = platform === "windows" ? "mega-ai-agent.exe" : "mega-ai-agent"
+const targetBinary = path.join(__dirname, "bin", "mega-ai-agent.exe")
 
 function supportsAvx2() {
   if (arch !== "x64") return false
@@ -127,7 +127,7 @@ function installPackage(name) {
   const version = packageJson.optionalDependencies?.[name]
   if (!version) return
 
-  const temp = fs.mkdtempSync(path.join(os.tmpdir(), "megaladata-ai-agent-install-"))
+  const temp = fs.mkdtempSync(path.join(os.tmpdir(), "mega-ai-agent-install-"))
   try {
     const result = childProcess.spawnSync(
       "npm",
@@ -175,7 +175,7 @@ function main() {
   }
 
   throw new Error(
-    `It seems your package manager failed to install the right megaladata-ai-agent CLI package. Try manually installing ${packageNames()
+    `It seems your package manager failed to install the right mega-ai-agent CLI package. Try manually installing ${packageNames()
       .map((name) => JSON.stringify(name))
       .join(" or ")}.`,
   )

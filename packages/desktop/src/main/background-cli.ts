@@ -9,7 +9,7 @@ import { app } from "electron"
 const execFileAsync = promisify(execFile)
 const root = dirname(fileURLToPath(import.meta.url))
 const stateHome = process.env.XDG_STATE_HOME
-const desktopStateNames = ["com.megaladata.aiagent.dev", "com.megaladata.aiagent.beta", "com.megaladata.aiagent"]
+const desktopStateNames = ["com.mega.aiagent.dev", "com.mega.aiagent.beta", "com.mega.aiagent"]
 
 type Logger = {
   log(message: string, meta?: Record<string, unknown>): void
@@ -51,12 +51,12 @@ export async function startBackgroundCli(
   })
   logger.log("v2 CLI background service ready", {
     existing: Boolean(found),
-    username: "megaladata-ai-agent",
+    username: "mega-ai-agent",
     ...endpoint(url),
   })
   return {
     url,
-    username: "megaladata-ai-agent",
+    username: "mega-ai-agent",
     password,
   }
 }
@@ -125,5 +125,5 @@ function endpoint(url: string | undefined) {
 }
 
 function executableName() {
-  return process.platform === "win32" ? "megaladata-ai-agent-cli.exe" : "megaladata-ai-agent-cli"
+  return process.platform === "win32" ? "mega-ai-agent-cli.exe" : "mega-ai-agent-cli"
 }

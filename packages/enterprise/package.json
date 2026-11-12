@@ -8,7 +8,7 @@
     "typecheck": "tsgo --noEmit",
     "dev": "vite dev",
     "build": "vite build",
-    "build:cloudflare": "MEGALADATA_AI_AGENT_DEPLOYMENT_TARGET=cloudflare vite build",
+    "build:cloudflare": "MEGA_AI_AGENT_DEPLOYMENT_TARGET=cloudflare vite build",
     "start": "vite start",
     "shell-prod": "sst shell --target Teams --stage production"
   },

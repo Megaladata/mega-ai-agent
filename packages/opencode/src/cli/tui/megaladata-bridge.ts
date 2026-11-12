@@ -1,5 +1,5 @@
 import { EventEmitter } from "node:events"
-import type { Port } from "@megaladata-ai-agent/megaladata-host/transport"
+import type { Port } from "@mega-ai-agent/megaladata-host/transport"
 
 export function workerMegaladataBridge(send: (data: unknown) => void) {
   const events = new EventEmitter()

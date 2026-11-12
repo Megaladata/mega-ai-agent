@@ -78,6 +78,6 @@ export function sidecarEnvironment(base: NodeJS.ProcessEnv, proxy?: Record<strin
   delete env.DEBUG
   if (process.platform === "linux") delete env.LD_PRELOAD
   Object.assign(env, proxy)
-  if (resources) env.MEGALADATA_AI_AGENT_RESOURCES = resources
+  if (resources) env.MEGA_AI_AGENT_RESOURCES = resources
   return env
 }

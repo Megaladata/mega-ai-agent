@@ -10,7 +10,7 @@ export async function createKnowledgeClient({ endpoint, apiKey }, signal, startu
   if (typeof apiKey !== 'string' || !apiKey.trim()) throw Error('MEGALADATA_CONFIG_REQUIRED');
   const startup = catalogStartup({ ...startupOptions, signal });
   const remote = await connectRemote(() => ({
-    client: new Client({ name: 'megaladata-ai-agent-knowledge', version: '0.1.0' }),
+    client: new Client({ name: 'mega-ai-agent-knowledge', version: '0.1.0' }),
     transport: new StreamableHTTPClientTransport(new URL(endpoint), {
       requestInit: { headers: { Authorization: `Bearer ${apiKey}` }, redirect: 'error' },
     }),

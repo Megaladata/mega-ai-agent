@@ -39,7 +39,7 @@ export function megaladataAddress(value) {
   const url = new URL(value)
   if (!["http:", "https:"].includes(url.protocol) || url.username || url.password) throw Error("MEGALADATA_URL_INVALID")
   // Public root and /app redirect to /app/; keep login and preparation on that exact path.
-  if (url.origin === "https://app.megaladata.ai" && ["/", "/app"].includes(url.pathname)) url.pathname = "/app/"
+  if ((url.origin === "https://agent.megaladata.com" || url.origin === "https://app.megaladata.ai") && ["/", "/app"].includes(url.pathname)) url.pathname = "/app/"
   url.searchParams.set("testable", "true")
   return url.href
 }

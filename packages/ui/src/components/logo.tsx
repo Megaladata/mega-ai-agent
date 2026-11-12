@@ -8,7 +8,7 @@ export const Mark = (props: { class?: string }) => (
     viewBox="0 0 1024 1024"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    aria-label="Megaladata AI Agent"
+    aria-label="Mega AI Agent"
   >
     <image href={icon} width="1024" height="1024" />
   </svg>
@@ -22,16 +22,16 @@ export const Splash = (props: Pick<ComponentProps<"svg">, "ref" | "class">) => (
     viewBox="0 0 1024 1024"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    aria-label="Megaladata AI Agent"
+    aria-label="Mega AI Agent"
   >
     <image href={icon} width="1024" height="1024" />
   </svg>
 )
 
 export const Logo = (props: { class?: string }) => (
-  <svg class={props.class} viewBox="0 0 288 42" xmlns="http://www.w3.org/2000/svg" aria-label="Megaladata AI Agent">
+  <svg class={props.class} viewBox="0 0 220 42" xmlns="http://www.w3.org/2000/svg" aria-label="Mega AI Agent">
     <text x="0" y="31" fill="var(--icon-base)" font-family="system-ui, sans-serif" font-size="30" font-weight="600">
-      Megaladata AI Agent
+      Mega AI Agent
     </text>
   </svg>
 )

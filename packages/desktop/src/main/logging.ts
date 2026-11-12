@@ -1,4 +1,4 @@
-import { productSlug } from "@megaladata-ai-agent/product"
+import { productSlug } from "@mega-ai-agent/product"
 import { MainLogger } from "electron-log"
 import log from "electron-log/main.js"
 import { app, crashReporter, netLog, shell } from "electron"
@@ -59,7 +59,7 @@ export function startSession() {
     root,
     run,
     crashDumps: app.getPath("crashDumps"),
-    legacy: serverLogRoots().map((dir) => join(dir, "megaladata-ai-agent.log")),
+    legacy: serverLogRoots().map((dir) => join(dir, "mega-ai-agent.log")),
     maxBytes: MAX_LOG_BYTES,
     maxAge: MAX_LOG_AGE_DAYS * 24 * 60 * 60 * 1000,
     reserve: { log: log.transports.file.maxSize, netlog: NET_LOG_SIZE },
@@ -100,7 +100,7 @@ export async function exportDebugLogs() {
     await netLog.stopLogging().catch((error) => write("network", "failed to stop net log", { error }))
   }
 
-  const output = join(app.getPath("downloads"), `megaladata-ai-agent-debug-${stamp()}.zip`)
+  const output = join(app.getPath("downloads"), `mega-ai-agent-debug-${stamp()}.zip`)
   try {
     write("main", "exporting debug logs", { output })
     const runtime = join(app.getPath("userData"), "megaladata", "runtime")
@@ -173,7 +173,7 @@ function manifest() {
     version: app.getVersion(),
     channel: CHANNEL,
     ...BUILD_SOURCE,
-    browserRecovery: import.meta.env?.MEGALADATA_AI_AGENT_BROWSER_RECOVERY === true,
+    browserRecovery: import.meta.env?.MEGA_AI_AGENT_BROWSER_RECOVERY === true,
     name: app.getName(),
     packaged: app.isPackaged,
     platform: process.platform,

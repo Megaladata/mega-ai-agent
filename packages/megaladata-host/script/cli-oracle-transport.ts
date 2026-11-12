@@ -19,9 +19,9 @@ export async function cliOracleTransport(options: {
   if (!options.resume && typeof options.csv !== "string") throw Error("CLI_ORACLE_INPUT_REQUIRED")
   const profile = options.resume?.profile ?? options.profile ?? join(options.directory, "profile")
   const env = {
-    ...Object.fromEntries(Object.entries(process.env).filter(([key]) => !key.startsWith("MEGALADATA_AI_AGENT_CLI_"))),
-    MEGALADATA_AI_AGENT_CLI_PROFILE: profile,
-    MEGALADATA_AI_AGENT_PURE: "1",
+    ...Object.fromEntries(Object.entries(process.env).filter(([key]) => !key.startsWith("MEGA_AI_AGENT_CLI_"))),
+    MEGA_AI_AGENT_CLI_PROFILE: profile,
+    MEGA_AI_AGENT_PURE: "1",
   }
   if (!options.resume && !options.profile) {
     const setup = Bun.spawn([options.executable, "megaladata", "setup", "--stdin-json", "--format", "json"], {
@@ -48,7 +48,7 @@ export async function cliOracleTransport(options: {
       if (options.mode === "tui") child.stdin.write("finish\n")
     },
   })
-  await Bun.write(join(profile, "config/megaladata-ai-agent.json"), JSON.stringify(provider.config))
+  await Bun.write(join(profile, "config/mega-ai-agent.json"), JSON.stringify(provider.config))
   const workspace =
     options.resume?.workspace ?? (options.mode === "tui" ? join(options.directory, "workspace") : options.directory)
   await mkdir(workspace, { recursive: true })
@@ -61,7 +61,7 @@ export async function cliOracleTransport(options: {
       ? [
           ...(process.platform === "win32"
             ? [
-                process.env.MEGALADATA_AI_AGENT_TEST_NODE ??
+                process.env.MEGA_AI_AGENT_TEST_NODE ??
                   resolve(dirname(options.executable), "../resources/megaladata/bin/node.exe"),
                 join(import.meta.dir, "tui-oracle-windows.ts"),
               ]

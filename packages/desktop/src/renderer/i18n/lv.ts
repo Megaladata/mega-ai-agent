@@ -9,17 +9,17 @@ export const dict = {
   "desktop.updater.checkFailed.title": "Atjauninājumu pārbaude neizdevās",
   "desktop.updater.checkFailed.message": "Neizdevās pārbaudīt atjauninājumus",
   "desktop.updater.none.title": "Atjauninājumu nav",
-  "desktop.updater.none.message": "Jūs jau izmantojat jaunāko Megaladata AI Agent versiju",
+  "desktop.updater.none.message": "Jūs jau izmantojat jaunāko Mega AI Agent versiju",
   "desktop.updater.downloadFailed.title": "Atjaunināšana neizdevās",
   "desktop.updater.downloadFailed.message": "Neizdevās lejupielādēt atjauninājumu",
   "desktop.updater.downloaded.title": "Atjauninājums lejupielādēts",
   "desktop.updater.downloaded.prompt":
-    "Megaladata AI Agent versija {{version}} ir lejupielādēta. Vai vēlaties to instalēt un palaist no jauna?",
+    "Mega AI Agent versija {{version}} ir lejupielādēta. Vai vēlaties to instalēt un palaist no jauna?",
   "desktop.updater.installFailed.title": "Atjaunināšana neizdevās",
   "desktop.updater.installFailed.message": "Neizdevās instalēt atjauninājumu",
   "desktop.cli.installed.title": "CLI instalēts",
   "desktop.cli.installed.message":
-    "CLI instalēts uz {{path}}\n\nRestartējiet termināli, lai izmantotu komandu 'megaladata-ai-agent'.",
+    "CLI instalēts uz {{path}}\n\nRestartējiet termināli, lai izmantotu komandu 'mega-ai-agent'.",
   "desktop.cli.failed.title": "Instalēšana neizdevās",
   "desktop.cli.failed.message": "Neizdevās instalēt CLI: {{error}}",
 

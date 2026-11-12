@@ -1,6 +1,6 @@
-# Megaladata AI Agent Desktop
+# Mega AI Agent Desktop
 
-The Megaladata AI Agent Desktop app, built with Electron.
+The Mega AI Agent Desktop app, built with Electron.
 
 ## Development
 

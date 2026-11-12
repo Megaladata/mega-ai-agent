@@ -1,4 +1,4 @@
-# Megaladata AI Agent Windows implementation plan
+# Mega AI Agent Windows implementation plan
 
 ## Goal and how to keep the plan
 
@@ -94,7 +94,7 @@ Interim result 2026-09-18, commit `697cc2e5addff232f2faeb9be8c4790100995f18`: po
 - [x] Keep verification compatible with existing Linux manifests.
 - [x] Check the CLI manifest after packaging, extraction, and installation.
 - [x] Check rejection of damaged and incomplete artifacts.
-- [x] Check CLI installation into `%LOCALAPPDATA%\Programs\megaladata-ai-agent-cli`.
+- [x] Check CLI installation into `%LOCALAPPDATA%\Programs\mega-ai-agent-cli`.
 - [x] Keep an explicit user step for adding the CLI to PATH.
 - [x] Check refusal to remove a busy CLI and preservation of profiles on uninstall.
 - [x] Record the source commit, dependency versions, and artifact SHA256.
@@ -147,7 +147,7 @@ Interim result 2026-09-18, commit `697cc2e5addff232f2faeb9be8c4790100995f18`: po
 - [x] Build and install Desktop 0.1.5.0 from product commit `30a22ff8905ff9f3d0b2dafe3605de17b23ffda2`, and check that the installed ASAR matches the packaged payload.
 - [x] Checks: 19 app tests, 7 packaging tests, 4 package typechecks, 4371 resource files; packaged GUI and real Dock/Megaladata check/save/reopen through the installed application — PASS.
 - Artifact SHA256: `9c003ea3a91fc20e2bb741ecc79573886b0b53a14d8dad2de3884fbf6116c9ca`. The CLI was not changed. Every GUI test used a separate profile.
-- [Report, evidence, commands, and limits](docs/testing/megaladata-ai-agent/reports/2026-09-19-settings-ux/report.md). This is the target UI regression, not a repeat of the full Windows/Xiaomi/CSV acceptance below.
+- [Report, evidence, commands, and limits](docs/testing/mega-ai-agent/reports/2026-09-19-settings-ux/report.md). This is the target UI regression, not a repeat of the full Windows/Xiaomi/CSV acceptance below.
 
 ### 2026-09-18 — Stage 0
 
@@ -164,9 +164,9 @@ Interim result 2026-09-18, commit `697cc2e5addff232f2faeb9be8c4790100995f18`: po
 - Base commit: `697cc2e5addff232f2faeb9be8c4790100995f18`; branch `windows-native`; the working tree still has uncommitted Windows changes.
 - Environment: portable Node `24.19.0`, Bun `1.3.14`, Chromium `1243`; the permanent user `PATH` was not changed. The Node, Bun, and Chromium archives matched the expected SHA256.
 - Desktop: `bun typecheck`, 7 targeted tests, and the production build — PASS. Packaged GUI smoke from an isolated profile — PASS: 4 wizard fields, empty secrets, default URL/username, no leftover processes.
-- Desktop artifact: `C:\Users\vskar\AppData\Local\megaladata-ai-agent-build\outputs\script-smoke\desktop\megaladata-ai-agent-win-x64.exe`, 313274217 bytes, SHA256 `ee17c118db7aef38fee2ad65f32be2b941e0b0a44eb1cbfc1ab18f9e0cb26028`. The installer and payload are unsigned; the application inside is PE32+/AMD64. Resource manifest: `win32-x64`, 4371 files, Node/Chromium bundled.
+- Desktop artifact: `C:\Users\vskar\AppData\Local\mega-ai-agent-build\outputs\script-smoke\desktop\mega-ai-agent-win-x64.exe`, 313274217 bytes, SHA256 `ee17c118db7aef38fee2ad65f32be2b941e0b0a44eb1cbfc1ab18f9e0cb26028`. The installer and payload are unsigned; the application inside is PE32+/AMD64. Resource manifest: `win32-x64`, 4371 files, Node/Chromium bundled.
 - CLI: payload → ZIP → extract → manifest check — PASS. Native `--version`, install/launcher/uninstall from a path with spaces and Cyrillic without Node/Bun on `PATH`, profile preservation, busy-process refusal, reparse rejection, and DPAPI — PASS.
-- CLI artifact: `C:\Users\vskar\AppData\Local\megaladata-ai-agent-build\outputs\cli-dev\megaladata-ai-agent-cli-0.0.0-dev-202609181843-win32-x64.zip`, 316244374 bytes, SHA256 `07e2ef1b0787d7006ab45cca4be82e15a43b2b598d0092781563810260b2e64f`.
+- CLI artifact: `C:\Users\vskar\AppData\Local\mega-ai-agent-build\outputs\cli-dev\mega-ai-agent-cli-0.0.0-dev-202609181843-win32-x64.zip`, 316244374 bytes, SHA256 `07e2ef1b0787d7006ab45cca4be82e15a43b2b598d0092781563810260b2e64f`.
 - Code checks: `packages/megaladata-host` — 11 PASS/10 platform skip, typecheck PASS; `packages/agent` typecheck PASS and native Unicode ACL PASS; `packages/desktop` typecheck PASS and 7/7 targeted tests PASS; `git diff --check` PASS.
 - Fixed: Windows checkout without the symlink privilege, CRLF-safe pinned hashes, CLI PE/resource validation, installer reparse/busy protection, Unicode profile paths, Desktop icon/prebuild paths, NSIS per-user x64 config, native application lookup, and a Windows-safe GUI evidence path.
 - Blockers: a full workspace install stops on the integrity of remote `@solidjs/start`; the current system proxy bypass policy is still rejected by the CLI as `SYSTEM_PROXY_BYPASS_UNSUPPORTED`; Dock/ChatGPT/TUI/ConPTY/end-to-end CSV are not checked yet. `script/build-windows.ps1 -Product Desktop` passed, but a clean-checkout rebuild and a single `-Product Both` are still required.

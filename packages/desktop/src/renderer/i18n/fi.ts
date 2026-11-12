@@ -9,17 +9,17 @@ export const dict = {
   "desktop.updater.checkFailed.title": "Päivitystarkistus epäonnistui",
   "desktop.updater.checkFailed.message": "Päivitysten tarkistaminen epäonnistui",
   "desktop.updater.none.title": "Päivitystä ei ole saatavilla",
-  "desktop.updater.none.message": "Käytät jo Megaladata AI Agentn uusinta versiota",
+  "desktop.updater.none.message": "Käytät jo Mega AI Agentn uusinta versiota",
   "desktop.updater.downloadFailed.title": "Päivitys epäonnistui",
   "desktop.updater.downloadFailed.message": "Päivityksen lataaminen epäonnistui",
   "desktop.updater.downloaded.title": "Päivitys ladattu",
   "desktop.updater.downloaded.prompt":
-    "Megaladata AI Agentn versio {{version}} on ladattu. Haluatko asentaa sen ja käynnistää Megaladata AI Agentn uudelleen?",
+    "Mega AI Agentn versio {{version}} on ladattu. Haluatko asentaa sen ja käynnistää Mega AI Agentn uudelleen?",
   "desktop.updater.installFailed.title": "Päivitys epäonnistui",
   "desktop.updater.installFailed.message": "Päivityksen asentaminen epäonnistui",
   "desktop.cli.installed.title": "CLI on asennettu",
   "desktop.cli.installed.message":
-    "CLI on asennettu polkuun {{path}}\n\nKäynnistä terminaali uudelleen, jotta voit käyttää 'megaladata-ai-agent'-komentoa.",
+    "CLI on asennettu polkuun {{path}}\n\nKäynnistä terminaali uudelleen, jotta voit käyttää 'mega-ai-agent'-komentoa.",
   "desktop.cli.failed.title": "Asennus epäonnistui",
   "desktop.cli.failed.message": "CLI:n asennus epäonnistui: {{error}}",
 

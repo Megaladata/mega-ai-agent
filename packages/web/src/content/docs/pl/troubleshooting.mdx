@@ -57,9 +57,9 @@ Jeśli aplikacja komputerowa ulega awarii podczas uruchamiania, zawiesza się lu
 
 Otwórz globalny plik konfiguracyjny i poszukaj klucza `plugin`.
 
-- **macOS/Linux**: `~/.config/opencode/megaladata-ai-agent.jsonc` (lub `~/.config/opencode/megaladata-ai-agent.json`)
-- **macOS/Linux** (starsze instalacje): `~/.local/share/opencode/megaladata-ai-agent.jsonc`
-- **Windows**: Naciśnij `WIN+R` i wklej `%USERPROFILE%\.config\opencode\megaladata-ai-agent.jsonc`
+- **macOS/Linux**: `~/.config/opencode/mega-ai-agent.jsonc` (lub `~/.config/opencode/mega-ai-agent.json`)
+- **macOS/Linux** (starsze instalacje): `~/.local/share/opencode/mega-ai-agent.jsonc`
+- **Windows**: Naciśnij `WIN+R` i wklej `%USERPROFILE%\.config\opencode\mega-ai-agent.jsonc`
 
 Jeśli masz skonfigurowane wtyczki, tymczasowo je wyłącz, usuwając klucz lub ustawiając go na pustą tablicę:
 
@@ -78,7 +78,7 @@ opencode może także ładować lokalne wtyczki z dysku. Tymczasowo usuń je (lu
   - **macOS/Linux**: `~/.config/opencode/plugins/`
   - **Windows**: Naciśnij `WIN+R` i wklej `%USERPROFILE%\.config\opencode\plugins`
 - **Wtyczki projektowe** (tylko jeśli używasz konfiguracji dla poszczególnych projektów)
-  - `<your-project>/.megaladata-ai-agent/plugins/`
+  - `<your-project>/.mega-ai-agent/plugins/`
 
 Jeśli aplikacja ponownie zacznie działać, włączaj ponownie wtyczki pojedynczo, aby dowiedzieć się, która powoduje problem.
 
@@ -111,13 +111,13 @@ Na ekranie głównym kliknij nazwę serwera (z kropką stanu), aby otworzyć sel
 
 #### Usuń `server.port` / `server.hostname` ze swojej konfiguracji
 
-Jeśli Twój `megaladata-ai-agent.json(c)` zawiera sekcję `server`, tymczasowo usuń ją i uruchom ponownie aplikację komputerową.
+Jeśli Twój `mega-ai-agent.json(c)` zawiera sekcję `server`, tymczasowo usuń ją i uruchom ponownie aplikację komputerową.
 
 #### Sprawdź zmienne środowiskowe
 
-Jeśli w swoim środowisku masz ustawiony `MEGALADATA_AI_AGENT_PORT`, aplikacja komputerowa spróbuje użyć tego portu dla serwera lokalnego.
+Jeśli w swoim środowisku masz ustawiony `MEGA_AI_AGENT_PORT`, aplikacja komputerowa spróbuje użyć tego portu dla serwera lokalnego.
 
-- usuń `MEGALADATA_AI_AGENT_PORT` (lub wybierz wolny port) i uruchom ponownie.
+- usuń `MEGA_AI_AGENT_PORT` (lub wybierz wolny port) i uruchom ponownie.
 
 ---
 
@@ -158,7 +158,7 @@ Jeśli aplikacja nie uruchamia się i nie możesz wyczyścić ustawień w interf
 1. Zamknij całkowicie opencode Desktop.
 2. Znajdź i usuń te pliki (znajdują się w katalogu danych aplikacji opencode Desktop):
 
-- `megaladata-ai-agent.settings.dat` (domyślny adres URL serwera na komputerze stacjonarnym)
+- `mega-ai-agent.settings.dat` (domyślny adres URL serwera na komputerze stacjonarnym)
 - `opencode.global.dat` i `opencode.workspace.*.dat` (stan interfejsu użytkownika, taki jak najnowsze serwery/projekty)
 
 Aby szybko znaleźć katalog:

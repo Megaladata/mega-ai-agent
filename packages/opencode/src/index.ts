@@ -34,7 +34,7 @@ const args = hideBin(process.argv)
 
 function show(out: string) {
   const text = out.trimStart()
-  if (!text.startsWith("megaladata-ai-agent ")) {
+  if (!text.startsWith("mega-ai-agent ")) {
     process.stderr.write(UI.logo() + EOL + EOL)
     process.stderr.write(text + EOL)
     return
@@ -44,7 +44,7 @@ function show(out: string) {
 
 const cli = yargs(args)
   .parserConfiguration({ "populate--": true })
-  .scriptName("megaladata-ai-agent")
+  .scriptName("mega-ai-agent")
   .wrap(100)
   .help("help", "show help")
   .alias("help", "h")
@@ -64,17 +64,17 @@ const cli = yargs(args)
     type: "boolean",
   })
   .middleware(async (opts) => {
-    if (opts.printLogs) process.env.MEGALADATA_AI_AGENT_PRINT_LOGS = "1"
-    if (opts.logLevel) process.env.MEGALADATA_AI_AGENT_LOG_LEVEL = opts.logLevel
+    if (opts.printLogs) process.env.MEGA_AI_AGENT_PRINT_LOGS = "1"
+    if (opts.logLevel) process.env.MEGA_AI_AGENT_LOG_LEVEL = opts.logLevel
     if (opts.pure) {
-      process.env.MEGALADATA_AI_AGENT_PURE = "1"
+      process.env.MEGA_AI_AGENT_PURE = "1"
     }
 
     Heap.start()
 
     process.env.AGENT = "1"
     process.env.OPENCODE = "1"
-    process.env.MEGALADATA_AI_AGENT_PID = String(process.pid)
+    process.env.MEGA_AI_AGENT_PID = String(process.pid)
   })
   .usage("")
   .completion("completion", "generate shell completion script")

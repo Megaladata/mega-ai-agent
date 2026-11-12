@@ -1,4 +1,4 @@
-# Megaladata AI Agent macOS build plan
+# Mega AI Agent macOS build plan
 
 Date: 2026-09-19.
 
@@ -42,7 +42,7 @@ Public publishing, auto-update, and full GUI acceptance on a clean macOS 14 are 
 - [x] Add one script for local and CI Desktop/CLI builds.
 - [x] Accept the output directory and version; use the existing Node/Chromium location parameters.
 - [x] Default to the `dev` channel and create a separate directory for each candidate without overwriting earlier ones.
-- [x] Pass one version through `MEGALADATA_AI_AGENT_VERSION` into the backend, CLI, Desktop metadata, and manifests.
+- [x] Pass one version through `MEGA_AI_AGENT_VERSION` into the backend, CLI, Desktop metadata, and manifests.
 - [x] Remove the current `0.1.0`/`0.1.4` version mismatch without changing tracked files during the build.
 - [x] Use the existing shared staging for `darwin-arm64`, keeping framework symlinks and execute bits.
 - [x] Record the commit, tool versions, and input-resource hashes.
@@ -133,7 +133,7 @@ An ad-hoc build does not prove Gatekeeper trust or a seamless Keychain update. D
 - **Local candidate:** `0.1.4-macos.20260919.2`, clean commit `6650b6d017ce805eb4e6b2e250e612ac55856f16`; DMG/ZIP/CLI/source archive/manifest/SHA256 were published.
 - **macOS 27:** source/build/static/offline, installed GUI/CLI, Finder/window/activate/Cmd+Q, Xiaomi reply, Unicode two-chat isolation, CSV 55/101 plus cold readback of both products, both close orders, crash/recovery/no orphan, upgrade settings/history — PASS.
 - **macOS 14.8.9 arm64:** CI07 `35408357070`, candidate `0.1.4-macos.7` from `e1b2b57d9469957f04433d9a7b8eccf92d96ac21`: source/build/static/offline PASS. Downloaded SHA256/source commit, repeated DMG/ZIP checks, and CLI manifest/signatures — PASS.
-- **Evidence:** [final report](docs/testing/megaladata-ai-agent/reports/2026-09-19-macos/report.md). Local candidate02 is in `~/.cache/megaladata-macos-build/candidate-02`, CI07 is in `~/.cache/megaladata-macos-build/ci-35408357070/megaladata-macos14-arm64-7/candidate`.
+- **Evidence:** [final report](docs/testing/mega-ai-agent/reports/2026-09-19-macos/report.md). Local candidate02 is in `~/.cache/megaladata-macos-build/candidate-02`, CI07 is in `~/.cache/megaladata-macos-build/ci-35408357070/megaladata-macos14-arm64-7/candidate`.
 - **Changes:** recorded and pushed to `macos-build`; the sources of the checked candidates are kept in the archives.
 - **Next action:** this plan has no remaining required work. A public release needs a separate decision and a Developer ID/notarization check.
 - **Limits:** full macOS 14 GUI acceptance is not claimed; the native picker and the changed ad-hoc identity helper were not tested. CI offline uses a mock Keychain; real protected storage was checked on macOS 27. A single CLI hang in CI06 did not recur; the cause is unknown, and the diagnostics and watchdog were kept.

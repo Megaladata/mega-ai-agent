@@ -23,14 +23,14 @@ shape before writing config, **fetch that URL and read the schema directly**
 rather than guessing. opencode hard-fails on invalid config, so the cost of a
 wrong shape is a broken startup.
 
-Independently, every `megaladata-ai-agent.json` should declare
+Independently, every `mega-ai-agent.json` should declare
 `"$schema": "https://opencode.ai/config.json"` so the user's editor catches
 mistakes as they type.
 
 ## Applying changes
 
 Config is loaded once when opencode starts and is not hot-reloaded. After
-saving changes to `megaladata-ai-agent.json`, an agent file, a skill, a plugin, or any
+saving changes to `mega-ai-agent.json`, an agent file, a skill, a plugin, or any
 other config-time file, **tell the user to quit and restart opencode** for
 the changes to take effect. The running session will keep using the
 already-loaded config until then.
@@ -39,20 +39,20 @@ already-loaded config until then.
 
 | Scope                         | Path                                                                                                                      |
 | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| Project config                | `./megaladata-ai-agent.json`, `./megaladata-ai-agent.jsonc`, or `.megaladata-ai-agent/megaladata-ai-agent.json` (opencode walks up from the cwd to the worktree root) |
-| Global config                 | `~/.config/opencode/megaladata-ai-agent.json` or `~/.config/opencode/megaladata-ai-agent.jsonc` (NOT `~/.megaladata-ai-agent/`)                            |
-| Project agents                | `.megaladata-ai-agent/agent/<name>.md` or `.megaladata-ai-agent/agents/<name>.md`                                                               |
+| Project config                | `./mega-ai-agent.json`, `./mega-ai-agent.jsonc`, or `.mega-ai-agent/mega-ai-agent.json` (opencode walks up from the cwd to the worktree root) |
+| Global config                 | `~/.config/opencode/mega-ai-agent.json` or `~/.config/opencode/mega-ai-agent.jsonc` (NOT `~/.mega-ai-agent/`)                            |
+| Project agents                | `.mega-ai-agent/agent/<name>.md` or `.mega-ai-agent/agents/<name>.md`                                                               |
 | Global agents                 | `~/.config/opencode/agent(s)/<name>.md`                                                                                   |
-| Project commands              | `.megaladata-ai-agent/command/<name>.md` or `.megaladata-ai-agent/commands/<name>.md`                                                           |
+| Project commands              | `.mega-ai-agent/command/<name>.md` or `.mega-ai-agent/commands/<name>.md`                                                           |
 | Global commands               | `~/.config/opencode/command(s)/<name>.md`                                                                                 |
-| Project skills                | `.megaladata-ai-agent/skill(s)/<name>/SKILL.md`                                                                                      |
+| Project skills                | `.mega-ai-agent/skill(s)/<name>/SKILL.md`                                                                                      |
 | Global skills                 | `~/.config/opencode/skill(s)/<name>/SKILL.md`                                                                             |
 | External skills (auto-loaded) | `~/.claude/skills/<name>/SKILL.md`, `~/.agents/skills/<name>/SKILL.md`                                                    |
 
 Configs from each scope are deep-merged. Project overrides global. Unknown
-top-level keys in `megaladata-ai-agent.json` are rejected with `ConfigInvalidError`.
+top-level keys in `mega-ai-agent.json` are rejected with `ConfigInvalidError`.
 
-## megaladata-ai-agent.json
+## mega-ai-agent.json
 
 Every field is optional.
 
@@ -71,7 +71,7 @@ Every field is optional.
   "instructions": ["AGENTS.md", "docs/style.md"],
 
   "skills": {
-    "paths": [".megaladata-ai-agent/skills", "/abs/path/to/skills"],
+    "paths": [".mega-ai-agent/skills", "/abs/path/to/skills"],
     "urls": ["https://example.com/.well-known/skills/"]
   },
 
@@ -165,7 +165,7 @@ file is named `SKILL.md` exactly, and lives in its own folder named after the
 skill:
 
 ```
-.megaladata-ai-agent/skills/my-skill/SKILL.md
+.mega-ai-agent/skills/my-skill/SKILL.md
 ```
 
 Frontmatter:
@@ -225,7 +225,7 @@ Local `path` values may be relative to the declaring config, absolute, or use
 
 Two ways to define an agent. Use the file form for anything non-trivial.
 
-### Inline (in `megaladata-ai-agent.json`)
+### Inline (in `mega-ai-agent.json`)
 
 ```json
 {
@@ -244,7 +244,7 @@ Two ways to define an agent. Use the file form for anything non-trivial.
 ### File
 
 ```
-.megaladata-ai-agent/agent/my-reviewer.md      OR     .megaladata-ai-agent/agents/my-reviewer.md
+.mega-ai-agent/agent/my-reviewer.md      OR     .mega-ai-agent/agents/my-reviewer.md
 ```
 
 ```markdown
@@ -286,7 +286,7 @@ opencode's command loader scans for `**/*.md` inside command directories. The
 file is named after the command, and lives directly inside the `command` folder:
 
 ```
-.megaladata-ai-agent/command/deploy.md
+.mega-ai-agent/command/deploy.md
 ```
 
 Frontmatter:
@@ -320,7 +320,7 @@ model: anthropic/claude-sonnet-4-6
 ```
 
 Auto-discovered plugins (no config entry needed): any `*.ts` or `*.js` file in
-`.megaladata-ai-agent/plugin/` or `.megaladata-ai-agent/plugins/`.
+`.mega-ai-agent/plugin/` or `.mega-ai-agent/plugins/`.
 
 A plugin module exports `default` (or any named export) of type
 `Plugin = (input: PluginInput, options?) => Promise<Hooks>`. The export is a
@@ -426,16 +426,16 @@ the `plan` agent's permission ruleset (`edit: deny *`).
 
 When a user's config is broken and opencode won't start, these env vars help:
 
-- `MEGALADATA_AI_AGENT_DISABLE_PROJECT_CONFIG=1`: skip the project's local `megaladata-ai-agent.json`
+- `MEGA_AI_AGENT_DISABLE_PROJECT_CONFIG=1`: skip the project's local `mega-ai-agent.json`
   and start from globals only. Run from the project directory, opencode loads,
   the user edits the broken file, then they restart without the flag.
-- `MEGALADATA_AI_AGENT_CONFIG=/path/to/file.json`: load an additional explicit config.
-- `MEGALADATA_AI_AGENT_CONFIG_CONTENT='{"$schema":"https://opencode.ai/config.json"}'`:
+- `MEGA_AI_AGENT_CONFIG=/path/to/file.json`: load an additional explicit config.
+- `MEGA_AI_AGENT_CONFIG_CONTENT='{"$schema":"https://opencode.ai/config.json"}'`:
   inject inline JSON as a final local-scope merge.
-- `MEGALADATA_AI_AGENT_DISABLE_DEFAULT_PLUGINS=1`: skip default plugins.
-- `MEGALADATA_AI_AGENT_PURE=1`: skip external plugins entirely.
-- `MEGALADATA_AI_AGENT_DISABLE_EXTERNAL_SKILLS=1`,
-  `MEGALADATA_AI_AGENT_DISABLE_CLAUDE_CODE_SKILLS=1`: skip the external skill scans under
+- `MEGA_AI_AGENT_DISABLE_DEFAULT_PLUGINS=1`: skip default plugins.
+- `MEGA_AI_AGENT_PURE=1`: skip external plugins entirely.
+- `MEGA_AI_AGENT_DISABLE_EXTERNAL_SKILLS=1`,
+  `MEGA_AI_AGENT_DISABLE_CLAUDE_CODE_SKILLS=1`: skip the external skill scans under
   `~/.claude/` and `~/.agents/`.
 
 ## When proposing edits
@@ -445,7 +445,7 @@ When a user's config is broken and opencode won't start, these env vars help:
   `https://opencode.ai/config.json` and read the schema rather than guessing.
 - Preserve `$schema` and any existing fields the user did not ask to change.
 - For agent, command, skill, and plugin definitions, prefer creating new files
-  in the correct location over inlining everything in `megaladata-ai-agent.json`.
+  in the correct location over inlining everything in `mega-ai-agent.json`.
 - If the user's existing config is malformed, point them at the env-var escape
   hatches above so they can edit from inside opencode without breaking their
   session.

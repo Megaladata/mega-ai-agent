@@ -26,8 +26,8 @@ function pagerCmd(): string[] {
     if (Filesystem.stat(lessOnPath)?.size) return [lessOnPath, ...lessOptions]
   }
 
-  if (Flag.MEGALADATA_AI_AGENT_GIT_BASH_PATH) {
-    const less = path.join(Flag.MEGALADATA_AI_AGENT_GIT_BASH_PATH, "..", "..", "usr", "bin", "less.exe")
+  if (Flag.MEGA_AI_AGENT_GIT_BASH_PATH) {
+    const less = path.join(Flag.MEGA_AI_AGENT_GIT_BASH_PATH, "..", "..", "usr", "bin", "less.exe")
     if (Filesystem.stat(less)?.size) return [less, ...lessOptions]
   }
 

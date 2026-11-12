@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url"
 import { promisify } from "node:util"
 import { linuxPermissions } from "./scripts/linux-permissions"
 import type { Configuration } from "electron-builder"
-import { Product, productChannel, productName, productSlug } from "@megaladata-ai-agent/product"
+import { Product, productChannel, productName, productSlug } from "@mega-ai-agent/product"
 import release from "../product/megaladata-release.json"
 
 const execFileAsync = promisify(execFile)
@@ -29,7 +29,7 @@ if (process.platform === "linux") process.umask(0o022)
 // Ad-hoc test artifacts must never select a certificate from the local keychain.
 if (process.platform === "darwin") process.env.CSC_IDENTITY_AUTO_DISCOVERY = "false"
 
-const channel = productChannel(process.env.MEGALADATA_AI_AGENT_CHANNEL)
+const channel = productChannel(process.env.MEGA_AI_AGENT_CHANNEL)
 const appId = Product.channels[channel]
 const config: Configuration = {
   appId,
@@ -55,7 +55,7 @@ const config: Configuration = {
     name: `${Product.namespace}/desktop`,
     productName: productName(channel),
     desktopName: `${appId}.desktop`,
-    ...(process.env.MEGALADATA_AI_AGENT_VERSION ? { version: process.env.MEGALADATA_AI_AGENT_VERSION } : {}),
+    ...(process.env.MEGA_AI_AGENT_VERSION ? { version: process.env.MEGA_AI_AGENT_VERSION } : {}),
   },
   files: ["out/**/*", "resources/icons/**/*"],
   extraResources: [

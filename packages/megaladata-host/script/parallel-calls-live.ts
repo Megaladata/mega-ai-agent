@@ -12,8 +12,8 @@ import { megaladataHostPort } from "../src/host-port"
 import { supervise } from "../src/supervisor"
 
 // Isolated source acceptance. Never opens or acknowledges the user's Desktop profile.
-const configPath = process.env.MEGALADATA_AI_AGENT_TEST_CONFIG
-const resourcePath = process.env.MEGALADATA_AI_AGENT_TEST_RESOURCES
+const configPath = process.env.MEGA_AI_AGENT_TEST_CONFIG
+const resourcePath = process.env.MEGA_AI_AGENT_TEST_RESOURCES
 if (!configPath || !resourcePath) throw Error("TEST_CONFIG_AND_RESOURCES_REQUIRED")
 const config = await Bun.file(configPath).json()
 if (config.workflow_profile?.passwordless_login !== true) throw Error("TEST_PASSWORD_UNAVAILABLE")

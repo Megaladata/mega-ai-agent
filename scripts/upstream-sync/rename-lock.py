@@ -21,6 +21,6 @@ def sub(m):
     if t in pk: return "@opencode-ai/" + t
     raise SystemExit("unexpected scoped name in lock: " + m.group(0))
 text = open(f"{repo}/bun.lock", encoding="utf-8").read()
-text = re.sub(r"@megaladata-ai-agent/([A-Za-z0-9_-]+)", sub, text)
+text = re.sub(r"@mega-ai-agent/([A-Za-z0-9_-]+)", sub, text)
 text = text.replace('"packages/agent"', '"packages/opencode"').replace("workspace:packages/agent", "workspace:packages/opencode")
 open(f"{repo}/bun.lock", "w", encoding="utf-8", newline="").write(text)

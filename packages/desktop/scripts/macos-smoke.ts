@@ -32,9 +32,9 @@ const env = {
   XDG_CACHE_HOME: join(root, "cache"),
   XDG_STATE_HOME: join(root, "state"),
   PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1",
-  MEGALADATA_AI_AGENT_TEST_ONBOARDING: "1",
-  MEGALADATA_AI_AGENT_TEST_ROOT: join(root, "desktop"),
-  MEGALADATA_AI_AGENT_CLI_PROFILE: join(root, "cli-profile"),
+  MEGA_AI_AGENT_TEST_ONBOARDING: "1",
+  MEGA_AI_AGENT_TEST_ROOT: join(root, "desktop"),
+  MEGA_AI_AGENT_CLI_PROFILE: join(root, "cli-profile"),
 }
 await mkdir(env.HOME, { recursive: true })
 let failure: string | undefined
@@ -79,8 +79,8 @@ try {
     )
     results.push({ check: `${label}-chromium`, status: "PASS", detail: output })
   }
-  const executable = join(cli, "bin/megaladata-ai-agent-cli")
-  if (!run(executable, ["--help"]).includes("megaladata-ai-agent-cli")) throw new Error("CLI_HELP_INVALID")
+  const executable = join(cli, "bin/mega-ai-agent-cli")
+  if (!run(executable, ["--help"]).includes("mega-ai-agent-cli")) throw new Error("CLI_HELP_INVALID")
   results.push({ check: "cli-help", status: "PASS", detail: "Help available with system-only PATH" })
   const version = run(executable, ["--version"])
   if (version !== metadata.metadata.version) throw new Error("CLI_VERSION_MISMATCH")

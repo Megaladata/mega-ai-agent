@@ -12,7 +12,7 @@ import { authFromToken } from "@/utils/server"
 import pkg from "../package.json"
 import { ServerConnection } from "./context/server"
 
-const DEFAULT_SERVER_URL_KEY = "megaladata-ai-agent.settings.dat:defaultServerUrl"
+const DEFAULT_SERVER_URL_KEY = "mega-ai-agent.settings.dat:defaultServerUrl"
 
 const getLocale = () => {
   if (typeof navigator !== "object") return "en" as const
@@ -98,7 +98,7 @@ if (!(root instanceof HTMLElement) && import.meta.env.DEV) {
 
 const getCurrentUrl = () => {
   if (import.meta.env.DEV)
-    return `http://${import.meta.env.VITE_MEGALADATA_AI_AGENT_SERVER_HOST ?? "localhost"}:${import.meta.env.VITE_MEGALADATA_AI_AGENT_SERVER_PORT ?? "4096"}`
+    return `http://${import.meta.env.VITE_MEGA_AI_AGENT_SERVER_HOST ?? "localhost"}:${import.meta.env.VITE_MEGA_AI_AGENT_SERVER_PORT ?? "4096"}`
   return location.origin
 }
 
@@ -142,7 +142,7 @@ if (import.meta.env.VITE_SENTRY_DSN) {
     integrations: (integrations) => {
       return integrations.filter(
         (i) =>
-          i.name !== "Breadcrumbs" && !(import.meta.env.MEGALADATA_AI_AGENT_CHANNEL === "prod" && i.name === "GlobalHandlers"),
+          i.name !== "Breadcrumbs" && !(import.meta.env.MEGA_AI_AGENT_CHANNEL === "prod" && i.name === "GlobalHandlers"),
       )
     },
   })

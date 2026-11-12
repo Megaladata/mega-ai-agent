@@ -20,7 +20,7 @@ type SidecarMessage =
 
 export type SidecarListener = { stop: () => Promise<void> }
 
-const SIDECAR_SERVICE_NAME = "megaladata-ai-agent server"
+const SIDECAR_SERVICE_NAME = "mega-ai-agent server"
 const SIDECAR_START_STALL_TIMEOUT = 60_000
 const SIDECAR_STOP_TIMEOUT = 6_000
 
@@ -53,10 +53,10 @@ export function preferAppEnv(userDataPath: string) {
   const shellEnv = shell ? loadShellEnv(shell, getLogger()) : null
   Object.assign(process.env, {
     ...shellEnv,
-    MEGALADATA_AI_AGENT_EXPERIMENTAL_ICON_DISCOVERY: "true",
-    MEGALADATA_AI_AGENT_EXPERIMENTAL_FILEWATCHER: "true",
-    MEGALADATA_AI_AGENT_CLIENT: "desktop",
-    MEGALADATA_AI_AGENT_CHANNEL: CHANNEL,
+    MEGA_AI_AGENT_EXPERIMENTAL_ICON_DISCOVERY: "true",
+    MEGA_AI_AGENT_EXPERIMENTAL_FILEWATCHER: "true",
+    MEGA_AI_AGENT_CLIENT: "desktop",
+    MEGA_AI_AGENT_CHANNEL: CHANNEL,
     XDG_STATE_HOME: process.env.XDG_STATE_HOME ?? userDataPath,
   })
   return shellEnv
@@ -207,7 +207,7 @@ export async function checkHealth(url: string, password?: string | null): Promis
 
   const headers = new Headers()
   if (password) {
-    const auth = Buffer.from(`megaladata-ai-agent:${password}`).toString("base64")
+    const auth = Buffer.from(`mega-ai-agent:${password}`).toString("base64")
     headers.set("authorization", `Basic ${auth}`)
   }
 

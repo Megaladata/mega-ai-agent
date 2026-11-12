@@ -140,7 +140,7 @@ def scenarios(tag=""):
         add("M", "text", fork, b, f, bu, m, layout, up_line)
     c = sid()
     add("M", "text", "none, upstream line has an OPENCODE_ name", body(c), body(c), body(c, [(10, "OPENCODE_NEW_FLAG")]),
-        body(c, [(10, "MEGALADATA_AI_AGENT_NEW_FLAG")]), added=(f"{c} line 10 OPENCODE_NEW_FLAG",), note="names")
+        body(c, [(10, "MEGA_AI_AGENT_NEW_FLAG")]), added=(f"{c} line 10 OPENCODE_NEW_FLAG",), note="names")
     c = sid()
     b = body(c, extra=())
     dup = body(c, [UP], extra=[f"{c} push", f"{c} push"])

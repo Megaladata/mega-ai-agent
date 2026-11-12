@@ -1,8 +1,8 @@
 import fs from "node:fs/promises"
 import path from "node:path"
 import { randomUUID } from "node:crypto"
-import { Product } from "@megaladata-ai-agent/product"
-import { profilePaths } from "@megaladata-ai-agent/product/cli-profile"
+import { Product } from "@mega-ai-agent/product"
+import { profilePaths } from "@mega-ai-agent/product/cli-profile"
 
 export async function acquireProfile(root: string, channel: keyof typeof Product.channels) {
   if (!path.isAbsolute(root)) throw new Error("PROFILE_ROOT_INVALID")
@@ -82,14 +82,14 @@ export async function acquireProfile(root: string, channel: keyof typeof Product
 export function profileEnvironment(paths: ReturnType<typeof profilePaths>, env: NodeJS.ProcessEnv) {
   const result = { ...env }
   // Inherited Desktop/sidecar settings must not redirect CLI writes or supply its auth.
-  delete result.MEGALADATA_AI_AGENT_AUTH_CONTENT
-  delete result.MEGALADATA_AI_AGENT_CONFIG
-  delete result.MEGALADATA_AI_AGENT_CONFIG_CONTENT
+  delete result.MEGA_AI_AGENT_AUTH_CONTENT
+  delete result.MEGA_AI_AGENT_CONFIG
+  delete result.MEGA_AI_AGENT_CONFIG_CONTENT
   return {
     ...result,
-    MEGALADATA_AI_AGENT_CLI_ROOT: paths.root,
-    MEGALADATA_AI_AGENT_CONFIG_DIR: paths.config,
-    MEGALADATA_AI_AGENT_DB: path.join(paths.data, Product.database),
+    MEGA_AI_AGENT_CLI_ROOT: paths.root,
+    MEGA_AI_AGENT_CONFIG_DIR: paths.config,
+    MEGA_AI_AGENT_DB: path.join(paths.data, Product.database),
     TMPDIR: paths.tmp,
     TMP: paths.tmp,
     TEMP: paths.tmp,

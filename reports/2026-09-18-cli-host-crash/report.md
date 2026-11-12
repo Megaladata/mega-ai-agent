@@ -28,7 +28,7 @@ MEGALADATA_HOST_CLEANUP_FAILED, in 3–5 ms. This checks transport without Megal
 ## Repeat live run
 
 Native binary candidate `0.1.4-cli.202609180130`:
-`/tmp/megaladata-cli-host-exit-20260918/megaladata-ai-agent-cli-linux-x64/bin/megaladata-ai-agent-cli`.
+`/tmp/megaladata-cli-host-exit-20260918/mega-ai-agent-cli-linux-x64/bin/mega-ai-agent-cli`.
 Build and --version smoke: PASS. This check explicitly used the development bundle
 `/tmp/megaladata-cli-native-staging-202609180107/resources/megaladata`.
 It checks the new executable with the old unchanged runtime closure,

@@ -57,7 +57,7 @@ export function activate(context: vscode.ExtensionContext) {
       },
       env: {
         _EXTENSION_OPENCODE_PORT: port.toString(),
-        MEGALADATA_AI_AGENT_CALLER: "vscode",
+        MEGA_AI_AGENT_CALLER: "vscode",
       },
     })
 

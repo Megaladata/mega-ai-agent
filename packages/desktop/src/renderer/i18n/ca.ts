@@ -9,17 +9,17 @@ export const dict = {
   "desktop.updater.checkFailed.title": "La comprovació d'actualització ha fallat",
   "desktop.updater.checkFailed.message": "No s'ha pogut comprovar si hi ha actualitzacions",
   "desktop.updater.none.title": "No hi ha cap actualització disponible",
-  "desktop.updater.none.message": "Ja utilitzeu la versió més recent d'Megaladata AI Agent",
+  "desktop.updater.none.message": "Ja utilitzeu la versió més recent d'Mega AI Agent",
   "desktop.updater.downloadFailed.title": "L'actualització ha fallat",
   "desktop.updater.downloadFailed.message": "No s'ha pogut descarregar l'actualització",
   "desktop.updater.downloaded.title": "Actualització baixada",
   "desktop.updater.downloaded.prompt":
-    "S'ha baixat la versió {{version}} d'Megaladata AI Agent. Voleu instal·lar-la i reiniciar l'aplicació?",
+    "S'ha baixat la versió {{version}} d'Mega AI Agent. Voleu instal·lar-la i reiniciar l'aplicació?",
   "desktop.updater.installFailed.title": "L'actualització ha fallat",
   "desktop.updater.installFailed.message": "No s'ha pogut instal·lar l'actualització",
   "desktop.cli.installed.title": "CLI instal·lada",
   "desktop.cli.installed.message":
-    "CLI instal·lada a {{path}}\n\nReinicieu el terminal per utilitzar l'ordre 'megaladata-ai-agent'.",
+    "CLI instal·lada a {{path}}\n\nReinicieu el terminal per utilitzar l'ordre 'mega-ai-agent'.",
   "desktop.cli.failed.title": "La instal·lació ha fallat",
   "desktop.cli.failed.message": "No s'ha pogut instal·lar CLI: {{error}}",
 

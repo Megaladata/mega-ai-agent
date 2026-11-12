@@ -1,6 +1,6 @@
 import type { SessionV1 } from "@opencode-ai/core/v1/session"
 import type { Schema } from "effect"
-import { HostTaskScope } from "@megaladata-ai-agent/megaladata-host/task-scope"
+import { HostTaskScope } from "@mega-ai-agent/megaladata-host/task-scope"
 import { MessageID, type PartID, type SessionID } from "./schema"
 import type { Skill } from "../skill"
 

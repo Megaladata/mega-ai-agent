@@ -1,7 +1,7 @@
 import fs from "node:fs/promises"
 import path from "node:path"
-import { Product, productChannel } from "@megaladata-ai-agent/product"
-import { cliProfile } from "@megaladata-ai-agent/product/cli-profile"
+import { Product, productChannel } from "@mega-ai-agent/product"
+import { cliProfile } from "@mega-ai-agent/product/cli-profile"
 import { InstallationChannel, InstallationVersion } from "@opencode-ai/core/installation/version"
 import { withStandaloneCancellation } from "./standalone-cancellation"
 import { acquireProfile, profileEnvironment } from "./profile"
@@ -18,7 +18,7 @@ export async function standalone(
         "Without a command: interactive TUI\n\n" +
         "Options: --headless, --no-headless, --help, --version\n" +
         "Management: --format json; setup --stdin-json; recover --acknowledge [id...]\n" +
-        "Profile: MEGALADATA_AI_AGENT_CLI_PROFILE (absolute path)\n",
+        "Profile: MEGA_AI_AGENT_CLI_PROFILE (absolute path)\n",
     )
     return
   }
@@ -40,12 +40,12 @@ async function executeProfile(
   execute: (args: string[], paths: ReturnType<typeof cliProfile>) => Promise<void>,
 ) {
   const channel = productChannel(
-    process.env.MEGALADATA_AI_AGENT_CHANNEL ?? (InstallationChannel === "local" ? "dev" : InstallationChannel),
+    process.env.MEGA_AI_AGENT_CHANNEL ?? (InstallationChannel === "local" ? "dev" : InstallationChannel),
   )
   const profile = await acquireProfile(
     cliProfile({
       channel,
-      root: process.env.MEGALADATA_AI_AGENT_CLI_PROFILE,
+      root: process.env.MEGA_AI_AGENT_CLI_PROFILE,
     }).root,
     channel,
   )
@@ -76,11 +76,11 @@ async function executeProfile(
     .forEach((key) => {
       delete process.env[key]
     })
-  Object.assign(process.env, environment, { MEGALADATA_AI_AGENT_CHANNEL: channel })
+  Object.assign(process.env, environment, { MEGA_AI_AGENT_CHANNEL: channel })
   // Only the private launcher's acknowledged cleanup can release a failed start.
   // Other callback failures retain the guard for offline recovery.
   const failure = await execute(args, profile.paths).catch(async (error: unknown) => {
-    const { NodeHostStartupError } = await import("@megaladata-ai-agent/megaladata-host/node-client")
+    const { NodeHostStartupError } = await import("@mega-ai-agent/megaladata-host/node-client")
     if (!(error instanceof NodeHostStartupError)) throw error
     if (error.cleanupError !== undefined) process.stderr.write("MEGALADATA_HOST_CLEANUP_FAILED\n")
     if (!error.cleanupConfirmed) throw error
@@ -94,7 +94,7 @@ async function executeProfile(
     await profile.release()
   } catch (error) {
     if (!failure) throw error
-    const { NodeHostStartupError } = await import("@megaladata-ai-agent/megaladata-host/node-client")
+    const { NodeHostStartupError } = await import("@mega-ai-agent/megaladata-host/node-client")
     process.stderr.write(
       error instanceof Error && error.message === "PROFILE_OWNER_CHANGED"
         ? "PROFILE_OWNER_CHANGED\n"

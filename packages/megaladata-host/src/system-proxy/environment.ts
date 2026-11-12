@@ -62,7 +62,7 @@ export function explicitProxy(environment: NodeJS.ProcessEnv) {
 
 export function systemProxyDisabled(environment: NodeJS.ProcessEnv, enabled?: boolean) {
   if (enabled === false) return true
-  const flag = environment.MEGALADATA_AI_AGENT_SYSTEM_PROXY
+  const flag = environment.MEGA_AI_AGENT_SYSTEM_PROXY
   if (typeof flag !== "string") return false
   return ["off", "0", "false"].includes(flag.trim().toLowerCase())
 }

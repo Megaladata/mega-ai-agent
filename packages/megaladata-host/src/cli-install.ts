@@ -24,8 +24,8 @@ export async function installCli(artifact: string, home: string) {
   const info = await verifyCliManifest(artifact, { platform: process.platform, arch: process.arch })
   const name = `${info.version}-${info.channel}`
   if (!/^[a-zA-Z0-9][a-zA-Z0-9._-]*$/.test(name)) throw new Error("CLI_INSTALL_VERSION_INVALID")
-  const base = join(home, ".local/share/megaladata-ai-agent-cli")
-  const launcher = join(home, ".local/bin/megaladata-ai-agent-cli")
+  const base = join(home, ".local/share/mega-ai-agent-cli")
+  const launcher = join(home, ".local/bin/mega-ai-agent-cli")
   await installDirectories(home, true)
   const lock = join(base, ".install-lock")
   await mkdir(lock).catch(() => {
@@ -48,13 +48,13 @@ export async function installCli(artifact: string, home: string) {
       await installDirectories(home, false)
       await ownLinuxSandbox(destination)
       // Never replace an existing launcher, including a foreign or dangling symlink.
-      await symlink(join(destination, "bin/megaladata-ai-agent-cli"), launcher)
+      await symlink(join(destination, "bin/mega-ai-agent-cli"), launcher)
       await writeFile(join(base, "current.json"), JSON.stringify({ format: "megaladata-cli-install-v1", name }) + "\n", {
         flag: "wx",
         mode: 0o600,
       })
     } catch (error) {
-      if ((await readlink(launcher).catch(() => undefined)) === join(destination, "bin/megaladata-ai-agent-cli"))
+      if ((await readlink(launcher).catch(() => undefined)) === join(destination, "bin/mega-ai-agent-cli"))
         await rm(launcher)
       await rm(destination, { recursive: true, force: true })
       throw error
@@ -68,8 +68,8 @@ export async function installCli(artifact: string, home: string) {
 export async function uninstallCli(home: string) {
   if (process.platform !== "linux" && process.platform !== "darwin") throw new Error("CLI_INSTALL_PLATFORM_UNAVAILABLE")
   if (!isAbsolute(home)) throw new Error("CLI_INSTALL_PATH_INVALID")
-  const base = join(home, ".local/share/megaladata-ai-agent-cli")
-  const launcher = join(home, ".local/bin/megaladata-ai-agent-cli")
+  const base = join(home, ".local/share/mega-ai-agent-cli")
+  const launcher = join(home, ".local/bin/mega-ai-agent-cli")
   await installDirectories(home, false)
   const lock = join(base, ".install-lock")
   await mkdir(lock).catch(() => {
@@ -91,7 +91,7 @@ export async function uninstallCli(home: string) {
     )
       throw new Error("CLI_INSTALL_RECEIPT_INVALID")
     const destination = join(base, receipt.name)
-    if ((await readlink(launcher)) !== join(destination, "bin/megaladata-ai-agent-cli"))
+    if ((await readlink(launcher)) !== join(destination, "bin/mega-ai-agent-cli"))
       throw new Error("CLI_INSTALL_LAUNCHER_CONFLICT")
     if ((await lstat(destination)).isSymbolicLink()) throw new Error("CLI_INSTALL_PATH_INVALID")
     await verifyCliManifest(destination, { platform: process.platform, arch: process.arch })
@@ -165,7 +165,7 @@ async function installDirectories(home: string, create: boolean) {
     home,
     join(home, ".local"),
     join(home, ".local/share"),
-    join(home, ".local/share/megaladata-ai-agent-cli"),
+    join(home, ".local/share/mega-ai-agent-cli"),
     join(home, ".local/bin"),
   ]) {
     if (create)

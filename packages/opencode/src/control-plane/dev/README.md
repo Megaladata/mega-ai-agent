@@ -1,4 +1,4 @@
-This is a plugin to simulate a remote environment locally. Add this to `.megaladata-ai-agent/megaladata-ai-agent.jsonc`:
+This is a plugin to simulate a remote environment locally. Add this to `.mega-ai-agent/mega-ai-agent.jsonc`:
 
 ```json
   "plugin": ["../packages/opencode/src/control-plane/dev/debug-workspace-plugin.ts"],

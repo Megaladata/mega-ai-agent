@@ -9,8 +9,8 @@ import { oracleProvider } from "./oracle-provider"
 // active-import: create a disposable unsaved draft using the attached fixture.
 if (!(["linux", "win32", "darwin"] as NodeJS.Platform[]).includes(process.platform))
   throw Error("PLATFORM_NOT_SUPPORTED")
-const executable = process.env.MEGALADATA_AI_AGENT_TEST_CLI_EXECUTABLE
-const configPath = process.env.MEGALADATA_AI_AGENT_TEST_CONFIG
+const executable = process.env.MEGA_AI_AGENT_TEST_CLI_EXECUTABLE
+const configPath = process.env.MEGA_AI_AGENT_TEST_CONFIG
 const savedPath = process.argv[2]
 const signal = process.argv[3] ?? "SIGKILL"
 const activeImport = process.argv[4] === "active-import"
@@ -26,7 +26,7 @@ if (disconnectNetwork ? signal !== "disconnect" : signal !== "SIGKILL" && signal
   throw Error("CRASH_SIGNAL_INVALID")
 if (!executable || !configPath || !savedPath) throw Error("PRIVATE_TEST_INPUTS_REQUIRED")
 const config = await Bun.file(configPath).json()
-const credentialProfile = process.env.MEGALADATA_AI_AGENT_TEST_CREDENTIAL_PROFILE
+const credentialProfile = process.env.MEGA_AI_AGENT_TEST_CREDENTIAL_PROFILE
 if (credentialProfile) {
   const record = await Bun.file(join(credentialProfile, "megaladata/connection/connection.json")).json()
   const secret = await cliCredentials("win32").decode(record.secrets)
@@ -39,13 +39,13 @@ const directory = await mkdtemp(join(tmpdir(), "megaladata-cli-owner-crash-"))
 console.log(`Private crash evidence: ${directory}`)
 const profile = join(directory, "profile")
 const network = disconnectNetwork
-  ? await networkFault(config.megaladata_url, process.env.MEGALADATA_AI_AGENT_TEST_RELAY_HOST)
+  ? await networkFault(config.megaladata_url, process.env.MEGA_AI_AGENT_TEST_RELAY_HOST)
   : undefined
 const env = {
   ...process.env,
-  MEGALADATA_AI_AGENT_CLI_PROFILE: profile,
-  MEGALADATA_AI_AGENT_PURE: "1",
-  MEGALADATA_AI_AGENT_STRICT_RECOVERY: "1",
+  MEGA_AI_AGENT_CLI_PROFILE: profile,
+  MEGA_AI_AGENT_PURE: "1",
+  MEGA_AI_AGENT_STRICT_RECOVERY: "1",
 }
 const setup = Bun.spawn([executable, "megaladata", "setup", "--stdin-json", "--format", "json"], {
   env,
@@ -76,7 +76,7 @@ if (activeImport)
     ).arrayBuffer(),
   )
 const provider = oracleProvider({ directory, apiKey: config.api_key })
-await Bun.write(join(profile, "config/megaladata-ai-agent.json"), JSON.stringify(provider.config))
+await Bun.write(join(profile, "config/mega-ai-agent.json"), JSON.stringify(provider.config))
 const child = Bun.spawn(
   [
     executable,

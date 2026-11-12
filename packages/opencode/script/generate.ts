@@ -7,7 +7,7 @@ const dir = path.resolve(__dirname, "..")
 
 process.chdir(dir)
 
-const modelsUrl = process.env.MEGALADATA_AI_AGENT_MODELS_URL || "https://models.dev"
+const modelsUrl = process.env.MEGA_AI_AGENT_MODELS_URL || "https://models.dev"
 export const modelsData = process.env.MODELS_DEV_API_JSON
   ? await Bun.file(process.env.MODELS_DEV_API_JSON).text()
   : await fetch(`${modelsUrl}/api.json`).then((x) => x.text())

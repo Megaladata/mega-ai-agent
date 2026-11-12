@@ -1,5 +1,5 @@
 {
-  "name": "@megaladata-ai-agent/megaladata-host",
+  "name": "@mega-ai-agent/megaladata-host",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -12,7 +12,7 @@
     "typecheck": "tsgo --noEmit"
   },
   "dependencies": {
-    "@megaladata-ai-agent/product": "workspace:*",
+    "@mega-ai-agent/product": "workspace:*",
     "@opencode-ai/schema": "workspace:*",
     "@xmldom/xmldom": "0.8.15",
     "@zip.js/zip.js": "2.7.62",

@@ -67,7 +67,7 @@ const { context } = await loginBrowser({
     username: config.workflow_profile.megaladata_user,
     password: input.connection.password,
   },
-  headless: process.env.MEGALADATA_AI_AGENT_TEST_HEADLESS !== "0",
+  headless: process.env.MEGA_AI_AGENT_TEST_HEADLESS !== "0",
   keepOpen: true,
 })
 const page = context.pages()[0]

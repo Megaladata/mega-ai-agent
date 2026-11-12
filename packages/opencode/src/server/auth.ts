@@ -15,8 +15,8 @@ export type DecodedCredentials = {
 }
 
 export class Config extends ConfigService.Service<Config>()("@opencode/ServerAuthConfig", {
-  password: EffectConfig.string("MEGALADATA_AI_AGENT_SERVER_PASSWORD").pipe(EffectConfig.option),
-  username: EffectConfig.string("MEGALADATA_AI_AGENT_SERVER_USERNAME").pipe(EffectConfig.withDefault("megaladata-ai-agent")),
+  password: EffectConfig.string("MEGA_AI_AGENT_SERVER_PASSWORD").pipe(EffectConfig.option),
+  username: EffectConfig.string("MEGA_AI_AGENT_SERVER_USERNAME").pipe(EffectConfig.withDefault("mega-ai-agent")),
 }) {}
 
 export type Info = Context.Service.Shape<typeof Config>
@@ -34,10 +34,10 @@ export function authorized(credentials: DecodedCredentials, config: Info) {
 }
 
 export function header(credentials?: Credentials) {
-  const password = credentials?.password ?? Flag.MEGALADATA_AI_AGENT_SERVER_PASSWORD
+  const password = credentials?.password ?? Flag.MEGA_AI_AGENT_SERVER_PASSWORD
   if (!password) return undefined
 
-  const username = credentials?.username ?? Flag.MEGALADATA_AI_AGENT_SERVER_USERNAME ?? "megaladata-ai-agent"
+  const username = credentials?.username ?? Flag.MEGA_AI_AGENT_SERVER_USERNAME ?? "mega-ai-agent"
   return `Basic ${Buffer.from(`${username}:${password}`).toString("base64")}`
 }
 

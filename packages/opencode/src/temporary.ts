@@ -24,8 +24,8 @@ const cli = yargs(hideBin(process.argv))
     type: "boolean",
   })
   .middleware((opts) => {
-    if (opts.printLogs) process.env.MEGALADATA_AI_AGENT_PRINT_LOGS = "1"
-    if (opts.logLevel) process.env.MEGALADATA_AI_AGENT_LOG_LEVEL = opts.logLevel
+    if (opts.printLogs) process.env.MEGA_AI_AGENT_PRINT_LOGS = "1"
+    if (opts.logLevel) process.env.MEGA_AI_AGENT_LOG_LEVEL = opts.logLevel
   })
   .command(TuiThreadCommand)
   .parse()

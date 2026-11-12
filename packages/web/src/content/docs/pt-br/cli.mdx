@@ -84,8 +84,8 @@ opencode attach http://10.20.30.40:4096
 | <nobr><code>{"--continue"}</code></nobr> | `-c`  | Continuar a última sessão                                                         |
 | <nobr><code>{"--session"}</code></nobr>  | `-s`  | ID da sessão para continuar                                                       |
 | <nobr><code>{"--fork"}</code></nobr>     |       | Bifurcar a sessão ao continuar (use com `--continue` ou `--session`)              |
-| <nobr><code>{"--password"}</code></nobr> | `-p`  | Senha de autenticação básica (padrão: `MEGALADATA_AI_AGENT_SERVER_PASSWORD`)                 |
-| <nobr><code>{"--username"}</code></nobr> | `-u`  | Usuário de autenticação básica (padrão: `MEGALADATA_AI_AGENT_SERVER_USERNAME` ou `opencode`) |
+| <nobr><code>{"--password"}</code></nobr> | `-p`  | Senha de autenticação básica (padrão: `MEGA_AI_AGENT_SERVER_PASSWORD`)                 |
+| <nobr><code>{"--username"}</code></nobr> | `-u`  | Usuário de autenticação básica (padrão: `MEGA_AI_AGENT_SERVER_USERNAME` ou `opencode`) |
 
 ---
 
@@ -352,8 +352,8 @@ opencode run --attach http://localhost:4096 "Explique async/await em JavaScript"
 | <nobr><code>{"--format"}</code></nobr>   |       | Formato: padrão (formatado) ou json (eventos JSON brutos)                         |
 | <nobr><code>{"--title"}</code></nobr>    |       | Título para a sessão (usa o prompt truncado se nenhum valor for fornecido)        |
 | <nobr><code>{"--attach"}</code></nobr>   |       | Anexe a um servidor opencode em execução (por exemplo, http://localhost:4096)     |
-| <nobr><code>{"--password"}</code></nobr> | `-p`  | Senha de autenticação básica (padrão: `MEGALADATA_AI_AGENT_SERVER_PASSWORD`)                 |
-| <nobr><code>{"--username"}</code></nobr> | `-u`  | Usuário de autenticação básica (padrão: `MEGALADATA_AI_AGENT_SERVER_USERNAME` ou `opencode`) |
+| <nobr><code>{"--password"}</code></nobr> | `-p`  | Senha de autenticação básica (padrão: `MEGA_AI_AGENT_SERVER_PASSWORD`)                 |
+| <nobr><code>{"--username"}</code></nobr> | `-u`  | Usuário de autenticação básica (padrão: `MEGA_AI_AGENT_SERVER_USERNAME` ou `opencode`) |
 | <nobr><code>{"--dir"}</code></nobr>      |       | Diretório de execução, ou caminho no servidor remoto ao anexar                    |
 | <nobr><code>{"--variant"}</code></nobr>  |       | Variante do modelo (nível de raciocínio específico do provedor)                   |
 | <nobr><code>{"--thinking"}</code></nobr> |       | Mostrar blocos de pensamento                                                      |
@@ -369,7 +369,7 @@ Inicie um servidor opencode sem cabeça para acesso à API. Confira a [documenta
 opencode serve
 ```
 
-Isso inicia um servidor HTTP que fornece acesso à funcionalidade do opencode sem a interface TUI. Defina `MEGALADATA_AI_AGENT_SERVER_PASSWORD` para habilitar a autenticação básica HTTP (o nome de usuário padrão é `opencode`).
+Isso inicia um servidor HTTP que fornece acesso à funcionalidade do opencode sem a interface TUI. Defina `MEGA_AI_AGENT_SERVER_PASSWORD` para habilitar a autenticação básica HTTP (o nome de usuário padrão é `opencode`).
 
 #### Opções
 
@@ -465,7 +465,7 @@ Inicie um servidor opencode sem cabeça com uma interface web.
 opencode web
 ```
 
-Isso inicia um servidor HTTP e abre um navegador para acessar o opencode através de uma interface web. Defina `MEGALADATA_AI_AGENT_SERVER_PASSWORD` para habilitar a autenticação básica HTTP (o nome de usuário padrão é `opencode`).
+Isso inicia um servidor HTTP e abre um navegador para acessar o opencode através de uma interface web. Defina `MEGA_AI_AGENT_SERVER_PASSWORD` para habilitar a autenticação básica HTTP (o nome de usuário padrão é `opencode`).
 
 #### Opções
 
@@ -564,29 +564,29 @@ O opencode pode ser configurado usando variáveis de ambiente.
 
 | Variável                              | Tipo    | Descrição                                                             |
 | ------------------------------------- | ------- | --------------------------------------------------------------------- |
-| `MEGALADATA_AI_AGENT_AUTO_SHARE`                 | boolean | Compartilhar sessões automaticamente                                  |
-| `MEGALADATA_AI_AGENT_GIT_BASH_PATH`              | string  | Caminho para o executável do Git Bash no Windows                      |
-| `MEGALADATA_AI_AGENT_CONFIG`                     | string  | Caminho para o arquivo de configuração                                |
-| `MEGALADATA_AI_AGENT_CONFIG_DIR`                 | string  | Caminho para o diretório de configuração                              |
-| `MEGALADATA_AI_AGENT_CONFIG_CONTENT`             | string  | Conteúdo de configuração json inline                                  |
-| `MEGALADATA_AI_AGENT_DISABLE_AUTOUPDATE`         | boolean | Desabilitar verificações de atualização automática                    |
-| `MEGALADATA_AI_AGENT_DISABLE_PRUNE`              | boolean | Desabilitar a poda de dados antigos                                   |
-| `MEGALADATA_AI_AGENT_DISABLE_TERMINAL_TITLE`     | boolean | Desabilitar atualizações automáticas do título do terminal            |
-| `MEGALADATA_AI_AGENT_PERMISSION`                 | string  | Configuração de permissões json inline                                |
-| `MEGALADATA_AI_AGENT_DISABLE_DEFAULT_PLUGINS`    | boolean | Desabilitar plugins padrão                                            |
-| `MEGALADATA_AI_AGENT_DISABLE_LSP_DOWNLOAD`       | boolean | Desabilitar downloads automáticos do servidor LSP                     |
-| `MEGALADATA_AI_AGENT_ENABLE_EXPERIMENTAL_MODELS` | boolean | Habilitar modelos experimentais                                       |
-| `MEGALADATA_AI_AGENT_DISABLE_AUTOCOMPACT`        | boolean | Desabilitar compactação automática de contexto                        |
-| `MEGALADATA_AI_AGENT_DISABLE_CLAUDE_CODE`        | boolean | Desabilitar leitura de `.claude` (prompt + habilidades)               |
-| `MEGALADATA_AI_AGENT_DISABLE_CLAUDE_CODE_PROMPT` | boolean | Desabilitar leitura de `~/.claude/CLAUDE.md`                          |
-| `MEGALADATA_AI_AGENT_DISABLE_CLAUDE_CODE_SKILLS` | boolean | Desabilitar carregamento de `.claude/skills`                          |
-| `MEGALADATA_AI_AGENT_DISABLE_MODELS_FETCH`       | boolean | Desabilitar busca de modelos de fontes remotas                        |
-| `MEGALADATA_AI_AGENT_FAKE_VCS`                   | string  | Provedor VCS falso para fins de teste                                 |
-| `MEGALADATA_AI_AGENT_CLIENT`                     | string  | Identificador do cliente (padrão é `cli`)                             |
-| `MEGALADATA_AI_AGENT_ENABLE_EXA`                 | boolean | Habilitar ferramentas de busca web Exa                                |
-| `MEGALADATA_AI_AGENT_SERVER_PASSWORD`            | string  | Habilitar autenticação básica para `serve`/`web`                      |
-| `MEGALADATA_AI_AGENT_SERVER_USERNAME`            | string  | Substituir nome de usuário de autenticação básica (padrão `opencode`) |
-| `MEGALADATA_AI_AGENT_MODELS_URL`                 | string  | URL personalizada para buscar configuração de modelos                 |
+| `MEGA_AI_AGENT_AUTO_SHARE`                 | boolean | Compartilhar sessões automaticamente                                  |
+| `MEGA_AI_AGENT_GIT_BASH_PATH`              | string  | Caminho para o executável do Git Bash no Windows                      |
+| `MEGA_AI_AGENT_CONFIG`                     | string  | Caminho para o arquivo de configuração                                |
+| `MEGA_AI_AGENT_CONFIG_DIR`                 | string  | Caminho para o diretório de configuração                              |
+| `MEGA_AI_AGENT_CONFIG_CONTENT`             | string  | Conteúdo de configuração json inline                                  |
+| `MEGA_AI_AGENT_DISABLE_AUTOUPDATE`         | boolean | Desabilitar verificações de atualização automática                    |
+| `MEGA_AI_AGENT_DISABLE_PRUNE`              | boolean | Desabilitar a poda de dados antigos                                   |
+| `MEGA_AI_AGENT_DISABLE_TERMINAL_TITLE`     | boolean | Desabilitar atualizações automáticas do título do terminal            |
+| `MEGA_AI_AGENT_PERMISSION`                 | string  | Configuração de permissões json inline                                |
+| `MEGA_AI_AGENT_DISABLE_DEFAULT_PLUGINS`    | boolean | Desabilitar plugins padrão                                            |
+| `MEGA_AI_AGENT_DISABLE_LSP_DOWNLOAD`       | boolean | Desabilitar downloads automáticos do servidor LSP                     |
+| `MEGA_AI_AGENT_ENABLE_EXPERIMENTAL_MODELS` | boolean | Habilitar modelos experimentais                                       |
+| `MEGA_AI_AGENT_DISABLE_AUTOCOMPACT`        | boolean | Desabilitar compactação automática de contexto                        |
+| `MEGA_AI_AGENT_DISABLE_CLAUDE_CODE`        | boolean | Desabilitar leitura de `.claude` (prompt + habilidades)               |
+| `MEGA_AI_AGENT_DISABLE_CLAUDE_CODE_PROMPT` | boolean | Desabilitar leitura de `~/.claude/CLAUDE.md`                          |
+| `MEGA_AI_AGENT_DISABLE_CLAUDE_CODE_SKILLS` | boolean | Desabilitar carregamento de `.claude/skills`                          |
+| `MEGA_AI_AGENT_DISABLE_MODELS_FETCH`       | boolean | Desabilitar busca de modelos de fontes remotas                        |
+| `MEGA_AI_AGENT_FAKE_VCS`                   | string  | Provedor VCS falso para fins de teste                                 |
+| `MEGA_AI_AGENT_CLIENT`                     | string  | Identificador do cliente (padrão é `cli`)                             |
+| `MEGA_AI_AGENT_ENABLE_EXA`                 | boolean | Habilitar ferramentas de busca web Exa                                |
+| `MEGA_AI_AGENT_SERVER_PASSWORD`            | string  | Habilitar autenticação básica para `serve`/`web`                      |
+| `MEGA_AI_AGENT_SERVER_USERNAME`            | string  | Substituir nome de usuário de autenticação básica (padrão `opencode`) |
+| `MEGA_AI_AGENT_MODELS_URL`                 | string  | URL personalizada para buscar configuração de modelos                 |
 
 ---
 
@@ -596,21 +596,21 @@ Essas variáveis de ambiente habilitam recursos experimentais que podem mudar ou
 
 | Variável                                        | Tipo    | Descrição                                                 |
 | ----------------------------------------------- | ------- | --------------------------------------------------------- |
-| `MEGALADATA_AI_AGENT_EXPERIMENTAL`                         | boolean | Habilitar recursos experimentais sob o sinalizador global |
-| `MEGALADATA_AI_AGENT_EXPERIMENTAL_ICON_DISCOVERY`          | boolean | Habilitar descoberta de ícones                            |
-| `MEGALADATA_AI_AGENT_EXPERIMENTAL_DISABLE_COPY_ON_SELECT`  | boolean | Desabilitar cópia ao selecionar no TUI                    |
-| `MEGALADATA_AI_AGENT_EXPERIMENTAL_BASH_DEFAULT_TIMEOUT_MS` | number  | Tempo limite padrão para comandos bash em ms              |
-| `MEGALADATA_AI_AGENT_EXPERIMENTAL_OUTPUT_TOKEN_MAX`        | number  | Máximo de tokens de saída para respostas LLM              |
-| `MEGALADATA_AI_AGENT_EXPERIMENTAL_FILEWATCHER`             | boolean | Habilitar monitoramento de arquivos para todo o diretório |
-| `MEGALADATA_AI_AGENT_EXPERIMENTAL_OXFMT`                   | boolean | Habilitar formatador oxfmt                                |
-| `MEGALADATA_AI_AGENT_EXPERIMENTAL_LSP_TOOL`                | boolean | Habilitar ferramenta LSP experimental                     |
-| `MEGALADATA_AI_AGENT_EXPERIMENTAL_DISABLE_FILEWATCHER`     | boolean | Desabilitar monitoramento de arquivos                     |
-| `MEGALADATA_AI_AGENT_EXPERIMENTAL_EXA`                     | boolean | Habilitar recursos experimentais do Exa                   |
-| `MEGALADATA_AI_AGENT_EXPERIMENTAL_LSP_TY`                  | boolean | Habilitar TY LSP para arquivos python                     |
-| `MEGALADATA_AI_AGENT_EXPERIMENTAL_PLAN_MODE`               | boolean | Habilitar modo de plano                                   |
-| `MEGALADATA_AI_AGENT_EXPERIMENTAL_BACKGROUND_SUBAGENTS`    | boolean | Habilitar tarefas de subagentes em segundo plano          |
-| `MEGALADATA_AI_AGENT_EXPERIMENTAL_EVENT_SYSTEM`            | boolean | Habilitar sistema de eventos experimental                 |
-| `MEGALADATA_AI_AGENT_EXPERIMENTAL_NATIVE_LLM`              | boolean | Habilitar caminho nativo de requisição LLM                |
-| `MEGALADATA_AI_AGENT_EXPERIMENTAL_PARALLEL`                | boolean | Habilitar execução paralela de busca web                  |
-| `MEGALADATA_AI_AGENT_EXPERIMENTAL_SCOUT`                   | boolean | Habilitar subagente Scout                                 |
-| `MEGALADATA_AI_AGENT_EXPERIMENTAL_WORKSPACES`              | boolean | Habilitar suporte a espaços de trabalho                   |
+| `MEGA_AI_AGENT_EXPERIMENTAL`                         | boolean | Habilitar recursos experimentais sob o sinalizador global |
+| `MEGA_AI_AGENT_EXPERIMENTAL_ICON_DISCOVERY`          | boolean | Habilitar descoberta de ícones                            |
+| `MEGA_AI_AGENT_EXPERIMENTAL_DISABLE_COPY_ON_SELECT`  | boolean | Desabilitar cópia ao selecionar no TUI                    |
+| `MEGA_AI_AGENT_EXPERIMENTAL_BASH_DEFAULT_TIMEOUT_MS` | number  | Tempo limite padrão para comandos bash em ms              |
+| `MEGA_AI_AGENT_EXPERIMENTAL_OUTPUT_TOKEN_MAX`        | number  | Máximo de tokens de saída para respostas LLM              |
+| `MEGA_AI_AGENT_EXPERIMENTAL_FILEWATCHER`             | boolean | Habilitar monitoramento de arquivos para todo o diretório |
+| `MEGA_AI_AGENT_EXPERIMENTAL_OXFMT`                   | boolean | Habilitar formatador oxfmt                                |
+| `MEGA_AI_AGENT_EXPERIMENTAL_LSP_TOOL`                | boolean | Habilitar ferramenta LSP experimental                     |
+| `MEGA_AI_AGENT_EXPERIMENTAL_DISABLE_FILEWATCHER`     | boolean | Desabilitar monitoramento de arquivos                     |
+| `MEGA_AI_AGENT_EXPERIMENTAL_EXA`                     | boolean | Habilitar recursos experimentais do Exa                   |
+| `MEGA_AI_AGENT_EXPERIMENTAL_LSP_TY`                  | boolean | Habilitar TY LSP para arquivos python                     |
+| `MEGA_AI_AGENT_EXPERIMENTAL_PLAN_MODE`               | boolean | Habilitar modo de plano                                   |
+| `MEGA_AI_AGENT_EXPERIMENTAL_BACKGROUND_SUBAGENTS`    | boolean | Habilitar tarefas de subagentes em segundo plano          |
+| `MEGA_AI_AGENT_EXPERIMENTAL_EVENT_SYSTEM`            | boolean | Habilitar sistema de eventos experimental                 |
+| `MEGA_AI_AGENT_EXPERIMENTAL_NATIVE_LLM`              | boolean | Habilitar caminho nativo de requisição LLM                |
+| `MEGA_AI_AGENT_EXPERIMENTAL_PARALLEL`                | boolean | Habilitar execução paralela de busca web                  |
+| `MEGA_AI_AGENT_EXPERIMENTAL_SCOUT`                   | boolean | Habilitar subagente Scout                                 |
+| `MEGA_AI_AGENT_EXPERIMENTAL_WORKSPACES`              | boolean | Habilitar suporte a espaços de trabalho                   |

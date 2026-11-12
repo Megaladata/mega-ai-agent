@@ -1,6 +1,6 @@
 import { execFile } from "node:child_process"
 import { win32 } from "node:path"
-import { windowsPowerShellArguments } from "@megaladata-ai-agent/megaladata-host/windows-powershell"
+import { windowsPowerShellArguments } from "@mega-ai-agent/megaladata-host/windows-powershell"
 
 // Called before creating the writer guard or writing profile data. Existing
 // profiles are inspected, never recursively rewritten to hide unsafe ACLs.

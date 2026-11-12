@@ -13,7 +13,7 @@ This document breaks the legacy configuration schema into small review groups. W
 
 Use one v2 config schema for now. Some fields, such as `autoupdate`, are intended for global/user configuration, but there is not yet enough benefit to enforce that with separate global and location schemas. Revisit this if more scope-sensitive fields survive the review.
 
-V2 core discovers config documents named `megaladata-ai-agent.json` or `megaladata-ai-agent.jsonc` in the global config directory, ancestor project directories, and `.megaladata-ai-agent` config directories. The legacy `config.json` filename is not supported in V2.
+V2 core discovers config documents named `mega-ai-agent.json` or `mega-ai-agent.jsonc` in the global config directory, ancestor project directories, and `.mega-ai-agent` config directories. The legacy `config.json` filename is not supported in V2.
 
 ## Group 1: File Metadata
 
@@ -107,7 +107,7 @@ Plugin order remains part of the v2 configuration contract because hook registra
 }
 ```
 
-The configured `plugins` list represents package-loaded plugins only. Local plugin code remains discovered from plugin directories such as `.megaladata-ai-agent/plugins/`; v2 does not port arbitrary configured local paths or file URLs into this field.
+The configured `plugins` list represents package-loaded plugins only. Local plugin code remains discovered from plugin directories such as `.mega-ai-agent/plugins/`; v2 does not port arbitrary configured local paths or file URLs into this field.
 
 ## Group 5: Filesystem And Tool Runtime
 
@@ -201,7 +201,7 @@ Provider selection rules belong in `experimental.policies` rather than provider 
 
 See [provider-policy.md](./provider-policy.md) for the provider policy semantics and precedence rules.
 
-Policy evaluation will consume authored config documents in reverse order while preserving statement order inside each document. The precedence of `.megaladata-ai-agent` policy sources remains open until `.megaladata-ai-agent` configuration is reviewed.
+Policy evaluation will consume authored config documents in reverse order while preserving statement order inside each document. The precedence of `.mega-ai-agent` policy sources remains open until `.mega-ai-agent` configuration is reviewed.
 
 Provider configuration uses the plural `providers` key in v2. This intentionally differs from the legacy singular `provider` key; v2 does not add a compatibility alias while its configuration surface is still being defined.
 

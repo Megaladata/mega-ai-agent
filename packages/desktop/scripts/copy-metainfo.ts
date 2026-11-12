@@ -1,4 +1,4 @@
-import { Product, productChannel, productName } from "@megaladata-ai-agent/product"
+import { Product, productChannel, productName } from "@mega-ai-agent/product"
 import { resolveChannel } from "./utils"
 
 const channel = productChannel(process.argv[2] ?? resolveChannel())

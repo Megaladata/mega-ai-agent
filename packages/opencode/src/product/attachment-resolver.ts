@@ -3,7 +3,7 @@ import {
   attachmentReceiptSource,
   bindAttachmentReceipt,
   createAttachmentReceipt,
-} from "@megaladata-ai-agent/megaladata-host/attachment-receipt"
+} from "@mega-ai-agent/megaladata-host/attachment-receipt"
 import { stat } from "node:fs/promises"
 import path from "path"
 import { fileURLToPath } from "url"
@@ -72,7 +72,7 @@ export const attachmentResolver = {
     hasAttachments: boolean
   }) {
     if (
-      !process.env.MEGALADATA_AI_AGENT_CLI_ROOT ||
+      !process.env.MEGA_AI_AGENT_CLI_ROOT ||
       input.url.search ||
       input.url.hash ||
       !input.filename ||

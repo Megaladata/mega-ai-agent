@@ -9,7 +9,7 @@ description: >-
   The package is not changed; the browser and searching for the package on the
   server are forbidden. If only a server path is known, immediately request a
   local .mgp. Megaladata Dock Help is needed to describe handler purpose.
-compatibility: Megaladata AI Agent Linux Desktop and standalone CLI with package_docs_run; a local .mgp and the Megaladata Dock Help service. The generator uses the bundled Node, without Python, LibreOffice, or a browser.
+compatibility: Mega AI Agent Linux Desktop and standalone CLI with package_docs_run; a local .mgp and the Megaladata Dock Help service. The generator uses the bundled Node, without Python, LibreOffice, or a browser.
 metadata:
   megaladata-generated: scripts/package-docs.mjs
 ---
@@ -36,7 +36,7 @@ File, and Supernode. Creating or changing a scenario uses the
 - Empty `external_references` means only that there are no references to external
   packages. Determine file sources, databases, services, and libraries from
   node settings; do not conclude that all external dependencies are absent.
-- In Megaladata AI Agent, run all generator operations only through
+- In Mega AI Agent, run all generator operations only through
   `package_docs_run`. Do not replace it with a shell, your own script, or a browser.
   If the tool is unavailable after the skill is loaded, report an error.
 - Only the `emit` operation publishes the final PDF/DOCX/Markdown. Ordinary
@@ -102,7 +102,7 @@ From `unique_engine_types` / `service_name` in the structure, go to Help:
    `data/processors/transformation/calc/README.md` inside Help (Calculator).
 
 Threshold B is met only after successful reading of at least one handler
-document with the Help `read` tool (`megaladata_read` in Megaladata AI Agent).
+document with the Help `read` tool (`megaladata_read` in Mega AI Agent).
 `search/find` results, summaries, and `.overview.md` do not replace this.
 Until such a read, do not fill the description or call `emit`.
 
@@ -192,4 +192,4 @@ System Python, Node, LibreOffice, and Chromium are not needed by the product for
 The program remains an ordinary Node CLI for compatible clients: `extract`,
 `skeleton`, `emit`; absolute `--mgp` and `--directory` are required, and `emit`
 has `--format`. Such a client itself supplies a trusted Node and a session
-directory. In Megaladata AI Agent this interface is called only by the tool backend.
+directory. In Mega AI Agent this interface is called only by the tool backend.

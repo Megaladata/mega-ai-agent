@@ -1,4 +1,4 @@
-import { Product } from "@megaladata-ai-agent/product"
+import { Product } from "@mega-ai-agent/product"
 
 const wordmark = Product.wordmark.split(" ")
 

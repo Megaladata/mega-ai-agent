@@ -84,10 +84,10 @@ export function homeSessionServerStatus(active: boolean, status: () => { working
   return status()
 }
 
-const MEGALADATA_AI_AGENT_PROJECT_ID = "4b0ea68d7af9a6031a7ffda7ad66e0cb83315750"
+const MEGA_AI_AGENT_PROJECT_ID = "4b0ea68d7af9a6031a7ffda7ad66e0cb83315750"
 
 export function getProjectAvatarSource(id?: string, icon?: { color?: string; url?: string; override?: string }) {
-  if (id === MEGALADATA_AI_AGENT_PROJECT_ID) return "/megaladata-icon.svg"
+  if (id === MEGA_AI_AGENT_PROJECT_ID) return "/megaladata-icon.svg"
   if (icon?.override) return icon.override
   if (icon?.color) return undefined
   return icon?.url

@@ -23,19 +23,19 @@ function tauriDir(id: string) {
 
 // The Tauri app identifier changes between dev/beta/prod builds.
 const TAURI_APP_IDS: Record<string, string> = {
-  dev: "com.megaladata.aiagent.dev",
-  beta: "com.megaladata.aiagent.beta",
-  prod: "com.megaladata.aiagent",
+  dev: "com.mega.aiagent.dev",
+  beta: "com.mega.aiagent.beta",
+  prod: "com.mega.aiagent",
 }
 function tauriAppId() {
-  return app.isPackaged ? TAURI_APP_IDS[CHANNEL] : "com.megaladata.aiagent.dev"
+  return app.isPackaged ? TAURI_APP_IDS[CHANNEL] : "com.mega.aiagent.dev"
 }
 
 // Migrate a single Tauri .dat file into the corresponding electron-store.
-// `megaladata-ai-agent.settings.dat` is special: it maps to the `megaladata-ai-agent.settings` store
+// `mega-ai-agent.settings.dat` is special: it maps to the `mega-ai-agent.settings` store
 // (the electron-store name without the `.dat` extension). All other .dat files
 // keep their full filename as the electron-store name so they match what the
-// renderer already passes via IPC (e.g. `"default.dat"`, `"megaladata-ai-agent.global.dat"`).
+// renderer already passes via IPC (e.g. `"default.dat"`, `"mega-ai-agent.global.dat"`).
 function migrateFile(datPath: string, filename: string) {
   let data: Record<string, unknown>
   try {
@@ -45,10 +45,10 @@ function migrateFile(datPath: string, filename: string) {
     return
   }
 
-  // megaladata-ai-agent.settings.dat → the electron settings store ("megaladata-ai-agent.settings").
+  // mega-ai-agent.settings.dat → the electron settings store ("mega-ai-agent.settings").
   // All other .dat files keep their full filename as the store name so they match
-  // what the renderer passes via IPC (e.g. "default.dat", "megaladata-ai-agent.global.dat").
-  const storeName = filename === "megaladata-ai-agent.settings.dat" ? "megaladata-ai-agent.settings" : filename
+  // what the renderer passes via IPC (e.g. "default.dat", "mega-ai-agent.global.dat").
+  const storeName = filename === "mega-ai-agent.settings.dat" ? "mega-ai-agent.settings" : filename
   const target = getStore(storeName)
   const migrated: string[] = []
   const skipped: string[] = []

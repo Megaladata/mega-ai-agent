@@ -44,10 +44,10 @@ stdenv.mkDerivation (finalAttrs: {
   ];
 
   desktopItems = lib.optional stdenv.hostPlatform.isLinux (makeDesktopItem {
-    name = "com.megaladata.aiagent";
+    name = "com.mega.aiagent";
     desktopName = "OpenCode";
     exec = "opencode-desktop %U";
-    icon = "com.megaladata.aiagent";
+    icon = "com.mega.aiagent";
     # Electron 41 derives X11 WM_CLASS from app.name.
     startupWMClass = "OpenCode";
     categories = [ "Development" ];
@@ -110,17 +110,17 @@ stdenv.mkDerivation (finalAttrs: {
     mkdir -p $out/opt/opencode-desktop
     cp -r dist/linux*-unpacked/{resources,LICENSE*} $out/opt/opencode-desktop
     install -Dm644 resources/icons/32x32.png \
-      "$out/share/icons/hicolor/32x32/apps/com.megaladata.aiagent.png"
+      "$out/share/icons/hicolor/32x32/apps/com.mega.aiagent.png"
     install -Dm644 resources/icons/64x64.png \
-      "$out/share/icons/hicolor/64x64/apps/com.megaladata.aiagent.png"
+      "$out/share/icons/hicolor/64x64/apps/com.mega.aiagent.png"
     install -Dm644 resources/icons/128x128.png \
-      "$out/share/icons/hicolor/128x128/apps/com.megaladata.aiagent.png"
+      "$out/share/icons/hicolor/128x128/apps/com.mega.aiagent.png"
     install -Dm644 resources/icons/128x128@2x.png \
-      "$out/share/icons/hicolor/256x256/apps/com.megaladata.aiagent.png"
+      "$out/share/icons/hicolor/256x256/apps/com.mega.aiagent.png"
     install -Dm644 resources/icons/icon.png \
-      "$out/share/icons/hicolor/512x512/apps/com.megaladata.aiagent.png"
-    install -Dm644 resources/com.megaladata.aiagent.metainfo.xml \
-      "$out/share/metainfo/com.megaladata.aiagent.metainfo.xml"
+      "$out/share/icons/hicolor/512x512/apps/com.mega.aiagent.png"
+    install -Dm644 resources/com.mega.aiagent.metainfo.xml \
+      "$out/share/metainfo/com.mega.aiagent.metainfo.xml"
     makeWrapper ${lib.getExe electron} $out/bin/opencode-desktop \
      --inherit-argv0 \
      --set ELECTRON_FORCE_IS_PACKAGED 1 \

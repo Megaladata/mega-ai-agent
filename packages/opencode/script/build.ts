@@ -3,7 +3,7 @@
 import { $ } from "bun"
 import path from "path"
 import { mkdir, rm } from "node:fs/promises"
-import { Product } from "@megaladata-ai-agent/product"
+import { Product } from "@mega-ai-agent/product"
 import { fileURLToPath } from "url"
 import { createSolidTransformPlugin } from "@opentui/solid/bun-plugin"
 
@@ -26,8 +26,8 @@ if (
       process.argv.includes("--baseline")))
 )
   throw new Error("Invalid standalone --target; use linux-x64, darwin-arm64 or win32-x64 without --single/--baseline")
-const output = standaloneFlag ? (process.env.MEGALADATA_AI_AGENT_BUILD_OUTPUT ?? "dist-standalone") : "dist"
-if (standaloneFlag && process.env.MEGALADATA_AI_AGENT_BUILD_OUTPUT && !path.isAbsolute(output))
+const output = standaloneFlag ? (process.env.MEGA_AI_AGENT_BUILD_OUTPUT ?? "dist-standalone") : "dist"
+if (standaloneFlag && process.env.MEGA_AI_AGENT_BUILD_OUTPUT && !path.isAbsolute(output))
   throw new Error("Standalone build output must be absolute")
 const executable = standaloneFlag ? Product.cliExecutable : Product.executable
 if (standaloneFlag) process.env.MODELS_DEV_API_JSON ??= path.join(dir, "../product/models.json")
@@ -47,7 +47,7 @@ const createEmbeddedWebUIBundle = async () => {
   console.log(`Building Web UI to embed in the binary`)
   const appDir = path.join(import.meta.dirname, "../../app")
   const dist = path.join(appDir, "dist")
-  await $`MEGALADATA_AI_AGENT_CHANNEL=${Script.channel} bun run --cwd ${appDir} build`
+  await $`MEGA_AI_AGENT_CHANNEL=${Script.channel} bun run --cwd ${appDir} build`
   const files = (await Array.fromAsync(new Bun.Glob("**/*").scan({ cwd: dist })))
     .map((file) => file.replaceAll("\\", "/"))
     .filter((file) => !file.endsWith(".map"))
@@ -153,7 +153,7 @@ const targets = selectedTarget
       })
     : allTargets
 
-if (standaloneFlag && process.env.MEGALADATA_AI_AGENT_BUILD_OUTPUT) await mkdir(output)
+if (standaloneFlag && process.env.MEGA_AI_AGENT_BUILD_OUTPUT) await mkdir(output)
 else await $`rm -rf ${output}`
 
 const binaries: Record<string, string> = {}
@@ -198,7 +198,7 @@ for (const item of targets) {
       autoloadPackageJson: true,
       target: name.replace(executable, "bun") as any,
       outfile: `${output}/${name}/bin/${executable}`,
-      execArgv: [`--user-agent=megaladata-ai-agent/${Script.version}`, "--use-system-ca", "--"],
+      execArgv: [`--user-agent=mega-ai-agent/${Script.version}`, "--use-system-ca", "--"],
       windows: {},
     },
     files: {
@@ -213,13 +213,13 @@ for (const item of targets) {
     ],
     define: {
       FFF_LIBC: JSON.stringify(item.abi === "musl" ? "musl" : "gnu"),
-      MEGALADATA_AI_AGENT_VERSION: `'${Script.version}'`,
-      MEGALADATA_AI_AGENT_MODELS_DEV: generated.modelsData,
+      MEGA_AI_AGENT_VERSION: `'${Script.version}'`,
+      MEGA_AI_AGENT_MODELS_DEV: generated.modelsData,
       OTUI_TREE_SITTER_WORKER_PATH: bunfsRoot + treeSitterWorkerPath,
-      MEGALADATA_AI_AGENT_WORKER_PATH: workerPath,
-      MEGALADATA_AI_AGENT_CHANNEL: `'${Script.channel}'`,
-      MEGALADATA_AI_AGENT_BROWSER_RECOVERY: JSON.stringify(Script.browserRecovery),
-      MEGALADATA_AI_AGENT_LIBC: item.os === "linux" ? `'${item.abi ?? "glibc"}'` : "",
+      MEGA_AI_AGENT_WORKER_PATH: workerPath,
+      MEGA_AI_AGENT_CHANNEL: `'${Script.channel}'`,
+      MEGA_AI_AGENT_BROWSER_RECOVERY: JSON.stringify(Script.browserRecovery),
+      MEGA_AI_AGENT_LIBC: item.os === "linux" ? `'${item.abi ?? "glibc"}'` : "",
       ...(item.os === "linux" ? { "process.env.OPENTUI_LIBC": JSON.stringify(item.abi ?? "glibc") } : {}),
     },
   })

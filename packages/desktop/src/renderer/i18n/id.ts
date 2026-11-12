@@ -11,18 +11,18 @@ export const dict = {
   "desktop.updater.checkFailed.title": "Pemeriksaan pembaruan gagal",
   "desktop.updater.checkFailed.message": "Gagal memeriksa pembaruan",
   "desktop.updater.none.title": "Tidak ada pembaruan",
-  "desktop.updater.none.message": "Anda sudah menggunakan versi terbaru Megaladata AI Agent",
+  "desktop.updater.none.message": "Anda sudah menggunakan versi terbaru Mega AI Agent",
   "desktop.updater.downloadFailed.title": "Pembaruan gagal",
   "desktop.updater.downloadFailed.message": "Gagal mengunduh pembaruan",
   "desktop.updater.downloaded.title": "Pembaruan diunduh",
   "desktop.updater.downloaded.prompt":
-    "Megaladata AI Agent versi {{version}} telah diunduh. Apakah Anda ingin menginstalnya dan menjalankan ulang aplikasi?",
+    "Mega AI Agent versi {{version}} telah diunduh. Apakah Anda ingin menginstalnya dan menjalankan ulang aplikasi?",
   "desktop.updater.installFailed.title": "Pembaruan gagal",
   "desktop.updater.installFailed.message": "Gagal menginstal pembaruan",
 
   "desktop.cli.installed.title": "CLI terinstal",
   "desktop.cli.installed.message":
-    "CLI terinstal di {{path}}\n\nMulai ulang terminal Anda untuk menggunakan perintah 'megaladata-ai-agent'.",
+    "CLI terinstal di {{path}}\n\nMulai ulang terminal Anda untuk menggunakan perintah 'mega-ai-agent'.",
   "desktop.cli.failed.title": "Instalasi gagal",
   "desktop.cli.failed.message": "Gagal menginstal CLI: {{error}}",
 

@@ -154,12 +154,12 @@ async function rejectSetup(resources: string, directory: string, url: string) {
   const manifest = await Bun.file(join(bundle, "resource-manifest.json")).json()
   await Bun.write(join(bundle, "resource-manifest.json"), JSON.stringify({ ...manifest, endpoint: url + "mcp" }))
   const child = Bun.spawn(
-    [resolve(resources, "../../bin/megaladata-ai-agent-cli"), "megaladata", "setup", "--stdin-json", "--format", "json"],
+    [resolve(resources, "../../bin/mega-ai-agent-cli"), "megaladata", "setup", "--stdin-json", "--format", "json"],
     {
       env: {
-        ...Object.fromEntries(Object.entries(process.env).filter(([key]) => key !== "MEGALADATA_AI_AGENT_CLI_BUNDLE")),
-        MEGALADATA_AI_AGENT_CLI_PROFILE: profile,
-        MEGALADATA_AI_AGENT_CLI_BUNDLE: bundle,
+        ...Object.fromEntries(Object.entries(process.env).filter(([key]) => key !== "MEGA_AI_AGENT_CLI_BUNDLE")),
+        MEGA_AI_AGENT_CLI_PROFILE: profile,
+        MEGA_AI_AGENT_CLI_BUNDLE: bundle,
         NO_PROXY: "127.0.0.1,localhost",
         no_proxy: "127.0.0.1,localhost",
       },

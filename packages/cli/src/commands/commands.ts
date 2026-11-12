@@ -1,9 +1,9 @@
 import { Argument, Flag } from "effect/unstable/cli"
 import { Spec } from "../framework/spec"
 
-declare const MEGALADATA_AI_AGENT_CLI_NAME: string | undefined
+declare const MEGA_AI_AGENT_CLI_NAME: string | undefined
 
-export const Commands = Spec.make(typeof MEGALADATA_AI_AGENT_CLI_NAME === "string" ? MEGALADATA_AI_AGENT_CLI_NAME : "opencode", {
+export const Commands = Spec.make(typeof MEGA_AI_AGENT_CLI_NAME === "string" ? MEGA_AI_AGENT_CLI_NAME : "opencode", {
   description: "OpenCode 2.0 preview command line interface",
   commands: [
     Spec.make("api", {

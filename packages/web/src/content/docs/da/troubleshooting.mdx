@@ -57,9 +57,9 @@ Hvis skrivebordsappen går ned ved opstart, hænger eller opfører sig mærkelig
 
 Åbn den globale konfigurationsfil og se efter en `plugin`-nøgle.
 
-- **macOS/Linux**: `~/.config/opencode/megaladata-ai-agent.jsonc` (eller `~/.config/opencode/megaladata-ai-agent.json`)
-- **macOS/Linux** (ældre installationer): `~/.local/share/opencode/megaladata-ai-agent.jsonc`
-- **Windows**: Tryk `WIN+R` og indsæt `%USERPROFILE%\.config\opencode\megaladata-ai-agent.jsonc`
+- **macOS/Linux**: `~/.config/opencode/mega-ai-agent.jsonc` (eller `~/.config/opencode/mega-ai-agent.json`)
+- **macOS/Linux** (ældre installationer): `~/.local/share/opencode/mega-ai-agent.jsonc`
+- **Windows**: Tryk `WIN+R` og indsæt `%USERPROFILE%\.config\opencode\mega-ai-agent.jsonc`
 
 Hvis du har konfigureret plugins, deaktiver dem midlertidigt ved at fjerne nøglen eller sætte den til et tomt array:
 
@@ -78,7 +78,7 @@ OpenCode kan også indlæse lokale plugins fra disken. Flyt disse midlertidigt v
   - **macOS/Linux**: `~/.config/opencode/plugins/`
   - **Windows**: Tryk `WIN+R` og indsæt `%USERPROFILE%\.config\opencode\plugins`
 - **Projektplugins** (kun hvis du bruger konfiguration per projekt)
-  - `<your-project>/.megaladata-ai-agent/plugins/`
+  - `<your-project>/.mega-ai-agent/plugins/`
 
 Hvis appen begynder at fungere igen, aktiverer du plugins én ad gangen for at finde ud af, hvilken som forårsager problemet.
 
@@ -111,13 +111,13 @@ Fra startskærmen klikker du på servernavnet (med statusprikken) for at åbne s
 
 #### Fjern `server.port` / `server.hostname` fra din konfiguration
 
-Hvis `megaladata-ai-agent.json(c)` indeholder en `server`-del, fjern den midlertidigt og start skrivebordsappen på ny.
+Hvis `mega-ai-agent.json(c)` indeholder en `server`-del, fjern den midlertidigt og start skrivebordsappen på ny.
 
 #### Tjek miljøvariabler
 
-Hvis du har `MEGALADATA_AI_AGENT_PORT` sat i dit miljø, vil skrivebordsappen prøve at bruge den port for den lokale server.
+Hvis du har `MEGA_AI_AGENT_PORT` sat i dit miljø, vil skrivebordsappen prøve at bruge den port for den lokale server.
 
-- Deaktiver `MEGALADATA_AI_AGENT_PORT` (eller vælg en ledig port) og start på ny.
+- Deaktiver `MEGA_AI_AGENT_PORT` (eller vælg en ledig port) og start på ny.
 
 ---
 
@@ -158,7 +158,7 @@ Hvis appen ikke starter og du ikke kan slette indstillingerne fra UI, nulstil sk
 1. Afslut OpenCode Desktop.
 2. Find og slet disse filer (de findes i OpenCode Desktop-appens datamappe):
 
-- `megaladata-ai-agent.settings.dat` (skrivebordsstandardserver URL)
+- `mega-ai-agent.settings.dat` (skrivebordsstandardserver URL)
 - `opencode.global.dat` og `opencode.workspace.*.dat` (UI tilstand som nylige servere/projekter)
 
 Sådan finder du mappen hurtigt:

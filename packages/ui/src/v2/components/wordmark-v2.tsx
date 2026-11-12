@@ -3,7 +3,7 @@ import "./wordmark-v2.css"
 
 // Geometry the accent flow relies on: the viewBox, the text baseline and the
 // approximate cap height of `system-ui` at font-size 100 (about 0.7em).
-export const WORDMARK_V2_METRICS = { width: 720, height: 129, baseline: 100, cap: 70 }
+export const WORDMARK_V2_METRICS = { width: 420, height: 129, baseline: 100, cap: 70 }
 
 export function WordmarkV2(props: Pick<ComponentProps<"svg">, "class"> & { onAccentClick?: () => void }) {
   return (
@@ -13,7 +13,7 @@ export function WordmarkV2(props: Pick<ComponentProps<"svg">, "class"> & { onAcc
       class={props.class}
       data-component="wordmark-v2"
       role="img"
-      aria-label="Megaladata AI"
+      aria-label="Mega AI"
     >
       <text
         x={WORDMARK_V2_METRICS.width / 2}
@@ -25,7 +25,7 @@ export function WordmarkV2(props: Pick<ComponentProps<"svg">, "class"> & { onAcc
         font-size="100"
         font-weight="600"
       >
-        Megaladata{" "}
+        Mega{" "}
         <tspan
           data-slot="wordmark-v2-accent"
           data-interactive={props.onAccentClick ? "" : undefined}

@@ -4,7 +4,7 @@ import type { ServerConnection } from "@/context/server"
 import { decode64 } from "@/utils/base64"
 
 export function authTokenFromCredentials(input: { username?: string; password: string }) {
-  return btoa(`${input.username ?? "megaladata-ai-agent"}:${input.password}`)
+  return btoa(`${input.username ?? "mega-ai-agent"}:${input.password}`)
 }
 
 export function authFromToken(token: string | null) {
@@ -13,7 +13,7 @@ export function authFromToken(token: string | null) {
   const separator = decoded.indexOf(":")
   if (separator === -1) return
   return {
-    username: decoded.slice(0, separator) || "megaladata-ai-agent",
+    username: decoded.slice(0, separator) || "mega-ai-agent",
     password: decoded.slice(separator + 1),
   }
 }

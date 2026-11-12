@@ -77,9 +77,9 @@ W przypadku użytkowników migrujących z Claude Code opencode obsługuje konwen
 Aby wyłączyć kompatybilność z Claude Code, ustaw jedną z tych zmiennych środowiskowych:
 
 ```bash
-export MEGALADATA_AI_AGENT_DISABLE_CLAUDE_CODE=1        # Disable all .claude support
-export MEGALADATA_AI_AGENT_DISABLE_CLAUDE_CODE_PROMPT=1 # Disable only ~/.claude/CLAUDE.md
-export MEGALADATA_AI_AGENT_DISABLE_CLAUDE_CODE_SKILLS=1 # Disable only .claude/skills
+export MEGA_AI_AGENT_DISABLE_CLAUDE_CODE=1        # Disable all .claude support
+export MEGA_AI_AGENT_DISABLE_CLAUDE_CODE_PROMPT=1 # Disable only ~/.claude/CLAUDE.md
+export MEGA_AI_AGENT_DISABLE_CLAUDE_CODE_SKILLS=1 # Disable only .claude/skills
 ```
 
 ---
@@ -98,11 +98,11 @@ Pierwszy pasujący plik wygrywa w każdej kategorii. Na przykład, jeśli masz z
 
 ## Instrukcje niestandardowe
 
-Możesz określić niestandardowe pliki instrukcji w swoim `megaladata-ai-agent.json` lub globalnym `~/.config/opencode/megaladata-ai-agent.json`. Dzięki temu Ty i Twój zespół możecie ponownie wykorzystać istniejące reguły, zamiast duplikować je w pliku AGENTS.md.
+Możesz określić niestandardowe pliki instrukcji w swoim `mega-ai-agent.json` lub globalnym `~/.config/opencode/mega-ai-agent.json`. Dzięki temu Ty i Twój zespół możecie ponownie wykorzystać istniejące reguły, zamiast duplikować je w pliku AGENTS.md.
 
 Przykład:
 
-```json title="megaladata-ai-agent.json"
+```json title="mega-ai-agent.json"
 {
   "$schema": "https://opencode.ai/config.json",
   "instructions": ["CONTRIBUTING.md", "docs/guidelines.md", ".cursor/rules/*.md"]
@@ -111,7 +111,7 @@ Przykład:
 
 Możesz także użyć zdalnych adresów URL, aby załadować instrukcje z Internetu.
 
-```json title="megaladata-ai-agent.json"
+```json title="mega-ai-agent.json"
 {
   "$schema": "https://opencode.ai/config.json",
   "instructions": ["https://raw.githubusercontent.com/my-org/shared-rules/main/style.md"]
@@ -128,11 +128,11 @@ Wszystkie pliki instrukcji są łączone z plikami `AGENTS.md`.
 
 Chociaż opencode nie analizuje automatycznie odniesień do plików w `AGENTS.md`, możesz osiągnąć podobną funkcjonalność na dwa sposoby:
 
-### Używanie megaladata-ai-agent.json
+### Używanie mega-ai-agent.json
 
-Zalecanym podejściem jest użycie pola `instructions` w `megaladata-ai-agent.json`:
+Zalecanym podejściem jest użycie pola `instructions` w `mega-ai-agent.json`:
 
-```json title="megaladata-ai-agent.json"
+```json title="mega-ai-agent.json"
 {
   "$schema": "https://opencode.ai/config.json",
   "instructions": ["docs/development-standards.md", "test/testing-guidelines.md", "packages/*/AGENTS.md"]
@@ -176,5 +176,5 @@ Takie podejście pozwala:
 - Upewnij się, że opencode ładuje pliki tylko wtedy, gdy są potrzebne do konkretnego zadania
 
 :::tip
-W przypadku monorepo lub projektów ze wspólnymi standardami użycie `megaladata-ai-agent.json` ze wzorami globalnymi (takimi jak `packages/*/AGENTS.md`) jest łatwiejsze w utrzymaniu niż instrukcje ręczne.
+W przypadku monorepo lub projektów ze wspólnymi standardami użycie `mega-ai-agent.json` ze wzorami globalnymi (takimi jak `packages/*/AGENTS.md`) jest łatwiejsze w utrzymaniu niż instrukcje ręczne.
 :::

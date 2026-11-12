@@ -86,13 +86,13 @@ export async function uninstallWindowsCli(localAppData: string) {
 }
 
 function launcherText(name: string) {
-  return `@echo off\r\nsetlocal DisableDelayedExpansion\r\n"%~dp0..\\${name}\\bin\\megaladata-ai-agent-cli.exe" %*\r\nexit /b %errorlevel%\r\n`
+  return `@echo off\r\nsetlocal DisableDelayedExpansion\r\n"%~dp0..\\${name}\\bin\\mega-ai-agent-cli.exe" %*\r\nexit /b %errorlevel%\r\n`
 }
 
 async function directories(localAppData: string, create: boolean) {
   if (process.platform !== "win32") throw Error("CLI_INSTALL_PLATFORM_UNAVAILABLE")
   if (!localAppData || !isAbsolute(localAppData)) throw Error("CLI_INSTALL_PATH_INVALID")
-  const base = join(localAppData, "Programs/megaladata-ai-agent-cli")
+  const base = join(localAppData, "Programs/mega-ai-agent-cli")
   const bin = join(base, "bin")
   for (const path of [localAppData, join(localAppData, "Programs"), base, bin]) {
     if (create)
@@ -105,7 +105,7 @@ async function directories(localAppData: string, create: boolean) {
   return {
     base,
     bin,
-    launcher: join(bin, "megaladata-ai-agent-cli.cmd"),
+    launcher: join(bin, "mega-ai-agent-cli.cmd"),
     receipt: join(base, "current.json"),
     lock: join(base, ".install-lock"),
   }

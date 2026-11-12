@@ -68,7 +68,7 @@ const { a, b } = obj
 
 - Never alias imports. Do not use `import { foo as bar } from "..."` or renamed imports like `resolve as pathResolve`.
 - Never use star imports. Do not use `import * as Foo from "..."` or `import type * as Foo from "..."`.
-- If a namespace-style value is needed, import the module's own exported namespace by name, for example `import { Project } from "@megaladata-ai-agent/core/project"`, then reference `Project.ID`.
+- If a namespace-style value is needed, import the module's own exported namespace by name, for example `import { Project } from "@mega-ai-agent/core/project"`, then reference `Project.ID`.
 - Prefer dynamic imports for heavy modules that are only needed in selected code paths, especially in startup-sensitive entrypoints. Destructure dynamic import bindings near the top of the narrowest scope that needs them so they read like normal imports. Avoid inline chains such as `await import("./module").then((mod) => mod.value())` or `(await import("./module")).value()`. Keep branch-specific imports inside the branch that needs them to preserve lazy loading.
 
 ### Variables
@@ -168,10 +168,10 @@ const table = sqliteTable("session", {
 - Keep EventV2 replay owner claims separate from clustered Session execution ownership.
 - Keep the System Context algebra, registry, and built-ins in `src/system-context`; keep Context Source producers with their observed domains, and keep Session History selection plus Context Epoch persistence Session-owned.
 
-## Megaladata AI Agent: module map and current state
+## Mega AI Agent: module map and current state
 
 - In `megaladata-cli`, implement the [standalone CLI design](docs/superpowers/specs/2026-09-17-megaladata-cli-standalone-design.md), starting from `c37913ab5`. Desktop and CLI own independent backend v1 processes and profiles. The earlier shared-service CLI design is historical; do not introduce service discovery, client leases, or Desktop profile migration.
-- Standalone executable: `megaladata-ai-agent-cli`; keep the GUI launcher `megaladata-ai-agent`. Track implementation and checks in the design's progress section and [standalone runbook](docs/testing/megaladata-ai-agent/standalone-cli.md).
+- Standalone executable: `mega-ai-agent-cli`; keep the GUI launcher `mega-ai-agent`. Track implementation and checks in the design's progress section and [standalone runbook](docs/testing/mega-ai-agent/standalone-cli.md).
 
 - [Product identity, release pins and bundled skills](packages/product/AGENTS.md)
 - [Desktop packaging, installation and acceptance](packages/desktop/AGENTS.md)
@@ -181,8 +181,8 @@ const table = sqliteTable("session", {
 - [Application settings and onboarding](packages/app/AGENTS.md)
 - [Shared UI and new-chat branding](packages/ui/AGENTS.md)
 - [Model/backend integration](packages/agent/AGENTS.md)
-- [CI: release builds and test workflows](docs/testing/megaladata-ai-agent/ci-release.md)
+- [CI: release builds and test workflows](docs/testing/mega-ai-agent/ci-release.md)
 - [Git secret protection, commands and audit](docs/security/secret-protection.md)
 - [Eval harness for Megaladata scenarios](evals/AGENTS.md)
 
-Before resuming release work, read the [canonical Linux checkpoint](docs/migration/linux-implementation-checkpoint.md) and [platform runbooks](docs/testing/megaladata-ai-agent/README.md). Reports distinguish tested installed artifacts from source-only checks. Keep durable decisions here or in the owning module; keep secrets and raw diagnostic logs out of git. Historical release reports retain the paths/version that were actually tested.
+Before resuming release work, read the [canonical Linux checkpoint](docs/migration/linux-implementation-checkpoint.md) and [platform runbooks](docs/testing/mega-ai-agent/README.md). Reports distinguish tested installed artifacts from source-only checks. Keep durable decisions here or in the owning module; keep secrets and raw diagnostic logs out of git. Historical release reports retain the paths/version that were actually tested.

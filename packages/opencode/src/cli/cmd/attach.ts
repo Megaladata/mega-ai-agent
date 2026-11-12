@@ -35,12 +35,12 @@ export const AttachCommand = cmd({
       .option("password", {
         alias: ["p"],
         type: "string",
-        describe: "basic auth password (defaults to MEGALADATA_AI_AGENT_SERVER_PASSWORD)",
+        describe: "basic auth password (defaults to MEGA_AI_AGENT_SERVER_PASSWORD)",
       })
       .option("username", {
         alias: ["u"],
         type: "string",
-        describe: "basic auth username (defaults to MEGALADATA_AI_AGENT_SERVER_USERNAME or 'opencode')",
+        describe: "basic auth username (defaults to MEGA_AI_AGENT_SERVER_USERNAME or 'opencode')",
       })
       .option("mini", {
         type: "boolean",

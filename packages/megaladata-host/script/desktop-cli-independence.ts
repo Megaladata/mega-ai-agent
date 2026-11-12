@@ -7,13 +7,13 @@ import { cliCredentials } from "../src/connection/cli-credentials"
 
 // Native acceptance: close each independent application while the other has a
 // live Megaladata workspace, then require a fresh successful observation there.
-const configPath = process.env.MEGALADATA_AI_AGENT_TEST_CONFIG
-const cli = process.env.MEGALADATA_AI_AGENT_TEST_CLI_EXECUTABLE
-const desktop = process.env.MEGALADATA_AI_AGENT_TEST_DESKTOP_EXECUTABLE
-const resources = process.env.MEGALADATA_AI_AGENT_TEST_RESOURCES
+const configPath = process.env.MEGA_AI_AGENT_TEST_CONFIG
+const cli = process.env.MEGA_AI_AGENT_TEST_CLI_EXECUTABLE
+const desktop = process.env.MEGA_AI_AGENT_TEST_DESKTOP_EXECUTABLE
+const resources = process.env.MEGA_AI_AGENT_TEST_RESOURCES
 if (!configPath || !cli || !desktop || !resources) throw Error("INDEPENDENCE_INPUTS_REQUIRED")
 const config = await Bun.file(configPath).json()
-const credentialProfile = process.env.MEGALADATA_AI_AGENT_TEST_CREDENTIAL_PROFILE
+const credentialProfile = process.env.MEGA_AI_AGENT_TEST_CREDENTIAL_PROFILE
 if (credentialProfile) {
   const record = await Bun.file(join(credentialProfile, "megaladata/connection/connection.json")).json()
   const secret = await cliCredentials("win32").decode(record.secrets)

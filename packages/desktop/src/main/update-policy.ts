@@ -1,4 +1,4 @@
-import { Product } from "@megaladata-ai-agent/product"
+import { Product } from "@mega-ai-agent/product"
 
 export function validateUpdate(
   info: { version: string; files: { url: string; sha512: string }[] },

@@ -1,7 +1,7 @@
 import { parseArgs } from "node:util"
-import { launchNodeHost, NodeHostStartupError } from "@megaladata-ai-agent/megaladata-host/node-client"
-import type { cliProfile } from "@megaladata-ai-agent/product/cli-profile"
-import { hostError } from "@megaladata-ai-agent/megaladata-host/errors"
+import { launchNodeHost, NodeHostStartupError } from "@mega-ai-agent/megaladata-host/node-client"
+import type { cliProfile } from "@mega-ai-agent/product/cli-profile"
+import { hostError } from "@mega-ai-agent/megaladata-host/errors"
 import { megaladataManagement } from "./megaladata-management"
 import { standaloneBundle } from "./standalone-bundle"
 
@@ -82,7 +82,7 @@ export async function standaloneCommand(args: string[], paths: ReturnType<typeof
     resources: bundle.resources,
     headless: parsed.values.headless && !parsed.values["no-headless"],
     environment: process.env,
-    strictRecovery: process.env.MEGALADATA_AI_AGENT_STRICT_RECOVERY === "1",
+    strictRecovery: process.env.MEGA_AI_AGENT_STRICT_RECOVERY === "1",
   }).catch((error: unknown) => {
     if (!(error instanceof NodeHostStartupError) || !error.cleanupConfirmed)
       throw new Error("MEGALADATA_HOST_CLEANUP_FAILED", { cause: error })

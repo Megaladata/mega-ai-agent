@@ -10,7 +10,7 @@ import { buildPackageDocs } from "./build-package-docs"
 import { collectBuildNotices } from "./collect-build-notices"
 import release from "../../product/megaladata-release.json"
 import catalogs from "../../product/megaladata-catalogs.json"
-import { productSkillsDirectory } from "@megaladata-ai-agent/product/skills"
+import { productSkillsDirectory } from "@mega-ai-agent/product/skills"
 import { resourceInventory } from "../../megaladata-runtime/src/resource-inventory.mjs"
 
 export function actionCatalogForPlatform(platform: string) {
@@ -178,7 +178,7 @@ export async function stageResources(input: {
     join(staging, "THIRD_PARTY_NOTICES.md"),
     `# Third-party notices
 
-  Megaladata AI Agent includes code derived from OpenCode (MIT) and Megaladata Dock (AGPL-3.0).
+  Mega AI Agent includes code derived from OpenCode (MIT) and Megaladata Dock (AGPL-3.0).
   The original copyright/license notices are preserved in licenses/.
   Node.js license and bundled dependency notices are in licenses/Node.txt.
   Package documentation uses Golos Text under the SIL Open Font License (licenses/Golos-OFL.txt).

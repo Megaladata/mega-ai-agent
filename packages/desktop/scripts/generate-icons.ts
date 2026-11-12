@@ -71,8 +71,8 @@ export async function generateIcons(options: { check?: boolean; preview?: boolea
   const manifest = (landing: boolean) =>
     JSON.stringify(
       {
-        name: landing ? "Megaladata Dock" : "Megaladata AI Agent",
-        short_name: landing ? "Megaladata Dock" : "Megaladata AI",
+        name: landing ? "Megaladata Dock" : "Mega AI Agent",
+        short_name: landing ? "Megaladata Dock" : "Mega AI",
         id: "/",
         start_url: "/",
         scope: "/",
@@ -147,9 +147,9 @@ function encodeIcns(frames: { type: string; png: Buffer }[]) {
 }
 
 function previewHtml() {
-  return `<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Megaladata AI — icons</title>
+  return `<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Mega AI — icons</title>
 <style>*{box-sizing:border-box}body{margin:0;background:#f4f3f0;color:#252830;font:15px system-ui}main{max-width:1220px;margin:auto;padding:32px}h1{font-size:30px;margin:0}p{line-height:1.6;color:#65666c}header{margin-bottom:26px}.controls{display:flex;gap:8px;margin:20px 0}button{font:inherit;border:1px solid #bbb;border-radius:6px;background:white;padding:8px 16px;cursor:pointer}button[aria-pressed=true]{background:#252830;color:white}.comparison{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:#bcbec1;border:1px solid #bcbec1;border-radius:10px;overflow:hidden}.sample{padding:22px;text-align:center;background:var(--surface,#fff);color:var(--ink,#252830)}.sample h2{font-size:16px;font-weight:500}.hero{width:100%;max-width:210px;aspect-ratio:1;object-fit:contain}.sizes{display:flex;align-items:center;gap:20px;min-height:80px;flex-wrap:wrap}.row{padding:20px 0;border-bottom:1px solid #cecece}.row h2{font-size:16px}.small{display:grid;justify-items:center;gap:9px;font:12px ui-monospace}.strip{background:var(--surface,#fff);color:var(--ink,#252830);padding:18px;border-radius:8px}body[data-bg=dark]{--surface:#22242b;--ink:#eee}body[data-bg=color]{--surface:#42706e;--ink:#fff}.note{font-size:13px}footer{margin-top:25px}@media(max-width:700px){.comparison{grid-template-columns:repeat(2,1fr)}main{padding:18px}}</style>
-<main><header><h1>Megaladata AI — icon family</h1><p>The supplied square artwork, scaled. The 16px frame is the designer's pixel icon.<br>Windows, Linux, and macOS use the same picture; the system mask rounds it.</p></header>
+<main><header><h1>Mega AI — icon family</h1><p>The supplied square artwork, scaled. The 16px frame is the designer's pixel icon.<br>Windows, Linux, and macOS use the same picture; the system mask rounds it.</p></header>
 <div class="controls" aria-label="Preview background">${["Light", "Dark", "Color"].map((name, index) => `<button aria-pressed="${index === 0}" data-bg="${["light", "dark", "color"][index]}">${name}</button>`).join("")}</div>
 <section class="comparison"><article class="sample"><h2>Source</h2><img class="hero" src="source.png" alt="Source image"><div class="note">Opaque outer background</div></article>${platforms.map((platform) => `<article class="sample"><h2>${platform === "macos" ? "macOS" : platform === "linux" ? "Linux" : "Windows"}</h2><img class="hero" src="${platform}-512.png" alt="${platform === "macos" ? "macOS" : platform === "linux" ? "Linux" : "Windows"} icon"><div class="note">Scaled from the 512px master</div></article>`).join("")}</section>
 ${platforms.map((platform) => `<section class="row"><h2>${platform === "macos" ? "macOS" : platform === "linux" ? "Linux" : "Windows"} · actual sizes</h2><div class="strip sizes">${[16, 24, 32, 48, 64, 128].map((size) => `<div class="small"><img width="${size}" height="${size}" src="${platform}-${size}.png" alt="${size} pixels"><span>${size}px</span></div>`).join("")}</div></section>`).join("")}

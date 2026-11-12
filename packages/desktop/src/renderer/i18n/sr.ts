@@ -9,17 +9,17 @@ export const dict = {
   "desktop.updater.checkFailed.title": "Провера ажурирања није успела",
   "desktop.updater.checkFailed.message": "Провера ажурирања није успела",
   "desktop.updater.none.title": "Ажурирање није доступно",
-  "desktop.updater.none.message": "Већ користите најновију верзију Megaladata AI Agent",
+  "desktop.updater.none.message": "Већ користите најновију верзију Mega AI Agent",
   "desktop.updater.downloadFailed.title": "Ажурирање није успело",
   "desktop.updater.downloadFailed.message": "Преузимање ажурирања није успело",
   "desktop.updater.downloaded.title": "Преузето ажурирање",
   "desktop.updater.downloaded.prompt":
-    "Верзија {{version}} од Megaladata AI Agent је преузета, да ли желите да је инсталирате и поново покренете?",
+    "Верзија {{version}} од Mega AI Agent је преузета, да ли желите да је инсталирате и поново покренете?",
   "desktop.updater.installFailed.title": "Ажурирање није успело",
   "desktop.updater.installFailed.message": "Инсталација ажурирања није успела",
   "desktop.cli.installed.title": "CLI Инсталиран",
   "desktop.cli.installed.message":
-    "CLI инсталиран на {{path}}\n\nПоново покрените терминал да бисте користили команду 'megaladata-ai-agent'.",
+    "CLI инсталиран на {{path}}\n\nПоново покрените терминал да бисте користили команду 'mega-ai-agent'.",
   "desktop.cli.failed.title": "Инсталација није успела",
   "desktop.cli.failed.message": "Инсталација CLI-ја није успела: {{error}}",
 

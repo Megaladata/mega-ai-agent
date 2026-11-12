@@ -207,7 +207,7 @@ Problems to reduce:
 - Importing the module creates directories.
 - Tests override `Global.Path` by mutating exported module state.
 - Most callers use `Global.Path` directly instead of the Effect service.
-- `Global.make()` still reads mutable `Flag.MEGALADATA_AI_AGENT_CONFIG_DIR`.
+- `Global.make()` still reads mutable `Flag.MEGA_AI_AGENT_CONFIG_DIR`.
 
 Next PR candidates:
 

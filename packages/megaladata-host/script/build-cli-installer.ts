@@ -35,7 +35,7 @@ export async function buildCliInstaller(artifact: string, platform: "linux" | "w
   await Bun.write(
     join(artifact, "INSTALL.md"),
     platform === "win32"
-      ? "# Windows user installation\n\nExtract the entire ZIP into a dedicated directory. Run install.cmd from that extracted directory. The installer uses the bundled Node and verifies the complete payload; no downloads occur.\n\nAdd %LOCALAPPDATA%\\Programs\\megaladata-ai-agent-cli\\bin to your user PATH explicitly, then open a new terminal and run megaladata-ai-agent-cli --version. Existing PATH entries are not edited by the installer.\n\nStop all CLI processes before running uninstall.cmd from the original extracted directory, outside the installed versioned payload. Uninstall preserves profiles, Desktop and PATH. To update, uninstall the old payload, then install the new archive. Existing launchers are never overwritten.\n"
+      ? "# Windows user installation\n\nExtract the entire ZIP into a dedicated directory. Run install.cmd from that extracted directory. The installer uses the bundled Node and verifies the complete payload; no downloads occur.\n\nAdd %LOCALAPPDATA%\\Programs\\mega-ai-agent-cli\\bin to your user PATH explicitly, then open a new terminal and run mega-ai-agent-cli --version. Existing PATH entries are not edited by the installer.\n\nStop all CLI processes before running uninstall.cmd from the original extracted directory, outside the installed versioned payload. Uninstall preserves profiles, Desktop and PATH. To update, uninstall the old payload, then install the new archive. Existing launchers are never overwritten.\n"
       : platform === "darwin"
         ? `# macOS test installation
 
@@ -46,24 +46,24 @@ Requires macOS 14 or later on Apple Silicon (arm64). This dev candidate bundles 
 Verify the archive against its adjacent SHA256 file before extraction. Keep the original extracted directory for uninstalling or replacing this candidate:
 
 \`\`\`sh
-shasum -a 256 -c megaladata-ai-agent-cli-<version>-darwin-arm64.tar.gz.sha256
+shasum -a 256 -c mega-ai-agent-cli-<version>-darwin-arm64.tar.gz.sha256
 mkdir cli-candidate
-tar -xpf megaladata-ai-agent-cli-<version>-darwin-arm64.tar.gz -C cli-candidate
+tar -xpf mega-ai-agent-cli-<version>-darwin-arm64.tar.gz -C cli-candidate
 cd cli-candidate
 ./install.sh
 \`\`\`
 
-The \`-p\` option preserves the exact modes verified by the manifest, including under \`umask 077\`. Do not extract into an existing installation. The installer verifies the complete payload and installs it under \`~/.local/share/megaladata-ai-agent-cli/<version>-<channel>\`. The launcher is \`~/.local/bin/megaladata-ai-agent-cli\`.
+The \`-p\` option preserves the exact modes verified by the manifest, including under \`umask 077\`. Do not extract into an existing installation. The installer verifies the complete payload and installs it under \`~/.local/share/mega-ai-agent-cli/<version>-<channel>\`. The launcher is \`~/.local/bin/mega-ai-agent-cli\`.
 
 Add the following line to \`~/.zprofile\` if that directory is not already on your PATH, then open a new terminal:
 
 \`\`\`sh
 export PATH="$HOME/.local/bin:$PATH"
-megaladata-ai-agent-cli --version
-megaladata-ai-agent-cli --help
+mega-ai-agent-cli --version
+mega-ai-agent-cli --help
 \`\`\`
 
-You can also invoke \`~/.local/bin/megaladata-ai-agent-cli\` directly. The installer does not edit PATH.
+You can also invoke \`~/.local/bin/mega-ai-agent-cli\` directly. The installer does not edit PATH.
 
 ## Remove or replace
 
@@ -75,6 +75,6 @@ This is an ad-hoc signed test build, without Developer ID, notarization or autom
 
 CLI Megaladata credentials use the bundled Keychain helper and an encrypted envelope in the independent CLI profile. A missing helper, a locked or unavailable Keychain, or denied access fails closed without plaintext fallback. The helper disables interactive Keychain prompts, so access requiring user interaction also fails closed. Ad-hoc identity does not guarantee uninterrupted Keychain access after replacement: access may need to be authorized in Keychain Access, or credentials reconfigured. Uninstall deliberately retains profile data and its Keychain key; it is not a credential-erasure operation. Desktop and CLI retain independent backends and profiles.
 `
-        : "# Linux user installation\n\nExtract the archive with tar --same-permissions -xzf <archive.tar.gz> into a dedicated directory. The manifest verifies exact file modes, including when your shell uses umask 077.\n\nRun ./install.sh from this extracted directory. The launcher is ~/.local/bin/megaladata-ai-agent-cli; ensure that directory is on your PATH. No downloads occur during installation. On Linux the installer uses sudo to make chrome-sandbox root:root while keeping mode 4755; Chromium will not start without that owner.\n\nStop all CLI processes before running ./uninstall.sh. Uninstall preserves profiles and Desktop. To update, uninstall the old payload after stopping its processes, then install the new payload. Existing launchers are never overwritten.\n",
+        : "# Linux user installation\n\nExtract the archive with tar --same-permissions -xzf <archive.tar.gz> into a dedicated directory. The manifest verifies exact file modes, including when your shell uses umask 077.\n\nRun ./install.sh from this extracted directory. The launcher is ~/.local/bin/mega-ai-agent-cli; ensure that directory is on your PATH. No downloads occur during installation. On Linux the installer uses sudo to make chrome-sandbox root:root while keeping mode 4755; Chromium will not start without that owner.\n\nStop all CLI processes before running ./uninstall.sh. Uninstall preserves profiles and Desktop. To update, uninstall the old payload after stopping its processes, then install the new payload. Existing launchers are never overwritten.\n",
   )
 }

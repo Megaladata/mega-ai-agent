@@ -18,7 +18,7 @@ opencode web
 يؤدي ذلك إلى تشغيل خادم محلي على `127.0.0.1` بمنفذ عشوائي متاح، ويفتح OpenCode تلقائيا في المتصفح الافتراضي لديك.
 
 :::caution
-إذا لم يتم تعيين `MEGALADATA_AI_AGENT_SERVER_PASSWORD` فسيكون الخادم دون حماية. هذا مناسب للاستخدام المحلي، لكنه يجب أن يكون مُعينا عند إتاحة الوصول عبر الشبكة.
+إذا لم يتم تعيين `MEGA_AI_AGENT_SERVER_PASSWORD` فسيكون الخادم دون حماية. هذا مناسب للاستخدام المحلي، لكنه يجب أن يكون مُعينا عند إتاحة الوصول عبر الشبكة.
 :::
 
 :::tip[مستخدمو Windows]
@@ -80,13 +80,13 @@ opencode web --cors https://example.com
 
 ### المصادقة
 
-لحماية الوصول، عيّن كلمة مرور عبر متغير البيئة `MEGALADATA_AI_AGENT_SERVER_PASSWORD`:
+لحماية الوصول، عيّن كلمة مرور عبر متغير البيئة `MEGA_AI_AGENT_SERVER_PASSWORD`:
 
 ```bash
-MEGALADATA_AI_AGENT_SERVER_PASSWORD=secret opencode web
+MEGA_AI_AGENT_SERVER_PASSWORD=secret opencode web
 ```
 
-اسم المستخدم الافتراضي هو `opencode`، ويمكن تغييره عبر `MEGALADATA_AI_AGENT_SERVER_USERNAME`.
+اسم المستخدم الافتراضي هو `opencode`، ويمكن تغييره عبر `MEGA_AI_AGENT_SERVER_USERNAME`.
 
 ---
 
@@ -126,7 +126,7 @@ opencode attach http://localhost:4096
 
 ## ملف الإعدادات
 
-يمكنك أيضا ضبط إعدادات الخادم داخل ملف الإعدادات `megaladata-ai-agent.json`:
+يمكنك أيضا ضبط إعدادات الخادم داخل ملف الإعدادات `mega-ai-agent.json`:
 
 ```json
 {

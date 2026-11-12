@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto"
-import { createAttachmentReceipt } from "@megaladata-ai-agent/megaladata-host/attachment-receipt"
+import { createAttachmentReceipt } from "@mega-ai-agent/megaladata-host/attachment-receipt"
 import { basename } from "node:path"
 import { stat } from "node:fs/promises"
 import { open } from "node:fs/promises"

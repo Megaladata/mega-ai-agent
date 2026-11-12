@@ -83,11 +83,11 @@ for (const item of targets) {
       windows: {},
     },
     define: {
-      MEGALADATA_AI_AGENT_VERSION: `'${Script.version}'`,
-      MEGALADATA_AI_AGENT_CLI_NAME: `'${binary}'`,
-      MEGALADATA_AI_AGENT_MODELS_DEV: modelsData,
-      MEGALADATA_AI_AGENT_CHANNEL: `'${Script.channel}'`,
-      MEGALADATA_AI_AGENT_LIBC: item.os === "linux" ? `'${item.abi ?? "glibc"}'` : "undefined",
+      MEGA_AI_AGENT_VERSION: `'${Script.version}'`,
+      MEGA_AI_AGENT_CLI_NAME: `'${binary}'`,
+      MEGA_AI_AGENT_MODELS_DEV: modelsData,
+      MEGA_AI_AGENT_CHANNEL: `'${Script.channel}'`,
+      MEGA_AI_AGENT_LIBC: item.os === "linux" ? `'${item.abi ?? "glibc"}'` : "undefined",
       // FFF_LIBC selects the fff native lib variant: "musl" or "gnu".
       FFF_LIBC: item.os === "linux" ? `'${item.abi ?? "gnu"}'` : "undefined",
       ...(item.os === "linux" ? { "process.env.OPENTUI_LIBC": JSON.stringify(item.abi ?? "glibc") } : {}),

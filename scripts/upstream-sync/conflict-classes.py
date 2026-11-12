@@ -5,9 +5,9 @@ Input is the `conflicts.tsv` written by measure-conflicts.sh (path, index-stage 
 Causal classes for the baseline of LAB-198 (merge of OpenCode v1.19.4 into fork 2e6f66a9):
 
   names-*   conflicts that existed only because the fork renamed internal identifiers:
-              names-scope      @opencode-ai/ -> @megaladata-ai-agent/ (package manifests and imports)
+              names-scope      @opencode-ai/ -> @mega-ai-agent/ (package manifests and imports)
               names-directory  packages/opencode -> packages/agent (git "file location")
-              names-svckey     Effect service keys @opencode/Name -> @megaladata-ai-agent/Name
+              names-svckey     Effect service keys @opencode/Name -> @mega-ai-agent/Name
               names-combined   needs more than one of the above
   the remaining classes describe why a path still conflicts after the names are upstream's again;
   they are keyed by path in RESIDUAL below. A path that no rule knows is reported as `unclassified`, which is
@@ -48,7 +48,7 @@ RESIDUAL = [
     }),
 ]
 TITLES = {
-    "names-scope": "Package scope (@opencode-ai/ -> @megaladata-ai-agent/)",
+    "names-scope": "Package scope (@opencode-ai/ -> @mega-ai-agent/)",
     "names-directory": "Directory packages/opencode -> packages/agent",
     "names-svckey": "Effect service keys",
     "names-combined": "Combination of internal-name renames",

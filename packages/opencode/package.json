@@ -16,7 +16,7 @@
     "dev:temporary": "bun run ./src/temporary.ts"
   },
   "bin": {
-    "megaladata-ai-agent": "./bin/megaladata-ai-agent"
+    "mega-ai-agent": "./bin/mega-ai-agent"
   },
   "exports": {
     "./*": "./src/*.ts"
@@ -82,9 +82,9 @@
     "@gitlab/opencode-gitlab-auth": "1.3.3",
     "@opencode-ai/codemode": "workspace:*",
     "@opencode-ai/llm": "workspace:*",
-    "@megaladata-ai-agent/megaladata-host": "workspace:*",
+    "@mega-ai-agent/megaladata-host": "workspace:*",
     "@opencode-ai/plugin": "workspace:*",
-    "@megaladata-ai-agent/product": "workspace:*",
+    "@mega-ai-agent/product": "workspace:*",
     "@opencode-ai/protocol": "workspace:*",
     "@opencode-ai/schema": "workspace:*",
     "@opencode-ai/script": "workspace:*",

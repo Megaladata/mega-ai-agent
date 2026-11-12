@@ -9,17 +9,17 @@ export const dict = {
   "desktop.updater.checkFailed.title": "Frissítés ellenőrzése sikertelen",
   "desktop.updater.checkFailed.message": "Nem sikerült ellenőrizni a frissítéseket",
   "desktop.updater.none.title": "Nem érhető el frissítés",
-  "desktop.updater.none.message": "Már az Megaladata AI Agent legújabb verzióját használja",
+  "desktop.updater.none.message": "Már az Mega AI Agent legújabb verzióját használja",
   "desktop.updater.downloadFailed.title": "Frissítés sikertelen",
   "desktop.updater.downloadFailed.message": "Nem sikerült letölteni a frissítést",
   "desktop.updater.downloaded.title": "Frissítés letöltve",
   "desktop.updater.downloaded.prompt":
-    "Az Megaladata AI Agent {{version}} verziója letöltődött. Szeretné telepíteni és újraindítani az alkalmazást?",
+    "Az Mega AI Agent {{version}} verziója letöltődött. Szeretné telepíteni és újraindítani az alkalmazást?",
   "desktop.updater.installFailed.title": "Frissítés sikertelen",
   "desktop.updater.installFailed.message": "Nem sikerült telepíteni a frissítést",
   "desktop.cli.installed.title": "CLI telepítve",
   "desktop.cli.installed.message":
-    "A CLI telepítési helye: {{path}}\n\nIndítsa újra a terminált az 'megaladata-ai-agent' parancs használatához.",
+    "A CLI telepítési helye: {{path}}\n\nIndítsa újra a terminált az 'mega-ai-agent' parancs használatához.",
   "desktop.cli.failed.title": "A telepítés sikertelen",
   "desktop.cli.failed.message": "A CLI telepítése sikertelen: {{error}}",
 

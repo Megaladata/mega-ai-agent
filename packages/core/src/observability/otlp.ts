@@ -35,13 +35,13 @@ function resourceAttributes() {
 
 export function resource(): { serviceName: string; serviceVersion: string; attributes: Record<string, string> } {
   return {
-    serviceName: "megaladata-ai-agent",
+    serviceName: "mega-ai-agent",
     serviceVersion: InstallationVersion,
     attributes: {
       ...resourceAttributes(),
       "deployment.environment.name": InstallationChannel,
-      "megaladata-ai-agent.client": Flag.MEGALADATA_AI_AGENT_CLIENT,
-      "megaladata-ai-agent.run": runID,
+      "mega-ai-agent.client": Flag.MEGA_AI_AGENT_CLIENT,
+      "mega-ai-agent.run": runID,
       "service.instance.id": runID,
     },
   }

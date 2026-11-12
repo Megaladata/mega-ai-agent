@@ -26,7 +26,7 @@ assert.ok(["docs", "default"].includes(testcase.group) || scenario)
 assert.ok(transition || (!testcase.setup && !testcase.followup), "MULTITURN_ADAPTER_REQUIRED")
 const evidence = "/home/tester/evidence"
 await mkdir(evidence, { mode: 0o700 })
-const cli = input.installed + "/bin/megaladata-ai-agent-cli"
+const cli = input.installed + "/bin/mega-ai-agent-cli"
 const [providerID] = input.model.split("/")
 if (testcase.connection !== "unconfigured" && testcase.id !== "default-translation") {
   const setup = spawn(cli, ["megaladata", "setup", "--stdin-json", "--format", "json", "--headless"], {
@@ -85,7 +85,7 @@ if (testcase.connection !== "unconfigured" && testcase.id !== "default-translati
       .some((line) => /execve\(/.test(line) && /chrome|chromium/.test(line)),
   )
 }
-const profile = "/home/tester/.config/com.megaladata.aiagent/cli/profiles/default"
+const profile = "/home/tester/.config/com.mega.aiagent/cli/profiles/default"
 await mkdir(join(profile, "data"), { recursive: true, mode: 0o700 })
 await writeFile(join(profile, "data/auth.json"), JSON.stringify({ [providerID]: input.auth }), {
   mode: 0o600,
@@ -157,11 +157,11 @@ for (const [turnIndex, turn] of turns.entries()) {
     stdio: ["ignore", "pipe", "pipe"],
     env: {
       ...process.env,
-      MEGALADATA_AI_AGENT_PURE: "1",
-      MEGALADATA_AI_AGENT_DISABLE_MODELS_FETCH: "1",
-      ...(input.modelsPath ? { MEGALADATA_AI_AGENT_MODELS_PATH: input.modelsPath } : {}),
-      MEGALADATA_AI_AGENT_DISABLE_PROJECT_CONFIG: "1",
-      MEGALADATA_AI_AGENT_PERMISSION: JSON.stringify(permission.permission ?? {}),
+      MEGA_AI_AGENT_PURE: "1",
+      MEGA_AI_AGENT_DISABLE_MODELS_FETCH: "1",
+      ...(input.modelsPath ? { MEGA_AI_AGENT_MODELS_PATH: input.modelsPath } : {}),
+      MEGA_AI_AGENT_DISABLE_PROJECT_CONFIG: "1",
+      MEGA_AI_AGENT_PERMISSION: JSON.stringify(permission.permission ?? {}),
     },
   })
   const events = []

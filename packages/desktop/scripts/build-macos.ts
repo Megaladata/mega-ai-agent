@@ -4,7 +4,7 @@ import { dirname, join, resolve } from "node:path"
 import { parseArgs } from "node:util"
 import { fileHash } from "./release/manifest"
 import { buildCommand } from "./build-command"
-import { productName } from "@megaladata-ai-agent/product"
+import { productName } from "@mega-ai-agent/product"
 import pins from "../../product/megaladata-release.json"
 import { packageManager } from "../../../package.json"
 
@@ -18,23 +18,23 @@ if (process.platform !== "darwin" || process.arch !== "arm64" || Bun.version !==
 const root = resolve(import.meta.dir, "../../..")
 const desktop = join(root, "packages/desktop")
 const output = resolve(args.output)
-const channel = process.env.MEGALADATA_AI_AGENT_CHANNEL ?? "dev"
+const channel = process.env.MEGA_AI_AGENT_CHANNEL ?? "dev"
 if (channel !== "dev" && channel !== "beta" && channel !== "prod") throw Error("Invalid channel")
 if ((await $`git status --porcelain --untracked-files=all`.cwd(root).text()).trim())
   throw Error("Commit all build inputs before building a candidate")
-if (!process.env.MEGALADATA_AI_AGENT_NODE_SOURCE || !process.env.MEGALADATA_AI_AGENT_BROWSER_SOURCE)
-  throw Error("Pinned MEGALADATA_AI_AGENT_NODE_SOURCE and MEGALADATA_AI_AGENT_BROWSER_SOURCE are required")
-const node = resolve(process.env.MEGALADATA_AI_AGENT_NODE_SOURCE)
+if (!process.env.MEGA_AI_AGENT_NODE_SOURCE || !process.env.MEGA_AI_AGENT_BROWSER_SOURCE)
+  throw Error("Pinned MEGA_AI_AGENT_NODE_SOURCE and MEGA_AI_AGENT_BROWSER_SOURCE are required")
+const node = resolve(process.env.MEGA_AI_AGENT_NODE_SOURCE)
 if ((await $`${node} --version`.text()).trim() !== `v${pins.nodeVersion}`) throw Error("Wrong Node version")
 await mkdir(dirname(output), { recursive: true })
 await mkdir(output) // Exclusive candidate directory: never replace an earlier build.
 const commit = (await $`git rev-parse HEAD`.cwd(root).text()).trim()
 const env = {
   ...process.env,
-  MEGALADATA_AI_AGENT_CHANNEL: channel,
-  MEGALADATA_AI_AGENT_VERSION: args.version,
+  MEGA_AI_AGENT_CHANNEL: channel,
+  MEGA_AI_AGENT_VERSION: args.version,
   // Prod candidates always bake browser recovery; acceptance builds may set it explicitly.
-  MEGALADATA_AI_AGENT_BROWSER_RECOVERY: process.env.MEGALADATA_AI_AGENT_BROWSER_RECOVERY ?? (channel === "prod" ? "1" : "0"),
+  MEGA_AI_AGENT_BROWSER_RECOVERY: process.env.MEGA_AI_AGENT_BROWSER_RECOVERY ?? (channel === "prod" ? "1" : "0"),
   MODELS_DEV_API_JSON: join(root, "packages/product/models.json"),
   CSC_IDENTITY_AUTO_DISCOVERY: "false",
   // PR builds need the same ad-hoc resource seal as local candidates.
@@ -43,7 +43,7 @@ const env = {
   MACOSX_DEPLOYMENT_TARGET: "14.0",
   PATH: `${dirname(process.execPath)}:${dirname(node)}:${process.env.PATH ?? "/usr/bin:/bin"}`,
 }
-delete env.MEGALADATA_AI_AGENT_RELEASE
+delete env.MEGA_AI_AGENT_RELEASE
 await $`${process.execPath} run build`.cwd(desktop).env(env)
 await $`${process.execPath} run package:mac --arm64 --publish never --config.directories.output=${output}`
   .cwd(desktop)
@@ -57,7 +57,7 @@ await buildCommand({
   // The workflow step still ends at 75 minutes.
   timeout: 40 * 60_000,
 })
-await $`git archive --format=tar.gz --output=${join(output, `megaladata-ai-agent-${args.version}-macos-source.tar.gz`)} ${commit}`.cwd(
+await $`git archive --format=tar.gz --output=${join(output, `mega-ai-agent-${args.version}-macos-source.tar.gz`)} ${commit}`.cwd(
   root,
 )
 await $`${process.execPath} scripts/release/write-manifest.ts --target darwin-arm64 --version ${args.version} --channel ${channel} --dist ${output} --resources ${join(desktop, "resources/megaladata")} --output ${join(output, "release-manifest.json")}`

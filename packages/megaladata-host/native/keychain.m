@@ -18,7 +18,7 @@ int main(void) {
     if (SecKeychainSetUserInteractionAllowed(false) != errSecSuccess) return 1;
     NSDictionary *identity = @{
       (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
-      (__bridge id)kSecAttrService: @"com.megaladata.aiagent.cli.profile-key.v1",
+      (__bridge id)kSecAttrService: @"com.mega.aiagent.cli.profile-key.v1",
       (__bridge id)kSecAttrAccount: account,
     };
     NSMutableDictionary *query = [identity mutableCopy];

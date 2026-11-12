@@ -41,7 +41,7 @@ export const MEGALADATA_ENGLISH = {
 
   "megaladata.continue": "Save and continue",
   "megaladata.later": "Later",
-  "megaladata.welcome": "Welcome to Megaladata AI Agent",
+  "megaladata.welcome": "Welcome to Mega AI Agent",
   "megaladata.description":
     "Connect the Megaladata web application. You can change these settings anytime in Megaladata.",
   "megaladata.desktopOnly": "Megaladata connections are available in the desktop application.",
@@ -209,7 +209,7 @@ export const dict = {
   "provider.connect.status.waiting": "Waiting for authorization...",
   "provider.connect.status.failed": "Authorization failed: {{error}}",
   "provider.connect.apiKey.description":
-    "Enter your {{provider}} API key to connect your account and use {{provider}} models in Megaladata AI Agent.",
+    "Enter your {{provider}} API key to connect your account and use {{provider}} models in Mega AI Agent.",
   "provider.connect.apiKey.label": "{{provider}} API key",
   "provider.connect.apiKey.placeholder": "API key",
   "provider.connect.apiKey.required": "API key is required",
@@ -223,7 +223,7 @@ export const dict = {
   "provider.connect.oauth.code.visit.prefix": "Visit ",
   "provider.connect.oauth.code.visit.link": "this link",
   "provider.connect.oauth.code.visit.suffix":
-    " to collect your authorization code to connect your account and use {{provider}} models in Megaladata AI Agent.",
+    " to collect your authorization code to connect your account and use {{provider}} models in Mega AI Agent.",
   "provider.connect.oauth.code.label": "{{method}} authorization code",
   "provider.connect.oauth.code.placeholder": "Authorization code",
   "provider.connect.oauth.code.required": "Authorization code is required",
@@ -231,7 +231,7 @@ export const dict = {
   "provider.connect.oauth.auto.visit.prefix": "Visit ",
   "provider.connect.oauth.auto.visit.link": "this link",
   "provider.connect.oauth.auto.visit.suffix":
-    " and enter the code below to connect your account and use {{provider}} models in Megaladata AI Agent.",
+    " and enter the code below to connect your account and use {{provider}} models in Mega AI Agent.",
   "provider.connect.oauth.auto.confirmationCode": "Confirmation code",
   "provider.connect.toast.connected.title": "{{provider}} connected",
   "provider.connect.toast.connected.description": "{{provider}} models are now available to use.",
@@ -392,7 +392,7 @@ export const dict = {
   "dialog.mcp.empty": "No MCPs configured",
 
   "dialog.lsp.empty": "LSPs auto-detected from file types",
-  "dialog.plugins.empty": "Plugins configured in megaladata-ai-agent.json",
+  "dialog.plugins.empty": "Plugins configured in mega-ai-agent.json",
 
   "mcp.status.connected": "connected",
   "mcp.status.failed": "failed",
@@ -415,7 +415,7 @@ export const dict = {
   "app.server.otherServers": "Other servers",
 
   "dialog.server.title": "Servers",
-  "dialog.server.description": "Switch which Megaladata AI Agent server this app connects to.",
+  "dialog.server.description": "Switch which Mega AI Agent server this app connects to.",
   "dialog.server.search.placeholder": "Search servers",
   "dialog.server.empty": "No servers yet",
   "dialog.server.add.title": "Add server",
@@ -452,7 +452,7 @@ export const dict = {
   "wsl.server.retryStart": "Retry start",
   "wsl.server.updating": "Updating...",
   "wsl.onboarding.step.distro": "Choose distro",
-  "wsl.onboarding.step.opencode": "Megaladata AI Agent",
+  "wsl.onboarding.step.opencode": "Mega AI Agent",
   "wsl.onboarding.checkingRuntime": "Checking WSL...",
   "wsl.onboarding.restartRequired": "Windows needs a restart to finish installing WSL.",
   "wsl.onboarding.ready": "WSL is ready.",
@@ -466,16 +466,16 @@ export const dict = {
   "wsl.onboarding.openDistroOnce": "Open {{distro}} once to finish setup.",
   "wsl.onboarding.finishingDistro": "Finishing setup for {{distro}}.",
   "wsl.onboarding.pickDistro": "Pick a distro or install one below.",
-  "wsl.onboarding.checkingOpencode": "Checking Megaladata AI Agent...",
-  "wsl.onboarding.checkingOpencodeIn": "Checking Megaladata AI Agent in {{distro}}...",
-  "wsl.onboarding.updatingOpencode": "Updating Megaladata AI Agent...",
-  "wsl.onboarding.updatingOpencodeIn": "Updating Megaladata AI Agent in {{distro}}...",
-  "wsl.onboarding.updateOpencodeIn": "Update Megaladata AI Agent in {{distro}}.",
-  "wsl.onboarding.updateOpencode": "Update Megaladata AI Agent",
-  "wsl.onboarding.opencodeReadyIn": "Megaladata AI Agent is ready in {{distro}}.",
-  "wsl.onboarding.opencodeReady": "Megaladata AI Agent is ready.",
-  "wsl.onboarding.installOpencodeIn": "Install Megaladata AI Agent in {{distro}}.",
-  "wsl.onboarding.installOpencode": "Install Megaladata AI Agent",
+  "wsl.onboarding.checkingOpencode": "Checking Mega AI Agent...",
+  "wsl.onboarding.checkingOpencodeIn": "Checking Mega AI Agent in {{distro}}...",
+  "wsl.onboarding.updatingOpencode": "Updating Mega AI Agent...",
+  "wsl.onboarding.updatingOpencodeIn": "Updating Mega AI Agent in {{distro}}...",
+  "wsl.onboarding.updateOpencodeIn": "Update Mega AI Agent in {{distro}}.",
+  "wsl.onboarding.updateOpencode": "Update Mega AI Agent",
+  "wsl.onboarding.opencodeReadyIn": "Mega AI Agent is ready in {{distro}}.",
+  "wsl.onboarding.opencodeReady": "Mega AI Agent is ready.",
+  "wsl.onboarding.installOpencodeIn": "Install Mega AI Agent in {{distro}}.",
+  "wsl.onboarding.installOpencode": "Install Mega AI Agent",
   "wsl.onboarding.chooseDistroFirst": "Choose a distro first.",
   "wsl.onboarding.loadFailed": "Failed to load WSL state.",
   "wsl.onboarding.loading": "Loading...",
@@ -483,18 +483,18 @@ export const dict = {
   "wsl.onboarding.checkAgain": "Check again",
   "wsl.onboarding.distroStatus.ready": "Ready",
   "wsl.onboarding.distroStatus.checking": "Checking...",
-  "wsl.onboarding.distroStatus.opencodeMissing": "Megaladata AI Agent not installed",
+  "wsl.onboarding.distroStatus.opencodeMissing": "Mega AI Agent not installed",
   "wsl.onboarding.distroStatus.missingTools": "Missing bash, curl",
   "wsl.onboarding.distroStatus.unsupported": "Unsupported · Use WSL 2",
   "wsl.onboarding.needAnotherDistro": "Need another distro?",
   "wsl.onboarding.needAnotherDistroHint": "Install a Linux distribution from the WSL catalog",
   "wsl.onboarding.wslNotInstalled.title": "WSL not installed",
   "wsl.onboarding.wslNotInstalled.description":
-    "WSL (Windows Subsystem for Linux) is required before Megaladata AI Agent can add a WSL server",
+    "WSL (Windows Subsystem for Linux) is required before Mega AI Agent can add a WSL server",
   "wsl.onboarding.wslUnavailable.title": "WSL unavailable",
-  "wsl.onboarding.wslUnavailable.description": "Megaladata AI Agent could not verify WSL on this machine.",
+  "wsl.onboarding.wslUnavailable.description": "Mega AI Agent could not verify WSL on this machine.",
   "wsl.onboarding.installWsl": "Install WSL",
-  "wsl.onboarding.windowsRestartRequired": "Restart Windows to finish installing WSL, then reopen Megaladata AI Agent.",
+  "wsl.onboarding.windowsRestartRequired": "Restart Windows to finish installing WSL, then reopen Mega AI Agent.",
   "wsl.onboarding.next": "Next",
   "wsl.onboarding.refresh": "Refresh",
   "wsl.onboarding.allDistrosAdded": "All installed distros are already added.",
@@ -519,7 +519,7 @@ export const dict = {
   "help.tabs.title": "Introducing Tabs",
   "help.tabs.description": "Organize your work and active sessions with tabs",
   "help.tabs.date": "July 14",
-  "help.tabs.introduction": "Megaladata AI Agent Desktop is now built around tabs.",
+  "help.tabs.introduction": "Mega AI Agent Desktop is now built around tabs.",
   "help.tabs.sessions":
     "Start a new session in a tab, or open an existing session from any of your projects. Open a new tab when you're starting something new, and close it when you're done.",
   "help.tabs.organize":
@@ -648,7 +648,7 @@ export const dict = {
   "toast.project.reloadFailed.title": "Failed to reload {{project}}",
 
   "toast.update.title": "Update available",
-  "toast.update.description": "A new version of Megaladata AI Agent ({{version}}) is now available to install.",
+  "toast.update.description": "A new version of Mega AI Agent ({{version}}) is now available to install.",
   "toast.update.action.installRestart": "Install and restart",
   "toast.update.action.notYet": "Not yet",
 
@@ -664,7 +664,7 @@ export const dict = {
   "error.page.action.checkUpdates": "Check for updates",
   "error.page.action.updateTo": "Update to {{version}}",
   "error.page.circular": "[Circular]",
-  "error.page.report.prefix": "Please report this error to the Megaladata AI Agent team",
+  "error.page.report.prefix": "Please report this error to the Mega AI Agent team",
   "error.page.report.discord": "on Discord",
   "error.page.version": "Version: {{version}}",
 
@@ -689,9 +689,9 @@ export const dict = {
   "error.chain.responseBody": "Response body:\n{{body}}",
   "error.chain.didYouMean": "Did you mean: {{suggestions}}",
   "error.chain.modelNotFound": "Model not found: {{provider}}/{{model}}",
-  "error.chain.checkConfig": "Check your config (megaladata-ai-agent.json) provider/model names",
+  "error.chain.checkConfig": "Check your config (mega-ai-agent.json) provider/model names",
   "error.chain.mcpFailed":
-    'MCP server "{{name}}" failed. Note, Megaladata AI Agent does not support MCP authentication yet.',
+    'MCP server "{{name}}" failed. Note, Mega AI Agent does not support MCP authentication yet.',
   "error.chain.providerAuthFailed": "Provider authentication failed ({{provider}}): {{message}}",
   "error.chain.providerInitFailed":
     'Failed to initialize provider "{{provider}}". Check credentials and configuration.',
@@ -955,7 +955,7 @@ export const dict = {
   "debugBar.direction.ltr": "LTR",
   "debugBar.direction.rtl": "RTL",
 
-  "app.name.desktop": "Megaladata AI Agent Desktop",
+  "app.name.desktop": "Mega AI Agent Desktop",
 
   "settings.section.desktop": "Desktop",
   "settings.section.server": "Server",
@@ -963,7 +963,7 @@ export const dict = {
   "settings.tab.shortcuts": "Shortcuts",
   "settings.desktop.section.wsl": "WSL",
   "settings.desktop.wsl.title": "WSL integration",
-  "settings.desktop.wsl.description": "Run the Megaladata AI Agent server inside WSL on Windows.",
+  "settings.desktop.wsl.description": "Run the Mega AI Agent server inside WSL on Windows.",
 
   "settings.general.section.appearance": "Appearance",
   "settings.general.section.advanced": "Advanced",
@@ -974,7 +974,7 @@ export const dict = {
   "settings.general.section.display": "Display",
 
   "settings.general.row.language.title": "Language",
-  "settings.general.row.language.description": "Change the display language for Megaladata AI Agent",
+  "settings.general.row.language.description": "Change the display language for Mega AI Agent",
   "systemProxy.settings.title": "Use system proxy",
   "systemProxy.settings.description":
     "Send model and sign-in requests through the operating system proxy. Restarts the app.",
@@ -1000,12 +1000,12 @@ export const dict = {
   "settings.general.row.shell.autoDefault": "Auto (Default)",
   "settings.general.row.shell.terminalOnly": "terminal only",
   "settings.general.row.appearance.title": "Appearance",
-  "settings.general.row.appearance.description": "Customise how Megaladata AI Agent looks on your device",
+  "settings.general.row.appearance.description": "Customise how Mega AI Agent looks on your device",
   "settings.general.row.colorScheme.title": "Color scheme",
   "settings.general.row.colorScheme.description":
-    "Choose whether Megaladata AI Agent follows the system, light, or dark theme",
+    "Choose whether Mega AI Agent follows the system, light, or dark theme",
   "settings.general.row.theme.title": "Theme",
-  "settings.general.row.theme.description": "Customise how Megaladata AI Agent is themed.",
+  "settings.general.row.theme.description": "Customise how Mega AI Agent is themed.",
   "settings.general.row.font.title": "Code Font",
   "settings.general.row.font.description": "Customise the font used in code blocks",
   "settings.general.row.terminalFont.title": "Terminal Font",
@@ -1059,7 +1059,7 @@ export const dict = {
   "settings.general.row.releaseNotes.description": "Show What's New popups after updates",
 
   "settings.updates.row.startup.title": "Check for updates on startup",
-  "settings.updates.row.startup.description": "Automatically check for updates when Megaladata AI Agent launches",
+  "settings.updates.row.startup.description": "Automatically check for updates when Mega AI Agent launches",
   "settings.updates.row.check.title": "Check for updates",
   "settings.updates.row.check.description": "Manually check for updates and install if available",
   "settings.updates.action.checkNow": "Check now",
@@ -1067,7 +1067,7 @@ export const dict = {
   "settings.updates.action.downloading": "Downloading...",
   "settings.updates.action.installing": "Installing...",
   "settings.updates.toast.latest.title": "You're up to date",
-  "settings.updates.toast.latest.description": "You're running the latest version of Megaladata AI Agent.",
+  "settings.updates.toast.latest.description": "You're running the latest version of Mega AI Agent.",
   "sound.option.none": "None",
   "sound.option.alert01": "Alert 01",
   "sound.option.alert02": "Alert 02",

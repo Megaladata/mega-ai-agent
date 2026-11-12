@@ -55,7 +55,7 @@ export const UninstallCommand = {
     UI.empty()
     UI.println(UI.logo("  "))
     UI.empty()
-    prompts.intro("Uninstall Megaladata AI Agent")
+    prompts.intro("Uninstall Mega AI Agent")
 
     const method = await Installation.method()
     prompts.log.info(`Installation method: ${method}`)
@@ -215,7 +215,7 @@ async function executeUninstall(method: Installation.Method, targets: RemovalTar
     prompts.log.info(`  rm "${targets.binary}"`)
 
     const binDir = path.dirname(targets.binary)
-    if (binDir.includes(".megaladata-ai-agent")) {
+    if (binDir.includes(".mega-ai-agent")) {
       prompts.log.info(`  rmdir "${binDir}" 2>/dev/null`)
     }
   }
@@ -229,7 +229,7 @@ async function executeUninstall(method: Installation.Method, targets: RemovalTar
   }
 
   UI.empty()
-  prompts.log.success("Thank you for using Megaladata AI Agent!")
+  prompts.log.success("Thank you for using Mega AI Agent!")
 }
 
 async function getShellConfigFile(): Promise<string | null> {
@@ -266,7 +266,7 @@ async function getShellConfigFile(): Promise<string | null> {
     if (!exists) continue
 
     const content = await Filesystem.readText(file).catch(() => "")
-    if (content.includes("# opencode") || content.includes(".megaladata-ai-agent/bin")) {
+    if (content.includes("# opencode") || content.includes(".mega-ai-agent/bin")) {
       return file
     }
   }
@@ -291,14 +291,14 @@ async function cleanShellConfig(file: string) {
 
     if (skip) {
       skip = false
-      if (trimmed.includes(".megaladata-ai-agent/bin") || trimmed.includes("fish_add_path")) {
+      if (trimmed.includes(".mega-ai-agent/bin") || trimmed.includes("fish_add_path")) {
         continue
       }
     }
 
     if (
-      (trimmed.startsWith("export PATH=") && trimmed.includes(".megaladata-ai-agent/bin")) ||
-      (trimmed.startsWith("fish_add_path") && trimmed.includes(".megaladata-ai-agent"))
+      (trimmed.startsWith("export PATH=") && trimmed.includes(".mega-ai-agent/bin")) ||
+      (trimmed.startsWith("fish_add_path") && trimmed.includes(".mega-ai-agent"))
     ) {
       continue
     }

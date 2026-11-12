@@ -1,4 +1,4 @@
-import { Product } from "@megaladata-ai-agent/product"
+import { Product } from "@mega-ai-agent/product"
 import { LayerNode } from "@opencode-ai/core/effect/layer-node"
 import { InstallationLocal, InstallationVersion } from "@opencode-ai/core/installation/version"
 import { Effect, Layer, type Context } from "effect"
@@ -36,5 +36,5 @@ export function installationNode<Id>(binding: Binding<Id>) {
 }
 
 export function pluginDependency(release = { local: InstallationLocal, version: InstallationVersion }) {
-  return { name: "@megaladata-ai-agent/plugin", version: release.local ? undefined : release.version }
+  return { name: "@mega-ai-agent/plugin", version: release.local ? undefined : release.version }
 }

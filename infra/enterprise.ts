@@ -9,10 +9,10 @@ new sst.cloudflare.x.SolidStart("Teams", {
   buildCommand: "bun run build:cloudflare",
   link: [SECRET.SupportApiKey],
   environment: {
-    MEGALADATA_AI_AGENT_STORAGE_ADAPTER: "r2",
-    MEGALADATA_AI_AGENT_STORAGE_ACCOUNT_ID: sst.cloudflare.DEFAULT_ACCOUNT_ID,
-    MEGALADATA_AI_AGENT_STORAGE_ACCESS_KEY_ID: SECRET.R2AccessKey.value,
-    MEGALADATA_AI_AGENT_STORAGE_SECRET_ACCESS_KEY: SECRET.R2SecretKey.value,
-    MEGALADATA_AI_AGENT_STORAGE_BUCKET: storage.name,
+    MEGA_AI_AGENT_STORAGE_ADAPTER: "r2",
+    MEGA_AI_AGENT_STORAGE_ACCOUNT_ID: sst.cloudflare.DEFAULT_ACCOUNT_ID,
+    MEGA_AI_AGENT_STORAGE_ACCESS_KEY_ID: SECRET.R2AccessKey.value,
+    MEGA_AI_AGENT_STORAGE_SECRET_ACCESS_KEY: SECRET.R2SecretKey.value,
+    MEGA_AI_AGENT_STORAGE_BUCKET: storage.name,
   },
 })

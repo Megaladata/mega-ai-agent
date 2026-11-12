@@ -17,7 +17,7 @@ description: أنشئ أدوات يمكن لـ LLM استدعاؤها في openc
 
 يمكن تعريفها:
 
-- محليا بوضعها في مجلد `.megaladata-ai-agent/tools/` داخل مشروعك.
+- محليا بوضعها في مجلد `.mega-ai-agent/tools/` داخل مشروعك.
 - أو عالميا بوضعها في `~/.config/opencode/tools/`.
 
 ---
@@ -26,7 +26,7 @@ description: أنشئ أدوات يمكن لـ LLM استدعاؤها في openc
 
 أسهل طريقة لإنشاء أدوات هي استخدام المساعد `tool()` الذي يوفر أمان الأنواع والتحقق.
 
-```ts title=".megaladata-ai-agent/tools/database.ts" {1}
+```ts title=".mega-ai-agent/tools/database.ts" {1}
 import { tool } from "@opencode-ai/plugin"
 
 export default tool({
@@ -49,7 +49,7 @@ export default tool({
 
 يمكنك أيضا تصدير عدة أدوات من ملف واحد. يصبح كل تصدير **أداة مستقلة** باسم **`<filename>_<exportname>`**:
 
-```ts title=".megaladata-ai-agent/tools/math.ts"
+```ts title=".mega-ai-agent/tools/math.ts"
 import { tool } from "@opencode-ai/plugin"
 
 export const add = tool({
@@ -85,7 +85,7 @@ export const multiply = tool({
 
 على سبيل المثال، يستبدل هذا الملف أداة `bash` المدمجة:
 
-```ts title=".megaladata-ai-agent/tools/bash.ts"
+```ts title=".mega-ai-agent/tools/bash.ts"
 import { tool } from "@opencode-ai/plugin"
 
 export default tool({
@@ -138,7 +138,7 @@ export default {
 
 تستقبل الأدوات سياقا حول الجلسة الحالية:
 
-```ts title=".megaladata-ai-agent/tools/project.ts" {8}
+```ts title=".mega-ai-agent/tools/project.ts" {8}
 import { tool } from "@opencode-ai/plugin"
 
 export default tool({
@@ -165,7 +165,7 @@ export default tool({
 
 أولا، أنشئ الأداة كسكربت Python:
 
-```python title=".megaladata-ai-agent/tools/add.py"
+```python title=".mega-ai-agent/tools/add.py"
 import sys
 
 a = int(sys.argv[1])
@@ -175,7 +175,7 @@ print(a + b)
 
 ثم أنشئ تعريف الأداة الذي يستدعيه:
 
-```ts title=".megaladata-ai-agent/tools/python-add.ts" {10}
+```ts title=".mega-ai-agent/tools/python-add.ts" {10}
 import { tool } from "@opencode-ai/plugin"
 import path from "path"
 
@@ -186,7 +186,7 @@ export default tool({
     b: tool.schema.number().describe("Second number"),
   },
   async execute(args, context) {
-    const script = path.join(context.worktree, ".megaladata-ai-agent/tools/add.py")
+    const script = path.join(context.worktree, ".mega-ai-agent/tools/add.py")
     const result = await Bun.$`python3 ${script} ${args.a} ${args.b}`.text()
     return result.trim()
   },

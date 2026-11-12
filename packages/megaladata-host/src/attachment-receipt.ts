@@ -7,7 +7,7 @@ import { fileError, hostException } from "./errors"
 
 // Native and backend processes share this private store. Renderer metadata is
 // only an opaque lookup key; it cannot replace the original file fingerprint.
-const root = join(homedir(), ".local", "state", "megaladata-ai-agent", "attachment-receipts-v1")
+const root = join(homedir(), ".local", "state", "mega-ai-agent", "attachment-receipts-v1")
 const prefix = "megaladata-attachment:"
 export type AttachmentOwner = { session: string; message: string }
 export type LocalAttachmentReference = {

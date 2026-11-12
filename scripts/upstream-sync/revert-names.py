@@ -2,12 +2,12 @@
 """Restore upstream (OpenCode) internal names in the fork tree.
 
 Inverse of script/migration/rebrand.py (svckey, scope, pkgdir classes):
-  scope   @megaladata-ai-agent/<upstream package>  -> @opencode-ai/<package>
-          @megaladata-ai-agent/agent               -> opencode          (package packages/opencode)
-  svckey  "@megaladata-ai-agent/<Key>"             -> "@opencode/<Key>"   (Effect service keys)
+  scope   @mega-ai-agent/<upstream package>  -> @opencode-ai/<package>
+          @mega-ai-agent/agent               -> opencode          (package packages/opencode)
+  svckey  "@mega-ai-agent/<Key>"             -> "@opencode/<Key>"   (Effect service keys)
   pkgdir  packages/agent                        -> packages/opencode
-Fork packages (product, megaladata-host, runtime, site, evals) keep the @megaladata-ai-agent scope.
-External names (MEGALADATA_AI_AGENT_*, .megaladata-ai-agent, megaladata-ai-agent.json…) are left alone.
+Fork packages (product, megaladata-host, runtime, site, evals) keep the @mega-ai-agent scope.
+External names (MEGA_AI_AGENT_*, .mega-ai-agent, mega-ai-agent.json…) are left alone.
 
 Edits are line-based and use the shared base: a fork line that equals the forward transform of the
 base line is replaced by the base line verbatim (where the inverse is ambiguous, for example
@@ -48,7 +48,7 @@ EXTRA_EDITS = [
     ("packages/opencode/test/server/session-list.test.ts", '"packages", "agent"', '"packages", "opencode"', 4),
     ("packages/opencode/test/server/httpapi-session.test.ts", '"packages", "agent"', '"packages", "opencode"', 1),
     # scope written as a separate path segment (the fixture directory of a fake plugin package)
-    ("packages/opencode/test/tool/registry.test.ts", '"node_modules", "@megaladata-ai-agent", "plugin"', '"node_modules", "@opencode-ai", "plugin"', 1),
+    ("packages/opencode/test/tool/registry.test.ts", '"node_modules", "@mega-ai-agent", "plugin"', '"node_modules", "@opencode-ai", "plugin"', 1),
 ]
 
 
@@ -78,7 +78,7 @@ def main():
                 upstream_pkgs.add(name.split("/", 1)[1])
     upstream_pkgs.discard("")
 
-    scope_rx = re.compile(r"@megaladata-ai-agent/([A-Za-z0-9_-]+)")
+    scope_rx = re.compile(r"@mega-ai-agent/([A-Za-z0-9_-]+)")
 
     def inv_scope(m):
         t = m.group(1)
@@ -96,7 +96,7 @@ def main():
     pkgdir_rx = re.compile(r"packages/agent(?![\w-])")
 
     def inv(line):
-        if "@megaladata-ai-agent/" in line:
+        if "@mega-ai-agent/" in line:
             line = scope_rx.sub(inv_scope, line)
         if "packages/agent" in line:
             line = pkgdir_rx.sub("packages/opencode", line)
@@ -105,9 +105,9 @@ def main():
     fwd_scope_rx = re.compile(r"@opencode-ai/([a-zA-Z0-9_-]+)")
 
     def fwd(line):
-        line = fwd_scope_rx.sub(lambda m: "@megaladata-ai-agent/" + m.group(1) if m.group(1) in upstream_pkgs else m.group(0), line)
+        line = fwd_scope_rx.sub(lambda m: "@mega-ai-agent/" + m.group(1) if m.group(1) in upstream_pkgs else m.group(0), line)
         line = line.replace("packages/opencode", "packages/agent").replace("../opencode", "../agent")
-        line = line.replace("@opencode/", "@megaladata-ai-agent/")
+        line = line.replace("@opencode/", "@mega-ai-agent/")
         return line
 
     # Path pairs base -> HEAD.
@@ -135,7 +135,7 @@ def main():
     for mode, sha, path in entries:
         if path in SKIP_FILES or path.startswith(SKIP_PREFIX) or SKIP_RX.search(path):
             continue
-        if path.startswith("docs/") and not re.fullmatch(r"docs/testing/megaladata-ai-agent/[^/]+\.md", path):
+        if path.startswith("docs/") and not re.fullmatch(r"docs/testing/mega-ai-agent/[^/]+\.md", path):
             continue
         raw_b = git("cat-file", "blob", sha)
         if b"\0" in raw_b:
@@ -144,7 +144,7 @@ def main():
             text = raw_b.decode("utf-8")
         except UnicodeDecodeError:
             continue
-        if "@megaladata-ai-agent/" not in text and "packages/agent" not in text and "../agent" not in text:
+        if "@mega-ai-agent/" not in text and "packages/agent" not in text and "../agent" not in text:
             continue
         lines = text.split("\n")
         bp = base_of.get(path)

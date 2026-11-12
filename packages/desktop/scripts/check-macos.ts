@@ -3,7 +3,7 @@ import { resolve } from "node:path"
 
 const root = resolve(import.meta.dir, "../../..")
 const output = process.argv[2]
-if (!output || !process.env.MEGALADATA_AI_AGENT_TEST_NODE) throw Error("Report path and pinned test Node are required")
+if (!output || !process.env.MEGA_AI_AGENT_TEST_NODE) throw Error("Report path and pinned test Node are required")
 const checks = [
   { package: "product", args: ["typecheck"] },
   { package: "megaladata-host", args: ["typecheck"] },

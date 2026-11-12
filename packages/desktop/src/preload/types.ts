@@ -1,4 +1,4 @@
-import type { LocalAttachmentReference } from "@megaladata-ai-agent/megaladata-host/attachment-receipt"
+import type { LocalAttachmentReference } from "@mega-ai-agent/megaladata-host/attachment-receipt"
 import type { Megaladata } from "@opencode-ai/schema/megaladata"
 import type { DesktopMenuAction } from "@opencode-ai/app/desktop-menu"
 import type { WslServersPlatform } from "@opencode-ai/app/wsl/types"

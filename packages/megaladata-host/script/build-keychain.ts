@@ -15,7 +15,7 @@ export async function buildKeychain(output: string) {
     await buildPhase(
       "keychain-sign",
       () =>
-        $`/usr/bin/codesign --force --sign - --timestamp=none --identifier com.megaladata.aiagent.cli.keychain ${join(work, "megaladata-keychain")}`,
+        $`/usr/bin/codesign --force --sign - --timestamp=none --identifier com.mega.aiagent.cli.keychain ${join(work, "megaladata-keychain")}`,
     )
     await buildPhase("keychain-verify", () => $`/usr/bin/codesign --verify --strict ${join(work, "megaladata-keychain")}`)
     await buildPhase("keychain-link", () => link(join(work, "megaladata-keychain"), join(output, "megaladata-keychain")))

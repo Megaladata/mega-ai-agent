@@ -1,6 +1,6 @@
 import { constants } from "node:fs"
 import { open } from "node:fs/promises"
-import { fileError, hostException } from "@megaladata-ai-agent/megaladata-host/errors"
+import { fileError, hostException } from "@mega-ai-agent/megaladata-host/errors"
 
 // Read an authorized file, with a bound on allocation and reads.
 // O_NONBLOCK lets us reject a FIFO after fstat without waiting for a writer.

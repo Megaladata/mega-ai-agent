@@ -8,7 +8,7 @@ export const Favicon = () => {
       <Link rel="shortcut icon" href="/megaladata-favicon-v1.ico" />
       <Link rel="apple-touch-icon" sizes="180x180" href="/megaladata-apple-touch-v1.png" />
       <Link rel="manifest" href="/megaladata-app-v1.webmanifest" />
-      <Meta name="apple-mobile-web-app-title" content="Megaladata AI" />
+      <Meta name="apple-mobile-web-app-title" content="Mega AI" />
     </>
   )
 }

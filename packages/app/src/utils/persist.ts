@@ -25,9 +25,9 @@ type PersistTarget = {
 }
 
 const LEGACY_STORAGE = "default.dat"
-const GLOBAL_STORAGE = "megaladata-ai-agent.global.dat"
-const WINDOW_STORAGE = "megaladata-ai-agent.window"
-const LOCAL_PREFIX = "megaladata-ai-agent."
+const GLOBAL_STORAGE = "mega-ai-agent.global.dat"
+const WINDOW_STORAGE = "mega-ai-agent.window"
+const LOCAL_PREFIX = "mega-ai-agent."
 const fallback = new Map<string, boolean>()
 
 const CACHE_MAX_ENTRIES = 500
@@ -349,13 +349,13 @@ async function migrateLegacyAsync(input: {
 function workspaceStorage(dir: string) {
   const head = (dir.slice(0, 12) || "workspace").replace(/[^a-zA-Z0-9._-]/g, "-")
   const sum = checksum(dir) ?? "0"
-  return `megaladata-ai-agent.workspace.${head}.${sum}.dat`
+  return `mega-ai-agent.workspace.${head}.${sum}.dat`
 }
 
 function draftStorage(draftID: string) {
   const head = (draftID.slice(0, 12) || "draft").replace(/[^a-zA-Z0-9._-]/g, "-")
   const sum = checksum(draftID) ?? "0"
-  return `megaladata-ai-agent.draft.${head}.${sum}.dat`
+  return `mega-ai-agent.draft.${head}.${sum}.dat`
 }
 
 function windowStorage(windowID: string) {

@@ -1,1 +1,1 @@
-export { megaladataHostPort } from "@megaladata-ai-agent/megaladata-host/host-port"
+export { megaladataHostPort } from "@mega-ai-agent/megaladata-host/host-port"

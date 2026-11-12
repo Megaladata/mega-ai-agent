@@ -284,7 +284,7 @@ export function SessionHeader() {
   const [centerMount, setCenterMount] = createSignal<HTMLElement | null>(null)
   const rightMount = useTitlebarRightMount()
   onMount(() => {
-    setCenterMount(document.getElementById("megaladata-ai-agent-titlebar-center"))
+    setCenterMount(document.getElementById("mega-ai-agent-titlebar-center"))
   })
 
   return (

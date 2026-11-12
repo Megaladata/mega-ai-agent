@@ -3,7 +3,7 @@ import { dirname, join, resolve } from "node:path"
 import { readdir, writeFile } from "node:fs/promises"
 import { fileURLToPath } from "node:url"
 import { $ } from "bun"
-import { Product, productName, productSlug } from "@megaladata-ai-agent/product"
+import { Product, productName, productSlug } from "@mega-ai-agent/product"
 import { decodeManifest, fileHash, hash } from "./manifest"
 import pins from "../../../product/megaladata-release.json"
 
@@ -96,7 +96,7 @@ const manifest = decodeManifest({
   schemaVersion: 1,
   version: args.version,
   channel,
-  browserRecovery: process.env.MEGALADATA_AI_AGENT_BROWSER_RECOVERY === "1",
+  browserRecovery: process.env.MEGA_AI_AGENT_BROWSER_RECOVERY === "1",
   builtAt: new Date().toISOString(),
   source: {
     commit: (await $`git rev-parse HEAD`.cwd(root).text()).trim(),

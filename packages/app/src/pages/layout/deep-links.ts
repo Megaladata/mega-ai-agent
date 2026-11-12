@@ -1,7 +1,7 @@
-export const deepLinkEvent = "megaladata-ai-agent:deep-link"
+export const deepLinkEvent = "mega-ai-agent:deep-link"
 
 const parseUrl = (input: string) => {
-  if (!input.startsWith("megaladata-ai-agent://")) return
+  if (!input.startsWith("mega-ai-agent://")) return
   if (typeof URL.canParse === "function" && !URL.canParse(input)) return
   try {
     return new URL(input)
@@ -37,14 +37,14 @@ export const collectNewSessionDeepLinks = (urls: string[]) =>
   urls.map(parseNewSessionDeepLink).filter((link): link is { directory: string; prompt?: string } => !!link)
 
 type OpenCodeWindow = Window & {
-  __MEGALADATA_AI_AGENT__?: {
+  __MEGA_AI_AGENT__?: {
     deepLinks?: string[]
   }
 }
 
 export const drainPendingDeepLinks = (target: OpenCodeWindow) => {
-  const pending = target.__MEGALADATA_AI_AGENT__?.deepLinks ?? []
+  const pending = target.__MEGA_AI_AGENT__?.deepLinks ?? []
   if (pending.length === 0) return []
-  if (target.__MEGALADATA_AI_AGENT__) target.__MEGALADATA_AI_AGENT__.deepLinks = []
+  if (target.__MEGA_AI_AGENT__) target.__MEGA_AI_AGENT__.deepLinks = []
   return pending
 }

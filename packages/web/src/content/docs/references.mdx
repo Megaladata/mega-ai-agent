@@ -5,9 +5,9 @@ description: Add local directories and Git repositories as project references.
 
 References give OpenCode access to directories outside the current project. Use them to make documentation, shared libraries, examples, or another repository available while you work.
 
-References are configured by alias in `megaladata-ai-agent.json` or `megaladata-ai-agent.jsonc`.
+References are configured by alias in `mega-ai-agent.json` or `mega-ai-agent.jsonc`.
 
-```jsonc title="megaladata-ai-agent.jsonc"
+```jsonc title="mega-ai-agent.jsonc"
 {
   "$schema": "https://opencode.ai/config.json",
   "references": {
@@ -30,7 +30,7 @@ References are configured by alias in `megaladata-ai-agent.json` or `megaladata-
 
 Use `path` to reference a local directory.
 
-```jsonc title="megaladata-ai-agent.jsonc"
+```jsonc title="mega-ai-agent.jsonc"
 {
   "references": {
     "docs": {
@@ -48,7 +48,7 @@ Paths can be:
 
 You can also use a string shorthand:
 
-```jsonc title="megaladata-ai-agent.jsonc"
+```jsonc title="mega-ai-agent.jsonc"
 {
   "references": {
     "docs": "../docs",
@@ -62,7 +62,7 @@ You can also use a string shorthand:
 
 Use `repository` to reference a Git repository. OpenCode materializes the repository in its local repository cache and makes the checked-out source available as a reference directory.
 
-```jsonc title="megaladata-ai-agent.jsonc"
+```jsonc title="mega-ai-agent.jsonc"
 {
   "references": {
     "effect": {
@@ -77,7 +77,7 @@ Use `repository` to reference a Git repository. OpenCode materializes the reposi
 
 You can use string shorthand when you do not need a branch, description, or other options:
 
-```jsonc title="megaladata-ai-agent.jsonc"
+```jsonc title="mega-ai-agent.jsonc"
 {
   "references": {
     "effect": "Effect-TS/effect",
@@ -95,7 +95,7 @@ Git references are refreshed asynchronously. A newly configured repository may t
 
 Add `description` to explain when an agent should use a reference.
 
-```jsonc title="megaladata-ai-agent.jsonc"
+```jsonc title="mega-ai-agent.jsonc"
 {
   "references": {
     "design-system": {
@@ -114,7 +114,7 @@ OpenCode includes references with descriptions in agent context. Descriptions sh
 
 Set `hidden` to `true` to omit a reference from `@` autocomplete in the TUI.
 
-```jsonc title="megaladata-ai-agent.jsonc"
+```jsonc title="mega-ai-agent.jsonc"
 {
   "references": {
     "internal": {

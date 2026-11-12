@@ -19,7 +19,7 @@ export function shouldNotify(input: {
 
 export async function upgrade() {
   const config = await AppRuntime.runPromise(Config.Service.use((cfg) => cfg.getGlobal()))
-  if (config.autoupdate === false || Flag.MEGALADATA_AI_AGENT_DISABLE_AUTOUPDATE) return
+  if (config.autoupdate === false || Flag.MEGA_AI_AGENT_DISABLE_AUTOUPDATE) return
   const method = await Installation.method()
   if (method === "unknown") return
   const latest = await Installation.latest(method).catch(() => {})
@@ -27,8 +27,8 @@ export async function upgrade() {
   if (
     shouldNotify({
       autoupdate: config.autoupdate,
-      disabled: Flag.MEGALADATA_AI_AGENT_DISABLE_AUTOUPDATE,
-      always: Flag.MEGALADATA_AI_AGENT_ALWAYS_NOTIFY_UPDATE,
+      disabled: Flag.MEGA_AI_AGENT_DISABLE_AUTOUPDATE,
+      always: Flag.MEGA_AI_AGENT_ALWAYS_NOTIFY_UPDATE,
       current: InstallationVersion,
       latest,
     })

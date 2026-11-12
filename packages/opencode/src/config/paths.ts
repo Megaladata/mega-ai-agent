@@ -24,21 +24,21 @@ export const directories = Effect.fn("ConfigPaths.directories")(function* (direc
   const afs = yield* FSUtil.Service
   return unique([
     Global.Path.config,
-    ...(!Flag.MEGALADATA_AI_AGENT_DISABLE_PROJECT_CONFIG
+    ...(!Flag.MEGA_AI_AGENT_DISABLE_PROJECT_CONFIG
       ? yield* afs.up({
-          targets: [".megaladata-ai-agent"],
+          targets: [".mega-ai-agent"],
           start: directory,
           stop: worktree,
         })
       : []),
-    ...(!process.env.MEGALADATA_AI_AGENT_CLI_ROOT
+    ...(!process.env.MEGA_AI_AGENT_CLI_ROOT
       ? yield* afs.up({
-          targets: [".megaladata-ai-agent"],
+          targets: [".mega-ai-agent"],
           start: Global.Path.home,
           stop: Global.Path.home,
         })
       : []),
-    ...(Flag.MEGALADATA_AI_AGENT_CONFIG_DIR ? [Flag.MEGALADATA_AI_AGENT_CONFIG_DIR] : []),
+    ...(Flag.MEGA_AI_AGENT_CONFIG_DIR ? [Flag.MEGA_AI_AGENT_CONFIG_DIR] : []),
   ])
 })
 

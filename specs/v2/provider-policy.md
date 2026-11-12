@@ -187,7 +187,7 @@ Result:
 provider.use / openai -> deny
 ```
 
-The relative policy precedence of direct project files and `.megaladata-ai-agent` files is intentionally deferred until `.megaladata-ai-agent` configuration is reviewed.
+The relative policy precedence of direct project files and `.mega-ai-agent` files is intentionally deferred until `.mega-ai-agent` configuration is reviewed.
 
 ## Organization-Managed Policy
 

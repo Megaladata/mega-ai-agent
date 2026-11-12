@@ -5,6 +5,6 @@ export default defineConfig({
   schema: ["./src/**/*.sql.ts", "./src/**/sql.ts"],
   out: "./migration",
   dbCredentials: {
-    url: "/home/thdxr/.local/share/opencode/megaladata-ai-agent.db",
+    url: "/home/thdxr/.local/share/opencode/mega-ai-agent.db",
   },
 })

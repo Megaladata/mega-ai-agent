@@ -35,8 +35,8 @@ await lstat(destination).then(
     if (error.code !== "ENOENT") throw error
   },
 )
-const node = process.env.MEGALADATA_AI_AGENT_NODE_SOURCE
-const browsers = process.env.MEGALADATA_AI_AGENT_BROWSER_SOURCE
+const node = process.env.MEGA_AI_AGENT_NODE_SOURCE
+const browsers = process.env.MEGA_AI_AGENT_BROWSER_SOURCE
 if (!node || !browsers) throw new Error("Pinned Node/browser inputs are required")
 if (process.versions.bun !== bunNotice.version || Bun.revision !== bunNotice.commit)
   throw Error("MEGALADATA_BUN_NOTICE_REVISION_MISMATCH")
@@ -56,19 +56,19 @@ try {
     .cwd(join(repo, "packages/opencode"))
     .env({
       ...process.env,
-      MEGALADATA_AI_AGENT_CHANNEL: process.env.MEGALADATA_AI_AGENT_CHANNEL ?? "dev",
-      MEGALADATA_AI_AGENT_BUILD_OUTPUT: join(work, "native"),
+      MEGA_AI_AGENT_CHANNEL: process.env.MEGA_AI_AGENT_CHANNEL ?? "dev",
+      MEGA_AI_AGENT_BUILD_OUTPUT: join(work, "native"),
     })
   const artifact = join(
     work,
-    `native/megaladata-ai-agent-cli-${process.platform === "win32" ? "windows" : process.platform}-${process.arch}${baseline ? "-baseline" : ""}`,
+    `native/mega-ai-agent-cli-${process.platform === "win32" ? "windows" : process.platform}-${process.arch}${baseline ? "-baseline" : ""}`,
   )
   const resources = join(artifact, "resources/megaladata")
   if (process.platform === "darwin") {
     // Bun supplies its JSC runtime entitlements. Retain them while signing our
     // compiled executable, and never re-sign vendor Node or Chromium resources.
-    await $`/usr/bin/codesign --force --sign - --timestamp=none --identifier com.megaladata.aiagent.cli --preserve-metadata=entitlements ${join(artifact, "bin/megaladata-ai-agent-cli")}`
-    await $`/usr/bin/codesign --verify --strict ${join(artifact, "bin/megaladata-ai-agent-cli")}`
+    await $`/usr/bin/codesign --force --sign - --timestamp=none --identifier com.mega.aiagent.cli --preserve-metadata=entitlements ${join(artifact, "bin/mega-ai-agent-cli")}`
+    await $`/usr/bin/codesign --verify --strict ${join(artifact, "bin/mega-ai-agent-cli")}`
   }
   await buildPhase("cli-resource-staging", () =>
     stageResources({
@@ -141,8 +141,8 @@ try {
   await buildPhase("cli-manifest", () =>
     writeCliManifest(artifact, {
       version: pkg.version,
-      channel: process.env.MEGALADATA_AI_AGENT_CHANNEL ?? "dev",
-      browserRecovery: process.env.MEGALADATA_AI_AGENT_BROWSER_RECOVERY === "1",
+      channel: process.env.MEGA_AI_AGENT_CHANNEL ?? "dev",
+      browserRecovery: process.env.MEGA_AI_AGENT_BROWSER_RECOVERY === "1",
       platform: process.platform,
       arch: process.arch,
       ...source,
@@ -166,7 +166,7 @@ try {
   } else {
     if (typeof pkg.version !== "string" || !/^[a-zA-Z0-9.+-]+$/.test(pkg.version))
       throw new Error("MEGALADATA_ARCHIVE_VERSION_INVALID")
-    const name = `megaladata-ai-agent-cli-${pkg.version}-${process.platform}-${process.arch}.${process.platform === "win32" ? "zip" : "tar.gz"}`
+    const name = `mega-ai-agent-cli-${pkg.version}-${process.platform}-${process.arch}.${process.platform === "win32" ? "zip" : "tar.gz"}`
     const archive = join(dirname(destination), name)
     const checksum = archive + ".sha256"
     const creation =
@@ -198,7 +198,7 @@ try {
     if (process.platform === "darwin") {
       await buildPhase(
         "cli-roundtrip-signature",
-        () => $`/usr/bin/codesign --verify --strict ${join(extracted, "bin/megaladata-ai-agent-cli")}`,
+        () => $`/usr/bin/codesign --verify --strict ${join(extracted, "bin/mega-ai-agent-cli")}`,
       )
       await buildPhase(
         "cli-roundtrip-keychain",

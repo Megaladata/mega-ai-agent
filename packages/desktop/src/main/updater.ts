@@ -1,5 +1,5 @@
 import { app, dialog } from "electron"
-import { Product } from "@megaladata-ai-agent/product"
+import { Product } from "@mega-ai-agent/product"
 import pkg from "electron-updater"
 import { CHANNEL, UPDATER_ENABLED } from "./constants"
 import { validateUpdate } from "./update-policy"

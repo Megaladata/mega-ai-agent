@@ -17,21 +17,21 @@ def transform(text, packages):
     # Exact workspace names, not a wildcard rewrite of external npm packages.
     text = re.sub(r"@opencode-ai/[a-zA-Z0-9_-]+", lambda match: packages.get(match[0], match[0]), text)
     text = re.sub(r"\bOPENCODE_[A-Z0-9_]+", lambda match: match[0] if match[0] in PROVIDER_ENV
-                  else match[0].replace("OPENCODE_", "MEGALADATA_AI_AGENT_", 1), text)
+                  else match[0].replace("OPENCODE_", "MEGA_AI_AGENT_", 1), text)
     for source, target in [
         ("packages/opencode", "packages/agent"),
         ("../opencode", "../agent"),
-        ("ai.opencode.desktop", "com.megaladata.aiagent"),
-        ("opencode://", "megaladata-ai-agent://"),
-        ("@opencode/", "@megaladata-ai-agent/"),
-        ("opencode.json", "megaladata-ai-agent.json"),
-        ("opencode.db", "megaladata-ai-agent.db"),
-        ("opencode.settings", "megaladata-ai-agent.settings"),
-        ("opencode.updater", "megaladata-ai-agent.updater"),
+        ("ai.opencode.desktop", "com.mega.aiagent"),
+        ("opencode://", "mega-ai-agent://"),
+        ("@opencode/", "@mega-ai-agent/"),
+        ("opencode.json", "mega-ai-agent.json"),
+        ("opencode.db", "mega-ai-agent.db"),
+        ("opencode.settings", "mega-ai-agent.settings"),
+        ("opencode.updater", "mega-ai-agent.updater"),
     ]:
         text = text.replace(source, target)
     # The leading dot must be a directory token, not a provider hostname.
-    text = re.sub(r"(?<![a-zA-Z0-9])\.opencode(?=[/\\\s\"'`)]|$)", ".megaladata-ai-agent", text)
+    text = re.sub(r"(?<![a-zA-Z0-9])\.opencode(?=[/\\\s\"'`)]|$)", ".mega-ai-agent", text)
     return text
 
 
@@ -44,7 +44,7 @@ def main():
             continue
         value = json.loads((root / name).read_text()).get("name", "")
         if value.startswith("@opencode-ai/"):
-            packages[value] = value.replace("@opencode-ai/", "@megaladata-ai-agent/", 1)
+            packages[value] = value.replace("@opencode-ai/", "@mega-ai-agent/", 1)
     changed = []
     for name in filenames:
         if not name or name.startswith(EXCLUDED + GENERATED) or name == "bun.lock":
@@ -59,19 +59,19 @@ def main():
         new = transform(old, packages)
         if name.startswith(("packages/app/", "packages/desktop/")):
             # The named OpenCode model providers retain their third-party brand.
-            new = re.sub(r"\bOpenCode\b(?! (?:Zen|Go)\b)", "Megaladata AI Agent", new)
+            new = re.sub(r"\bOpenCode\b(?! (?:Zen|Go)\b)", "Mega AI Agent", new)
         if old != new:
             path.write_text(new)
             changed.append(name)
-    for source, target in [("packages/opencode", "packages/agent"), (".opencode", ".megaladata-ai-agent")]:
+    for source, target in [("packages/opencode", "packages/agent"), (".opencode", ".mega-ai-agent")]:
         old, new = root / source, root / target
         if old.exists():
             if new.exists():
                 raise ValueError("RENAME_DESTINATION_EXISTS")
             old.rename(new)
-    config = root / ".megaladata-ai-agent/opencode.jsonc"
+    config = root / ".mega-ai-agent/opencode.jsonc"
     if config.exists():
-        config.rename(config.with_name("megaladata-ai-agent.jsonc"))
+        config.rename(config.with_name("mega-ai-agent.jsonc"))
     print(json.dumps({"changedFiles": len(changed), "workspaceNames": packages}, ensure_ascii=False))
 
 

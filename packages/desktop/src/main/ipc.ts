@@ -1,4 +1,4 @@
-import { createAttachmentReceipt } from "@megaladata-ai-agent/megaladata-host/attachment-receipt"
+import { createAttachmentReceipt } from "@mega-ai-agent/megaladata-host/attachment-receipt"
 import { execFile } from "node:child_process"
 import { stat } from "node:fs/promises"
 import { basename, join } from "node:path"

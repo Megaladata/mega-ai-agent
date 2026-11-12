@@ -1,4 +1,4 @@
-const enabled = process.env.MEGALADATA_AI_AGENT_ACP_PROFILE === "1"
+const enabled = process.env.MEGA_AI_AGENT_ACP_PROFILE === "1"
 const started = performance.now()
 
 export function mark(name: string, fields?: Record<string, string | number | boolean | undefined>) {

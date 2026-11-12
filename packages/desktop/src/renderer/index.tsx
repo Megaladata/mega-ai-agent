@@ -53,7 +53,7 @@ if (import.meta.env.VITE_SENTRY_DSN) {
         (i) =>
           i.name !== "Breadcrumbs" &&
           !(
-            import.meta.env.MEGALADATA_AI_AGENT_CHANNEL === "prod" &&
+            import.meta.env.MEGA_AI_AGENT_CHANNEL === "prod" &&
             (i.name === "GlobalHandlers" || i.name === "BrowserApiErrors")
           ),
       )
@@ -64,7 +64,7 @@ if (import.meta.env.VITE_SENTRY_DSN) {
 const [updaterState, setUpdaterState] = createSignal<UpdaterState>({ status: "disabled" })
 void window.api.updater.subscribe(setUpdaterState)
 
-const deepLinkEvent = "megaladata-ai-agent:deep-link"
+const deepLinkEvent = "mega-ai-agent:deep-link"
 
 type DesktopWindowState = {
   id?: string
@@ -72,9 +72,9 @@ type DesktopWindowState = {
 
 const emitDeepLinks = (urls: string[]) => {
   if (urls.length === 0) return
-  window.__MEGALADATA_AI_AGENT__ ??= {}
-  const pending = window.__MEGALADATA_AI_AGENT__.deepLinks ?? []
-  window.__MEGALADATA_AI_AGENT__.deepLinks = [...pending, ...urls]
+  window.__MEGA_AI_AGENT__ ??= {}
+  const pending = window.__MEGA_AI_AGENT__.deepLinks ?? []
+  window.__MEGA_AI_AGENT__.deepLinks = [...pending, ...urls]
   window.dispatchEvent(new CustomEvent(deepLinkEvent, { detail: { urls } }))
 }
 
@@ -84,7 +84,7 @@ const listenForDeepLinks = () => {
 }
 
 function windowLastActiveUrlKey(windowID: string) {
-  return `megaladata-ai-agent.desktop.window.${windowID}.last-active-url`
+  return `mega-ai-agent.desktop.window.${windowID}.last-active-url`
 }
 
 function getLastActiveUrl(windowID: string) {
@@ -351,7 +351,7 @@ function LoadingSplash() {
 function DesktopRoot(props: { windowState: DesktopWindowState }) {
   const platform = createPlatform(props.windowState)
   const loadLocale = async () => {
-    const current = await platform.storage?.("megaladata-ai-agent.global.dat").getItem("language")
+    const current = await platform.storage?.("mega-ai-agent.global.dat").getItem("language")
     const legacy = current ? undefined : await platform.storage?.().getItem("language.v1")
     const raw = current ?? legacy
     if (!raw) return

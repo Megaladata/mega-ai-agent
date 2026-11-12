@@ -6,7 +6,7 @@ description: >-
   package. Use for requests to build a scenario, change a package, or run an
   analysis in Megaladata. package-docs writes documentation for a local .mgp;
   ordinary Help questions use Help without this skill.
-compatibility: Megaladata AI Agent Linux Desktop and standalone CLI; Megaladata 7.4.2, managed runtime user-v1, and Megaladata Dock Help.
+compatibility: Mega AI Agent Linux Desktop and standalone CLI; Megaladata 7.4.2, managed runtime user-v1, and Megaladata Dock Help.
 ---
 
 # Building a Megaladata scenario

@@ -3,7 +3,7 @@
  * Compares two compat-snapshot.ts outputs.
  *
  * The "before" snapshot is first rewritten with the documented internal renames
- * (@megaladata-ai-agent/<upstream package> -> @opencode-ai/<package>, @megaladata-ai-agent/agent -> opencode,
+ * (@mega-ai-agent/<upstream package> -> @opencode-ai/<package>, @mega-ai-agent/agent -> opencode,
  * packages/agent -> packages/opencode). Every remaining difference is printed as a JSON path with both
  * values. Exit code 0 means the external surface is identical modulo those renames; 1 means differences.
  *
@@ -25,8 +25,8 @@ const allow = values.allow ?? []
 const FORK_ONLY = "product|megaladata-host|runtime|site|evals"
 const rename = (text: string) =>
   text
-    .replaceAll(/@megaladata-ai-agent\/agent(?![A-Za-z0-9_-])/g, "opencode")
-    .replaceAll(new RegExp(`@megaladata-ai-agent/(?!(?:${FORK_ONLY})(?![A-Za-z0-9_-]))`, "g"), "@opencode-ai/")
+    .replaceAll(/@mega-ai-agent\/agent(?![A-Za-z0-9_-])/g, "opencode")
+    .replaceAll(new RegExp(`@mega-ai-agent/(?!(?:${FORK_ONLY})(?![A-Za-z0-9_-]))`, "g"), "@opencode-ai/")
     .replaceAll(/packages\/agent(?![\w-])/g, "packages/opencode")
     .replaceAll("../../agent/", "../../opencode/")
 

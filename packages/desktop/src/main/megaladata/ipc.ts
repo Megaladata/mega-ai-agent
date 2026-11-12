@@ -10,7 +10,7 @@ export function registerMegaladataIpc(api: Megaladata.API) {
       throw new Error("MEGALADATA_SENDER_INVALID")
     const url = new URL(event.senderFrame.url)
     const valid =
-      (url.protocol === "megaladata-ai-agent-app:" && url.hostname === "renderer") ||
+      (url.protocol === "mega-ai-agent-app:" && url.hostname === "renderer") ||
       (!app.isPackaged &&
         !!process.env.ELECTRON_RENDERER_URL &&
         url.origin === new URL(process.env.ELECTRON_RENDERER_URL).origin)

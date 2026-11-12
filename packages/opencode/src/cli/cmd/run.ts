@@ -1,4 +1,4 @@
-import { createAttachmentReceipt, attachmentReceiptSource } from "@megaladata-ai-agent/megaladata-host/attachment-receipt"
+import { createAttachmentReceipt, attachmentReceiptSource } from "@mega-ai-agent/megaladata-host/attachment-receipt"
 import { standaloneCancellation } from "../standalone-cancellation"
 import { exitCli } from "../exit"
 import { runToolOutcome } from "../run-outcome"
@@ -22,7 +22,7 @@ import path from "path"
 import { pathToFileURL } from "url"
 import { fileSnapshot } from "@/util/file-snapshot"
 import { stat } from "node:fs/promises"
-import { fileError, hostErrorText } from "@megaladata-ai-agent/megaladata-host/errors"
+import { fileError, hostErrorText } from "@mega-ai-agent/megaladata-host/errors"
 import { Cause, Effect, Exit } from "effect"
 import { ProviderV2 } from "@opencode-ai/core/provider"
 import { ModelV2 } from "@opencode-ai/core/model"
@@ -202,12 +202,12 @@ export const RunCommand = effectCmd({
       .option("password", {
         alias: ["p"],
         type: "string",
-        describe: "basic auth password (defaults to MEGALADATA_AI_AGENT_SERVER_PASSWORD)",
+        describe: "basic auth password (defaults to MEGA_AI_AGENT_SERVER_PASSWORD)",
       })
       .option("username", {
         alias: ["u"],
         type: "string",
-        describe: "basic auth username (defaults to MEGALADATA_AI_AGENT_SERVER_USERNAME or 'opencode')",
+        describe: "basic auth username (defaults to MEGA_AI_AGENT_SERVER_USERNAME or 'opencode')",
       })
       .option("dir", {
         type: "string",
@@ -303,7 +303,7 @@ export const RunCommand = effectCmd({
         }
         process.exitCode = 1
         // Standalone must return so host cleanup can run; do not throw into CLI_RUN_FAILED.
-        if (!process.env.MEGALADATA_AI_AGENT_CLI_ROOT) exitCli(1)
+        if (!process.env.MEGA_AI_AGENT_CLI_ROOT) exitCli(1)
         return
       }
     }
@@ -404,7 +404,7 @@ export const RunCommand = effectCmd({
             return exitCli(1)
           })
           const isDirectory = info.isDirectory()
-          if ((args.attach || process.env.MEGALADATA_AI_AGENT_CLI_ROOT) && isDirectory) {
+          if ((args.attach || process.env.MEGA_AI_AGENT_CLI_ROOT) && isDirectory) {
             UI.error(
               hostErrorText("MEGALADATA_FILE_NOT_REGULAR") +
                 ". Cannot attach local directory without a shared filesystem: " +
@@ -445,7 +445,7 @@ export const RunCommand = effectCmd({
           }
 
           const content = await (async () => {
-            if (!args.attach && !process.env.MEGALADATA_AI_AGENT_CLI_ROOT) return
+            if (!args.attach && !process.env.MEGA_AI_AGENT_CLI_ROOT) return
             return fileSnapshot(resolvedPath).catch((error: unknown) => {
               UI.error(hostErrorText(error) + " Path: " + resolvedPath)
               return exitCli(1)
@@ -472,7 +472,7 @@ export const RunCommand = effectCmd({
         }
       }
 
-      const stdin = await readPromptStdin(!!process.env.MEGALADATA_AI_AGENT_CLI_ROOT)
+      const stdin = await readPromptStdin(!!process.env.MEGA_AI_AGENT_CLI_ROOT)
       if (stdin.cancelled) {
         process.exitCode = 130
         if (args.format === "json")
@@ -489,12 +489,12 @@ export const RunCommand = effectCmd({
 
       if (message.trim().length === 0 && !args.command && !interactive) {
         UI.error("You must provide a message or a command")
-        exitCli(process.env.MEGALADATA_AI_AGENT_CLI_ROOT ? 2 : 1)
+        exitCli(process.env.MEGA_AI_AGENT_CLI_ROOT ? 2 : 1)
       }
 
       if (args.fork && !args.continue && !args.session) {
         UI.error("--fork requires --continue or --session")
-        exitCli(process.env.MEGALADATA_AI_AGENT_CLI_ROOT ? 2 : 1)
+        exitCli(process.env.MEGA_AI_AGENT_CLI_ROOT ? 2 : 1)
       }
 
       const rules: PermissionV1.Ruleset = interactive
@@ -782,9 +782,9 @@ export const RunCommand = effectCmd({
               if (part.sessionID !== sessionID) continue
 
               if (part.type === "tool" && (part.state.status === "completed" || part.state.status === "error")) {
-                if (process.env.MEGALADATA_AI_AGENT_CLI_ROOT) outcome.observe(part)
+                if (process.env.MEGA_AI_AGENT_CLI_ROOT) outcome.observe(part)
                 if (
-                  process.env.MEGALADATA_AI_AGENT_CLI_ROOT &&
+                  process.env.MEGA_AI_AGENT_CLI_ROOT &&
                   part.state.status === "error" &&
                   part.state.metadata?.permissionDenied === true
                 ) {
@@ -883,7 +883,7 @@ export const RunCommand = effectCmd({
                   reply: "once",
                 })
               } else {
-                if (process.env.MEGALADATA_AI_AGENT_CLI_ROOT) {
+                if (process.env.MEGA_AI_AGENT_CLI_ROOT) {
                   error = "CLI_PERMISSION_REJECTED"
                   emit("error", { error: { name: error, data: { message: error } } })
                 }
@@ -900,11 +900,11 @@ export const RunCommand = effectCmd({
             }
           }
           const connectionFailure = outcome.connectionFailure()
-          if (process.env.MEGALADATA_AI_AGENT_CLI_ROOT && connectionFailure && !error) {
+          if (process.env.MEGA_AI_AGENT_CLI_ROOT && connectionFailure && !error) {
             error = connectionFailure
             if (!emit("error", { error: { name: error, data: { message: error } } })) UI.error(error)
           }
-          if (process.env.MEGALADATA_AI_AGENT_CLI_ROOT && outcome.failed() && !error) {
+          if (process.env.MEGA_AI_AGENT_CLI_ROOT && outcome.failed() && !error) {
             error = "CLI_TOOL_FAILED"
             if (!emit("error", { error: { name: error, data: { message: error } } })) UI.error(error)
           }
@@ -935,7 +935,7 @@ export const RunCommand = effectCmd({
             // Await and report failure from finally; never leak an unhandled rejection.
             void cancellation.pending.catch(() => {})
           }
-          if (process.env.MEGALADATA_AI_AGENT_CLI_ROOT) process.on("SIGINT", interrupt)
+          if (process.env.MEGA_AI_AGENT_CLI_ROOT) process.on("SIGINT", interrupt)
           async function finish() {
             if (args.attach) return
             const error = await completed
@@ -1001,7 +1001,7 @@ export const RunCommand = effectCmd({
           }
           // Legacy CLI owns the process. Leave after a rejected prompt so
           // instance dispose / worker teardown cannot outlive the error.
-          if (rejected && !process.env.MEGALADATA_AI_AGENT_CLI_ROOT) {
+          if (rejected && !process.env.MEGA_AI_AGENT_CLI_ROOT) {
             exitCli(1)
           }
           return

@@ -1,7 +1,7 @@
 // Standalone owns a private host and a profile guard outside the legacy command.
 // Let its finally blocks drain resources instead of exiting inside a handler.
 export function exitCli(code: number): never {
-  if (process.env.MEGALADATA_AI_AGENT_CLI_ROOT) {
+  if (process.env.MEGA_AI_AGENT_CLI_ROOT) {
     process.exitCode = code
     throw new Error(code === 2 ? "CLI_ARGUMENT_INVALID" : "CLI_COMMAND_FAILED")
   }

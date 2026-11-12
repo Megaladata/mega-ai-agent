@@ -4,7 +4,7 @@ import { nitro } from "nitro/vite"
 import tailwindcss from "@tailwindcss/vite"
 
 const nitroConfig: any = (() => {
-  const target = process.env.MEGALADATA_AI_AGENT_DEPLOYMENT_TARGET
+  const target = process.env.MEGA_AI_AGENT_DEPLOYMENT_TARGET
   if (target === "cloudflare") {
     return {
       compatibilityDate: "2024-09-19",
@@ -23,7 +23,7 @@ export default defineConfig({
     solidStart() as PluginOption,
     nitro({
       ...nitroConfig,
-      baseURL: process.env.MEGALADATA_AI_AGENT_BASE_URL,
+      baseURL: process.env.MEGA_AI_AGENT_BASE_URL,
     }),
   ],
   server: {

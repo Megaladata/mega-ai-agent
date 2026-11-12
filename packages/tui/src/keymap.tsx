@@ -18,10 +18,10 @@ import { useTuiConfig } from "./config"
 import { TuiKeybind } from "./config/keybind"
 
 export const LEADER_TOKEN = "leader"
-export const MEGALADATA_AI_AGENT_BASE_MODE = "base"
+export const MEGA_AI_AGENT_BASE_MODE = "base"
 export const COMMAND_PALETTE_COMMAND = "command.palette.show"
 
-const MEGALADATA_AI_AGENT_MODE_KEY = "opencode.mode"
+const MEGA_AI_AGENT_MODE_KEY = "opencode.mode"
 
 export const OpencodeKeymapProvider = KeymapProvider
 export const useOpencodeKeymap = useKeymap
@@ -51,11 +51,11 @@ function isVisiblePaletteCommand(command: Command) {
 }
 
 export function createOpencodeModeStack(keymap: OpenTuiKeymap) {
-  keymap.setData(MEGALADATA_AI_AGENT_MODE_KEY, MEGALADATA_AI_AGENT_BASE_MODE)
+  keymap.setData(MEGA_AI_AGENT_MODE_KEY, MEGA_AI_AGENT_BASE_MODE)
 
   const offFields = keymap.registerLayerFields({
     mode(value, ctx) {
-      ctx.require(MEGALADATA_AI_AGENT_MODE_KEY, value)
+      ctx.require(MEGA_AI_AGENT_MODE_KEY, value)
     },
   })
 
@@ -63,12 +63,12 @@ export function createOpencodeModeStack(keymap: OpenTuiKeymap) {
   let disposed = false
 
   const update = () => {
-    keymap.setData(MEGALADATA_AI_AGENT_MODE_KEY, stack.at(-1)?.mode ?? MEGALADATA_AI_AGENT_BASE_MODE)
+    keymap.setData(MEGA_AI_AGENT_MODE_KEY, stack.at(-1)?.mode ?? MEGA_AI_AGENT_BASE_MODE)
   }
 
   const stackApi = {
     current() {
-      return stack.at(-1)?.mode ?? MEGALADATA_AI_AGENT_BASE_MODE
+      return stack.at(-1)?.mode ?? MEGA_AI_AGENT_BASE_MODE
     },
     push(mode: string) {
       if (disposed) return () => {}
@@ -90,7 +90,7 @@ export function createOpencodeModeStack(keymap: OpenTuiKeymap) {
       disposed = true
       stack.length = 0
       offFields()
-      keymap.setData(MEGALADATA_AI_AGENT_MODE_KEY, undefined)
+      keymap.setData(MEGA_AI_AGENT_MODE_KEY, undefined)
       modeStacks.delete(keymap)
     },
   }

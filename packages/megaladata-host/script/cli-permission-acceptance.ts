@@ -4,7 +4,7 @@ import { join } from "node:path"
 import { oracleProvider } from "./oracle-provider"
 
 if (process.platform !== "linux") throw Error("LINUX_ONLY_TEST")
-const executable = process.env.MEGALADATA_AI_AGENT_TEST_CLI_EXECUTABLE
+const executable = process.env.MEGA_AI_AGENT_TEST_CLI_EXECUTABLE
 const restart = process.argv[2] === "--restart"
 const always = process.argv[2] === "--tui-always"
 const onceScope = process.argv[2] === "--tui-once-scope"
@@ -14,7 +14,7 @@ const savedPath = process.argv[3]
 if (allow && !savedPath?.startsWith("/")) throw Error("PERMISSION_SAVED_PACKAGE_REQUIRED")
 if (restart && !savedPath?.startsWith("/")) throw Error("PERMISSION_PROFILE_REQUIRED")
 if (process.argv[2] && !tui && !restart) throw Error("PERMISSION_ARGUMENT_INVALID")
-const configPath = process.env.MEGALADATA_AI_AGENT_TEST_CONFIG
+const configPath = process.env.MEGA_AI_AGENT_TEST_CONFIG
 if (!executable || !configPath) throw Error("PRIVATE_TEST_INPUTS_REQUIRED")
 const config = await Bun.file(configPath).json()
 if (config.workflow_profile?.passwordless_login !== true) throw Error("TEST_PASSWORD_UNAVAILABLE")
@@ -24,7 +24,7 @@ const workspace = restart ? savedPath : directory
 const profile = join(workspace, "profile")
 const previous = restart
   ? (() => {
-      const db = new Database(join(profile, "data/megaladata-ai-agent.db"), { readonly: true })
+      const db = new Database(join(profile, "data/mega-ai-agent.db"), { readonly: true })
       try {
         const sessions = db.query("select id from session").all() as { id: string }[]
         if (sessions.length !== 1) throw Error("PERMISSION_SESSION_AMBIGUOUS")
@@ -41,7 +41,7 @@ const previous = restart
       }
     })()
   : undefined
-const env = { ...process.env, MEGALADATA_AI_AGENT_CLI_PROFILE: profile, MEGALADATA_AI_AGENT_PURE: "1" }
+const env = { ...process.env, MEGA_AI_AGENT_CLI_PROFILE: profile, MEGA_AI_AGENT_PURE: "1" }
 if (!restart) {
   const setup = Bun.spawn([executable, "megaladata", "setup", "--stdin-json", "--format", "json"], {
     env,
@@ -66,7 +66,7 @@ const provider = oracleProvider({
   },
 })
 await Bun.write(
-  join(profile, "config/megaladata-ai-agent.json"),
+  join(profile, "config/mega-ai-agent.json"),
   JSON.stringify({ ...provider.config, permission: { "megaladata_*": "ask" } }),
 )
 // No skip-permissions flag and no interactive stdin: approval must not be invented.
@@ -144,7 +144,7 @@ try {
         .map((line) => JSON.parse(line))
   const tools = tui
     ? (() => {
-        const db = new Database(join(profile, "data/megaladata-ai-agent.db"), { readonly: true })
+        const db = new Database(join(profile, "data/mega-ai-agent.db"), { readonly: true })
         try {
           return (db.query("select data from part order by time_created, id").all() as { data: string }[])
             .map((row) => ({ part: JSON.parse(row.data) }))

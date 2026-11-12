@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto"
 import { Option, Schema } from "effect"
 import { Megaladata } from "@opencode-ai/schema/megaladata"
-import { Product } from "@megaladata-ai-agent/product"
+import { Product } from "@mega-ai-agent/product"
 import { connectionStore, type ActiveConnection } from "./connection-store"
 import type { recoveryStore } from "./recovery-store"
 

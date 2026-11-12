@@ -19,7 +19,7 @@ import { mockOpenCodeServer } from "../../utils/mock-server"
 import { installSseTransport } from "../../utils/sse-transport"
 import { expectSessionTitle } from "../../utils/waits"
 
-export const directory = "C:/Megaladata AI Agent/TimelineStability"
+export const directory = "C:/Mega AI Agent/TimelineStability"
 export const projectID = "proj_timeline_stability"
 export const sessionID = "ses_timeline_stability"
 export const userID = "msg_1000_timeline_user"
@@ -144,7 +144,7 @@ export async function setupTimeline(
   }, input.settings ?? {})
   if (input.locale) {
     await page.addInitScript((locale) => {
-      localStorage.setItem("megaladata-ai-agent.global.dat:language", JSON.stringify({ locale }))
+      localStorage.setItem("mega-ai-agent.global.dat:language", JSON.stringify({ locale }))
     }, input.locale)
   }
   if (input.reducedMotion) await page.emulateMedia({ reducedMotion: "reduce" })
@@ -558,7 +558,7 @@ function provider() {
     all: [
       {
         id: "opencode",
-        name: "Megaladata AI Agent",
+        name: "Mega AI Agent",
         models: { "claude-opus-4-6": { id: "claude-opus-4-6", name: "Claude Opus 4.6", limit: { context: 200_000 } } },
       },
     ],

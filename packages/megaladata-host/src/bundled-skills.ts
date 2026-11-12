@@ -1,7 +1,7 @@
 // Host owns the installed-skill contract; the Node-compatible implementation is
 // also staged with the runtime so classic/diagnostic bridges cannot weaken it.
 import { verifyBundledSkills } from "../../megaladata-runtime/client/lib/bundled-skill-manifest.mjs"
-import { reservedSkillNames } from "@megaladata-ai-agent/product/skills"
+import { reservedSkillNames } from "@mega-ai-agent/product/skills"
 
 export { verifyBundledSkills }
 

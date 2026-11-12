@@ -2,9 +2,9 @@ import { join } from "node:path"
 import { cliCredentials } from "../src/connection/cli-credentials"
 
 if (process.platform !== "win32") throw Error("WINDOWS_ONLY_TEST")
-const executable = process.env.MEGALADATA_AI_AGENT_TEST_DESKTOP_EXECUTABLE
-const resources = process.env.MEGALADATA_AI_AGENT_TEST_RESOURCES
-const credentialProfile = process.env.MEGALADATA_AI_AGENT_TEST_CREDENTIAL_PROFILE
+const executable = process.env.MEGA_AI_AGENT_TEST_DESKTOP_EXECUTABLE
+const resources = process.env.MEGA_AI_AGENT_TEST_RESOURCES
+const credentialProfile = process.env.MEGA_AI_AGENT_TEST_CREDENTIAL_PROFILE
 if (!executable || !resources || !credentialProfile) throw Error("INSTALLED_DESKTOP_INPUTS_REQUIRED")
 const record = await Bun.file(join(credentialProfile, "megaladata/connection/connection.json")).json()
 const secret = await cliCredentials("win32").decode(record.secrets)

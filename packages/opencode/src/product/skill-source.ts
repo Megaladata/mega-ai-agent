@@ -1,5 +1,5 @@
-import { verifyProductSkills } from "@megaladata-ai-agent/megaladata-host/bundled-skills"
-import { isReservedSkillName, reservedSkillNames } from "@megaladata-ai-agent/product/skills"
+import { verifyProductSkills } from "@mega-ai-agent/megaladata-host/bundled-skills"
+import { isReservedSkillName, reservedSkillNames } from "@mega-ai-agent/product/skills"
 import { NamedError } from "@opencode-ai/core/util/error"
 import { Effect } from "effect"
 import type { EventV2Bridge } from "@/event-v2-bridge"

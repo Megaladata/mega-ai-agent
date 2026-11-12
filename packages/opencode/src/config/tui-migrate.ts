@@ -8,7 +8,7 @@ import { Global } from "@opencode-ai/core/global"
 import { Filesystem } from "@/util/filesystem"
 import * as ConfigPaths from "@/config/paths"
 
-const TUI_SCHEMA_URL = "urn:megaladata-ai-agent:tui"
+const TUI_SCHEMA_URL = "urn:mega-ai-agent:tui"
 
 const decodeTheme = Schema.decodeUnknownOption(Schema.String)
 const decodeRecord = Schema.decodeUnknownOption(Schema.Record(Schema.String, Schema.Unknown))
@@ -22,7 +22,7 @@ interface MigrateInput {
 }
 
 /**
- * Migrates tui-specific keys (theme, keybinds, tui) from megaladata-ai-agent.json files
+ * Migrates tui-specific keys (theme, keybinds, tui) from mega-ai-agent.json files
  * into dedicated tui.json files. Migration is performed per-directory and
  * skips only locations where a tui.json already exists.
  */
@@ -114,13 +114,13 @@ async function backupAndStripLegacy(file: string, source: string) {
 
 async function opencodeFiles(input: { directories: string[]; cwd: string }) {
   const files = [
-    ...ConfigPaths.fileInDirectory(Global.Path.config, "megaladata-ai-agent"),
-    ...(await Filesystem.findUp(["megaladata-ai-agent.json", "megaladata-ai-agent.jsonc"], input.cwd, undefined, { rootFirst: true })),
+    ...ConfigPaths.fileInDirectory(Global.Path.config, "mega-ai-agent"),
+    ...(await Filesystem.findUp(["mega-ai-agent.json", "mega-ai-agent.jsonc"], input.cwd, undefined, { rootFirst: true })),
   ]
   for (const dir of unique(input.directories)) {
-    files.push(...ConfigPaths.fileInDirectory(dir, "megaladata-ai-agent"))
+    files.push(...ConfigPaths.fileInDirectory(dir, "mega-ai-agent"))
   }
-  if (Flag.MEGALADATA_AI_AGENT_CONFIG) files.push(Flag.MEGALADATA_AI_AGENT_CONFIG)
+  if (Flag.MEGA_AI_AGENT_CONFIG) files.push(Flag.MEGA_AI_AGENT_CONFIG)
 
   const existing = await Promise.all(
     unique(files).map(async (file) => {

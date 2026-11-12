@@ -101,7 +101,7 @@ const skills = await verifyProductSkills(resources)
 const sha = (bytes: Uint8Array | string) => createHash("sha256").update(bytes).digest("hex")
 if (desktopMetadata) {
   await verifyResourceTree(resources, desktopMetadata.runtime.resourcesSha256, "linux-x64")
-  const executable = join(artifact, "megaladata-ai-agent-linux-x86_64.AppImage")
+  const executable = join(artifact, "mega-ai-agent-linux-x86_64.AppImage")
   if (
     desktopMetadata.artifacts.find((item) => item.file === basename(executable))?.sha256 !==
     (await fileHash(executable))
@@ -156,7 +156,7 @@ const image =
     ? (await command(["docker", "image", "inspect", "--format", "{{.Id}}", args["cli-image"]!])).trim()
     : undefined
 const installed = cliMetadata
-  ? `/home/tester/.local/share/megaladata-ai-agent-cli/${cliMetadata.version}-${cliMetadata.channel}`
+  ? `/home/tester/.local/share/mega-ai-agent-cli/${cliMetadata.version}-${cliMetadata.channel}`
   : undefined
 if (image) {
   const actual = await command([
