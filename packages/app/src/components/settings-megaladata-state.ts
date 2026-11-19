@@ -90,7 +90,12 @@ export function createMegaladataSettings(api: Megaladata.API | undefined, saved:
       !!state.password ||
       (state.passwordMode === "empty") !== !state.baseline.hasPassword)
   const disabled = () => !state.baseline || busy() || pending()
-  const canSave = () => !disabled() && (dirty() || !!state.view?.failure || state.view?.state === "recoverable-error")
+  const canSave = () =>
+    !disabled() &&
+    (dirty() ||
+      !!state.view?.failure ||
+      state.view?.state === "recoverable-error" ||
+      state.view?.state === "unconfigured")
 
   function error(value: unknown) {
     if (!disposed) setState({ failed: true, message: megaladataError(value) })
@@ -191,9 +196,10 @@ export function createMegaladataSettings(api: Megaladata.API | undefined, saved:
       if (disposed) return
       setState("view", reconcile({ ...current }))
       setState("baseline", { ...state.baseline!, revision: current.revision })
-      // The settings are durable but activation awaits explicit recovery. The
-      // form already shows that notice; this is not a failed connection check.
-      if (current.recoveries?.length && !current.failure) return
+      // Keep the draft until a first connection has activated, so an activation
+      // failure still allows retrying with the entered values.
+      if (!current.failure && (current.recoveries?.length || (current.state === "pending" && !current.generation)))
+        return
       if (current.failure || !["ready", "pending"].includes(current.state))
         throw Error(current.failure ?? "MEGALADATA_RUNTIME_START_FAILED")
       apply(current)

@@ -25,6 +25,9 @@ export const MEGALADATA_ENGLISH = {
     "Could not confirm whether the saved settings were applied. Open Megaladata settings to check the status.",
   "megaladata.checkedSaved": "Connection verified: the AI server is accessible and Megaladata sign-in succeeded.",
   "megaladata.refresh": "Refresh settings",
+  "megaladata.loadFailed": "Could not load Megaladata settings.",
+  "megaladata.wizardRuntimeFailed":
+    "Could not apply the Megaladata connection. Check your connection settings and save them again.",
   "megaladata.discardTitle": "Close without saving?",
   "megaladata.discardDescription": "Your changes will be discarded. Previously saved settings will remain unchanged.",
   "megaladata.keepEditing": "Continue editing",

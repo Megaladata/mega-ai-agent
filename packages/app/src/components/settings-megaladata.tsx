@@ -4,16 +4,35 @@ import { Button } from "@opencode-ai/ui/button"
 import { IconButton } from "@opencode-ai/ui/icon-button"
 import { TextField } from "@opencode-ai/ui/text-field"
 import { useDialog } from "@opencode-ai/ui/context/dialog"
+import type { Megaladata } from "@opencode-ai/schema/megaladata"
 import { usePlatform } from "@/context/platform"
 import { useLanguage } from "@/context/language"
 import { dismissToast, showToast } from "@/utils/toast"
 import { createMegaladataSettings, megaladataBrowserMessage, watchMegaladataApplication } from "./settings-megaladata-state"
 
-export function SettingsMegaladata(props: { onSaved?: () => void; onLater?: () => void; wizard?: boolean }) {
+export function SettingsMegaladata(
+  props: { wizard: true; onSaved: (view: Megaladata.View, notify?: () => void) => void } | { wizard?: false },
+) {
   const platform = usePlatform()
   const language = useLanguage()
   const dialog = useDialog()
+  let wizardFinished = false
   const form = createMegaladataSettings(platform.megaladata, (view) => {
+    if (props.wizard) {
+      finishWizard(view, () => notifySaved(view))
+      return
+    }
+    notifySaved(view)
+    dialog.close()
+  })
+
+  function finishWizard(view = form.state.view, notify?: () => void) {
+    if (!props.wizard || wizardFinished || form.busy() || !view?.generation || view.setupRequired) return
+    wizardFinished = true
+    props.onSaved(view, notify)
+  }
+
+  function notifySaved(view: Megaladata.View) {
     const pending = view.state === "pending"
     const warning = view.browser?.state === "failed"
     const toast = showToast({
@@ -43,22 +62,20 @@ export function SettingsMegaladata(props: { onSaved?: () => void; onLater?: () =
         })
       })
     }
-    if (props.onSaved) props.onSaved()
-    else dialog.close()
-  })
-  const close = () => {
-    if (props.onLater) {
-      if (form.requestClose()) props.onLater()
-      return
-    }
-    dialog.close()
   }
+
+  async function load() {
+    await form.load()
+    finishWizard()
+  }
+
   onMount(() => {
-    void form.load()
-    const unguard = dialog.guardClose(form.requestClose)
-    const timer = setInterval(() => void form.refresh(), 1000)
+    void load()
+    const unguard = props.wizard ? undefined : dialog.guardClose(form.requestClose)
+    const timer = setInterval(() => void form.refresh().then(() => finishWizard()), 1000)
     onCleanup(() => {
-      unguard()
+      wizardFinished = true
+      unguard?.()
       clearInterval(timer)
     })
   })
@@ -67,14 +84,16 @@ export function SettingsMegaladata(props: { onSaved?: () => void; onLater?: () =
     <section class="flex flex-col gap-5 p-6 max-w-2xl mx-auto w-full" data-component="settings-megaladata">
       <div class="megaladata-heading">
         <h2 class="text-18-medium">{props.wizard ? language.t("megaladata.welcome") : "Megaladata"}</h2>
-        <IconButton
-          type="button"
-          icon="close"
-          variant="ghost"
-          aria-label={language.t("common.close")}
-          disabled={form.busy()}
-          onClick={close}
-        />
+        <Show when={!props.wizard}>
+          <IconButton
+            type="button"
+            icon="close"
+            variant="ghost"
+            aria-label={language.t("common.close")}
+            disabled={form.busy()}
+            onClick={dialog.close}
+          />
+        </Show>
       </div>
       <Show
         when={form.state.confirmClose}
@@ -152,7 +171,9 @@ export function SettingsMegaladata(props: { onSaved?: () => void; onLater?: () =
                   </p>
                 </Show>
                 <Show when={form.state.view?.state === "recoverable-error" && !form.state.view?.recoveries?.length}>
-                  <p role="alert">{language.t("megaladata.runtimeFailed")}</p>
+                  <p role="alert">
+                    {language.t(props.wizard ? "megaladata.wizardRuntimeFailed" : "megaladata.runtimeFailed")}
+                  </p>
                 </Show>
                 <Show when={form.state.message}>
                   {(message) => (
@@ -161,14 +182,9 @@ export function SettingsMegaladata(props: { onSaved?: () => void; onLater?: () =
                       data-failed={form.state.failed ? "true" : "false"}
                       role={form.state.failed ? "alert" : "status"}
                     >
-                      {language.t(message())}
-                      <Show when={message() === "megaladata.conflict"}>
-                        <Button
-                          type="button"
-                          variant="secondary"
-                          disabled={form.busy()}
-                          onClick={() => void form.load()}
-                        >
+                      {language.t(form.state.baseline ? message() : "megaladata.loadFailed")}
+                      <Show when={!form.state.baseline || message() === "megaladata.conflict"}>
+                        <Button type="button" variant="secondary" disabled={form.busy()} onClick={() => void load()}>
                           {language.t("megaladata.refresh")}
                         </Button>
                       </Show>
@@ -202,9 +218,11 @@ export function SettingsMegaladata(props: { onSaved?: () => void; onLater?: () =
                       {language.t("megaladata.cancel")}
                     </Button>
                   </Show>
-                  <Button type="button" variant="ghost" disabled={form.busy()} onClick={close}>
-                    {language.t("common.close")}
-                  </Button>
+                  <Show when={!props.wizard}>
+                    <Button type="button" variant="ghost" disabled={form.busy()} onClick={dialog.close}>
+                      {language.t("common.close")}
+                    </Button>
+                  </Show>
                 </div>
               </form>
             </Show>
@@ -223,7 +241,7 @@ export function SettingsMegaladata(props: { onSaved?: () => void; onLater?: () =
               variant="secondary"
               onClick={() => {
                 form.discard()
-                close()
+                dialog.close()
               }}
             >
               {language.t("megaladata.discardClose")}

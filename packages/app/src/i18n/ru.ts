@@ -23,6 +23,9 @@ export const dict = {
     "Не удалось подтвердить применение сохранённых настроек. Откройте настройки Megaladata и проверьте состояние подключения.",
   "megaladata.checkedSaved": "Подключение проверено: AI-сервер доступен, вход в Megaladata выполнен.",
   "megaladata.refresh": "Обновить настройки",
+  "megaladata.loadFailed": "Не удалось загрузить настройки Megaladata.",
+  "megaladata.wizardRuntimeFailed":
+    "Не удалось применить подключение Megaladata. Проверьте параметры и сохраните их повторно.",
   "megaladata.discardTitle": "Закрыть без сохранения?",
   "megaladata.discardDescription": "Введённые изменения будут отменены. Ранее сохранённые настройки останутся прежними.",
   "megaladata.keepEditing": "Продолжить редактирование",

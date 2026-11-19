@@ -253,7 +253,14 @@ export async function mutateGraph(page, task, read, scrollExport, readViewport, 
             await wait('export_palette_item_reachable',async()=>{try{await point(find(palette));return true;}catch{return false;}});
           }
         }finally{await handle.dispose();}
-        if(JSON.stringify(await read(page,task))!==JSON.stringify(gestureBefore))throw Error('Graph changed after palette reveal');
+        const revealedGraph=await read(page,task);
+        if(!sameGraph(gestureBefore,revealedGraph))throw Error('Graph changed after palette reveal');
+        gestureBefore=revealedGraph;
+        const currentView=await canvas.evaluate(readViewport);
+        if(currentView.scale!==placementNavigation.view.scale
+          ||currentView.translate.x!==placementNavigation.view.translate.x||currentView.translate.y!==placementNavigation.view.translate.y
+          ||currentView.scroll.x!==placementNavigation.view.scroll.x||currentView.scroll.y!==placementNavigation.view.scroll.y)
+          throw Error('Export drop transform changed after palette reveal');
         const currentOrigin=await find(task.request.workflow_ref.prefix+';ModelForm;cmpDiagram').boundingBox();
         if(JSON.stringify(currentOrigin)!==JSON.stringify(origin)||!await find(task.request.workflow_ref.prefix+';ModelForm;cmpDiagram').evaluate((e,p)=>{const b=e.getBoundingClientRect(),hit=document.elementFromPoint(p.x,p.y);return p.x>=b.x&&p.x<b.right&&p.y>=b.y&&p.y<b.bottom&&p.x>=0&&p.y>=0&&p.x<innerWidth&&p.y<innerHeight&&!!hit&&(hit===e||e.contains(hit));},target))throw Error('Export drop changed after palette reveal');
       }
@@ -703,6 +710,20 @@ export function createNodeTargetBrowserAdapter({execute,origin,build,pinned}) {
         let graph=await observeGraph(request,deadline);
         signal?.throwIfAborted();if(Date.now()>=deadline)throw Error('Connect deadline elapsed');
         if(!samePlacementGraph(effect.before,graph))return {status:'NOT_APPLIED',effect_possible:false,cleanup_complete:true,reason:'connect_graph_changed'};
+        const edge=effect.parameters.edge,source=graph.nodes.find(n=>n.ref.node_id===edge.source);
+        if(!source||source.locked)throw Error('Exact unlocked link source required');
+        await call(`async page=>{
+          const t=${JSON.stringify(t)},remaining=()=>{
+            if(page[Symbol.for('megaladata-dock.node-target-cancel')]?.has(t.effect.id))throw Error('Node target cancelled');
+            const value=t.deadline-Date.now();if(value<=0)throw Error('Connect deadline elapsed');return value;
+          };
+          const guard=async()=>{remaining();if(!(${samePlacementGraph.toString()})(t.effect.before,await (${readGraph.toString()})(page,t)))throw Error('Graph changed during link source navigation');};
+          await guard();
+          const navigation=await (${revealNodePlacement.toString()})({page,root:page.locator('[data-tid='+JSON.stringify(t.request.workflow_ref.prefix+';ModelForm;cmpDiagram')+']'),
+            nodeId:${JSON.stringify(source.ref.node_id)},position:${JSON.stringify(source.position)},prefix:t.request.workflow_ref.prefix,
+            remaining,guard,readViewport:${nodePlacementViewport.toString()},project:${nodePlacementPoint.toString()}});
+          await guard();if(!navigation.fully_visible)throw Error('Link source node and ports are not fully visible');return navigation;
+        }`,deadline);
         // Reuse the complete native graph reader, including its strictly verified
         // rendered-port cache fallback; a second SVG-only resolver loses that identity.
         const bindingGraph=await observeGraph(request,deadline,{readBindings:true});
@@ -715,7 +736,7 @@ export function createNodeTargetBrowserAdapter({execute,origin,build,pinned}) {
           if(!['data','tree'].includes(kind))throw Error('Unknown owned port kind');
           return {label:matches[0].label,index:matches[0][direction][index],kind};
         };
-        const edge=effect.parameters.edge,bound={source:resolve(edge.source,'outputs',edge.output),target:resolve(edge.target,'inputs',edge.input)};
+        const bound={source:resolve(edge.source,'outputs',edge.output),target:resolve(edge.target,'inputs',edge.input)};
         if(bound.source.kind!==bound.target.kind)throw Error('Incompatible source and target port kinds');
         signal?.throwIfAborted();if(Date.now()>=deadline)throw Error('Connect deadline elapsed');
         const hoverTask=task({effect,deadline,source_tid:request.workflow_ref.prefix+';Graph;'+bound.source.label+';Output_'+(bound.source.kind==='tree'?'DataTree-':'Data-')+bound.source.index});
