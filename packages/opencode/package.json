@@ -82,6 +82,7 @@
     "@gitlab/opencode-gitlab-auth": "1.3.3",
     "@opencode-ai/codemode": "workspace:*",
     "@opencode-ai/llm": "workspace:*",
+    "@mega-ai-agent/dashboard": "workspace:*",
     "@mega-ai-agent/megaladata-host": "workspace:*",
     "@opencode-ai/plugin": "workspace:*",
     "@mega-ai-agent/product": "workspace:*",

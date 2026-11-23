@@ -59,16 +59,25 @@ export async function stageResources(input: {
     throw new Error("MEGALADATA_ABSOLUTE_PATH_REQUIRED")
   const source = resolve(import.meta.dir, "../../megaladata-runtime")
   const docsSource = resolve(import.meta.dir, "../src/package-docs")
+  const dashboard = resolve(import.meta.dir, "../../dashboard")
   const destination = resolve(input.destination)
   const node = input.node
   const browsers = input.browsers
   const staging = destination + ".staging"
   for (const paths of [
-    [destination, staging, source, node, browsers, productSkillsDirectory, productHelpDirectory, docsSource],
+    [destination, staging, source, node, browsers, productSkillsDirectory, productHelpDirectory, docsSource, dashboard],
     await Promise.all(
-      [destination, staging, source, node, browsers, productSkillsDirectory, productHelpDirectory, docsSource].map(
-        canonicalBuildPath,
-      ),
+      [
+        destination,
+        staging,
+        source,
+        node,
+        browsers,
+        productSkillsDirectory,
+        productHelpDirectory,
+        docsSource,
+        dashboard,
+      ].map(canonicalBuildPath),
     ),
   ]) {
     if (
@@ -107,6 +116,14 @@ export async function stageResources(input: {
   await cp(productSkillsDirectory, join(staging, "skills"), { recursive: true, verbatimSymlinks: true })
   await mkdir(join(staging, "help"), { recursive: true })
   await cp(productHelpDirectory, join(staging, "help", "megaladata-help"), { recursive: true, verbatimSymlinks: true })
+  await $`${process.execPath} run script/build.ts`.cwd(dashboard)
+  const template = join(staging, "dashboard/template")
+  await cp(join(dashboard, "template"), template, {
+    recursive: true,
+    filter: (path) => !["node_modules", "dist", ".vite-cache"].includes(relative(join(dashboard, "template"), path).split(sep)[0]!),
+  })
+  await cp(join(dashboard, "dist/draft.js"), join(staging, "dashboard/draft.js"))
+  await cp(join(dashboard, "src/draft/selfcheck.mjs"), join(staging, "dashboard/selfcheck.mjs"))
   await cp(node, join(staging, pins.node))
   await cp(browsers, join(staging, "browsers"), {
     recursive: true,
@@ -137,6 +154,10 @@ export async function stageResources(input: {
       PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1",
       PATH: `${dirname(node)}${delimiter}${process.env.PATH ?? ""}`,
     })
+  await $`${node} ${npm} ci --ignore-scripts --no-audit --fund=false --workspaces=false`
+    .cwd(template)
+    .env({ ...process.env, PATH: `${dirname(node)}${delimiter}${process.env.PATH ?? ""}` })
+  await rm(join(template, "node_modules/.bin"), { recursive: true, force: true })
   for (const [name, version] of [
     ["@playwright/mcp", release.playwrightMcp],
     ["playwright", release.playwright],
