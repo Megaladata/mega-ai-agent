@@ -1,0 +1,34 @@
+# Statistical Indicators
+
+Availability of the given field indicator depends on the data type and kind of this field. For example, it is obvious that the Maximum string length indicator will not be available for the field related to the numeric or logical types.
+
+> **Important:** The indicators listed below are not available for the fields ![](../../images/icons/data-types/variant_default.svg) of the *Variant type*.
+
+Statistical indicators:
+
+|Indicator|![](../../images/icons/data-types/float_default.svg) |![](../../images/icons/data-types/integer_default.svg) |![](../../images/icons/data-types/datetime_default.svg) |![](../../images/icons/data-types/boolean_default.svg)|![](../../images/icons/data-types/string_default.svg)|
+|:-|:-:|:-:|:-:|:-:|:-:|
+|Histogram|![](../../images/icons/data-types/continuous_default.svg)![](../../images/icons/data-types/discrete_default.svg)|![](../../images/icons/data-types/continuous_default.svg) ![](../../images/icons/data-types/discrete_default.svg)|![](../../images/icons/data-types/continuous_default.svg) ![](../../images/icons/data-types/discrete_default.svg)|![](../../images/icons/data-types/discrete_default.svg)|![](../../images/icons/data-types/discrete_default.svg)|
+|Box plot|![](../../images/icons/data-types/continuous_default.svg)|![](../../images/icons/data-types/continuous_default.svg)|![](../../images/icons/data-types/continuous_default.svg)|||
+|Minimum|![](../../images/icons/data-types/continuous_default.svg)![](../../images/icons/data-types/discrete_default.svg)|![](../../images/icons/data-types/continuous_default.svg) ![](../../images/icons/data-types/discrete_default.svg)|![](../../images/icons/data-types/continuous_default.svg) ![](../../images/icons/data-types/discrete_default.svg)|![](../../images/icons/data-types/discrete_default.svg)||
+|Maximum|![](../../images/icons/data-types/continuous_default.svg)![](../../images/icons/data-types/discrete_default.svg)|![](../../images/icons/data-types/continuous_default.svg) ![](../../images/icons/data-types/discrete_default.svg)|![](../../images/icons/data-types/continuous_default.svg) ![](../../images/icons/data-types/discrete_default.svg)|![](../../images/icons/data-types/discrete_default.svg)||
+|Average|![](../../images/icons/data-types/continuous_default.svg)![](../../images/icons/data-types/discrete_default.svg)|![](../../images/icons/data-types/continuous_default.svg) ![](../../images/icons/data-types/discrete_default.svg)|![](../../images/icons/data-types/continuous_default.svg) ![](../../images/icons/data-types/discrete_default.svg)|![](../../images/icons/data-types/discrete_default.svg)||
+|Standard deviation|![](../../images/icons/data-types/continuous_default.svg)![](../../images/icons/data-types/discrete_default.svg)|![](../../images/icons/data-types/continuous_default.svg) ![](../../images/icons/data-types/discrete_default.svg)|![](../../images/icons/data-types/continuous_default.svg) ![](../../images/icons/data-types/discrete_default.svg)|![](../../images/icons/data-types/discrete_default.svg)| ![](../../images/icons/data-types/discrete_default.svg)|
+|Unbiased variance|![](../../images/icons/data-types/continuous_default.svg)![](../../images/icons/data-types/discrete_default.svg)|![](../../images/icons/data-types/continuous_default.svg) ![](../../images/icons/data-types/discrete_default.svg)||![](../../images/icons/data-types/discrete_default.svg)|![](../../images/icons/data-types/discrete_default.svg)|
+|Lower quartile|![](../../images/icons/data-types/continuous_default.svg)|![](../../images/icons/data-types/continuous_default.svg)|![](../../images/icons/data-types/continuous_default.svg)|||
+|Median|![](../../images/icons/data-types/continuous_default.svg)|![](../../images/icons/data-types/continuous_default.svg)|![](../../images/icons/data-types/continuous_default.svg)|||
+|Upper quartile|![](../../images/icons/data-types/continuous_default.svg)|![](../../images/icons/data-types/continuous_default.svg)|![](../../images/icons/data-types/continuous_default.svg)|||
+|Interquartile range[^1]|![](../../images/icons/data-types/continuous_default.svg)|![](../../images/icons/data-types/continuous_default.svg)|![](../../images/icons/data-types/continuous_default.svg)|||
+|Median absolute deviation|![](../../images/icons/data-types/continuous_default.svg)|![](../../images/icons/data-types/continuous_default.svg)|![](../../images/icons/data-types/continuous_default.svg)|||
+|Sum|![](../../images/icons/data-types/continuous_default.svg)![](../../images/icons/data-types/discrete_default.svg)|![](../../images/icons/data-types/continuous_default.svg) ![](../../images/icons/data-types/discrete_default.svg)||![](../../images/icons/data-types/discrete_default.svg)|![](../../images/icons/data-types/discrete_default.svg)|
+|Range[^2]|![](../../images/icons/data-types/continuous_default.svg)![](../../images/icons/data-types/discrete_default.svg)|![](../../images/icons/data-types/continuous_default.svg) ![](../../images/icons/data-types/discrete_default.svg)|![](../../images/icons/data-types/continuous_default.svg) ![](../../images/icons/data-types/discrete_default.svg)|![](../../images/icons/data-types/discrete_default.svg)|![](../../images/icons/data-types/discrete_default.svg)|
+|Null count|![](../../images/icons/data-types/continuous_default.svg)![](../../images/icons/data-types/discrete_default.svg)|![](../../images/icons/data-types/continuous_default.svg) ![](../../images/icons/data-types/discrete_default.svg)|![](../../images/icons/data-types/continuous_default.svg) ![](../../images/icons/data-types/discrete_default.svg)|![](../../images/icons/data-types/discrete_default.svg)|![](../../images/icons/data-types/discrete_default.svg)|
+|Values[^3]|![](../../images/icons/data-types/continuous_default.svg)![](../../images/icons/data-types/discrete_default.svg)|![](../../images/icons/data-types/continuous_default.svg) ![](../../images/icons/data-types/discrete_default.svg)|![](../../images/icons/data-types/continuous_default.svg) ![](../../images/icons/data-types/discrete_default.svg)|![](../../images/icons/data-types/discrete_default.svg)|![](../../images/icons/data-types/discrete_default.svg)|
+|Unique|![](../../images/icons/data-types/discrete_default.svg)| ![](../../images/icons/data-types/discrete_default.svg)|![](../../images/icons/data-types/discrete_default.svg)|![](../../images/icons/data-types/discrete_default.svg)|![](../../images/icons/data-types/discrete_default.svg)|
+|Minimum string length|||||![](../../images/icons/data-types/discrete_default.svg)|
+|Maximum string length|||||![](../../images/icons/data-types/discrete_default.svg)|
+|Mean string length|||||![](../../images/icons/data-types/discrete_default.svg)|
+
+[^1]: **Interquartile range**: difference between the upper and lower quartiles.
+[^2]: **Range**: difference between the maximum and minimum values.
+[^3]: **Values**: number of not null items in the field.

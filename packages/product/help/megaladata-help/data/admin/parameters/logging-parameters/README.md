@@ -1,0 +1,21 @@
+# Logging Parameters
+
+In the server and desktop editions, the platform creates a log file that records the execution of each node. If an error occurs, the log helps you identify its location and possible cause.
+
+The logging parameters define the rules for creating the log file.
+
+> **Note:** You must click ![](../../../images/icons/toolbar-controls_18x18/toolbar-controls_18x18_save_default.svg)&nbsp;**Save** to apply any changes.
+
+|Parameter|Default value|Description|
+|:-|:-|:-|
+|**Logging type**|`File`|Select the logging type: **File** or **journald**. Not available for Windows as the system always writes the log to a file. Linux supports both options. When using **journald**, you can only configure the **Logging level** parameter. All other parameters become read-only.|
+|**Logging level**|`Info`|Specify the type and level of detail that the system writes to the log file: **Trace**, **Debug**, **Info**, **Event**, **Warning**, **Error**, or **Fatal**.|
+|**Trace exceptions**|`false`|Enable or disable debugging mode. When you enable debugging mode, the system writes extended diagnostic information to the log file. Generating extended information in debugging mode reduces performance, so disable exception tracing during normal operation. By default, debugging mode is off.|
+|**Log the package name for the node**|`false`|Set this parameter to `true` to add the name of the package that contains the activated node to the log message together with the node GUID. The package name appears in log messages about the start and successful completion of node activation. It does not appear in node deactivation messages. Note that logging the package name reduces performance.|
+|**Log row count upon node activation**|`false`|Set this parameter to `true` to add the output port row count to the log message when activating any node with a tabular data output port. Set this parameter to `false` to log the row count only for nodes with the corresponding parameter enabled in the node settings.|
+|**Log file deletion**|`false`|Set this parameter to `true` to write the result of deleting files and folders to the log message. For nonempty folders, the system also records information about file deletion attempts. The log identifies a file or folder by its path relative to the file storage. This parameter is available only in **Megaladata server editions**.|
+|**Resolve domain names**|`false`|Set this to `true` to add the `CLIENT_HOST` parameter with the user's domain name to log messages about successful or failed authorization and session closure.|
+|**File name**|`app.log`|Specify the log file name as a path relative to the `Logs` folder. By default, the server edition stores the file in `C:\ProgramData\Megaladata\Server\Logs` on Windows, `/var/opt/megaladata/server/Logs` when running as a Linux service, and `/var/opt/megaladata-docker/server/Logs` when running in Linux containers. The desktop edition stores the log in `C:\Users\<User>\AppData\Roaming\Megaladata\Personal\Logs` on Windows and `$HOME/.megaladata/community/Logs` on Linux.|
+|**Rewrite file**|`false`|Enable this parameter to recreate the log file at startup instead of appending to it. The system will overwrites the old log file each time the application starts.|
+|**Maximum file size**|`10484760`|Specify the maximum log file size in bytes. When the file exceeds this size, the system saves it with the `.1` extension and creates a new file. For example, when the old `app.log` exceeds the specified size, the system saves it as `app.log.1` and creates a new `app.log` to continue logging.|
+|**Number of backup files**|`10`|Limit the number of backup copies that the system should create when the log file exceeds its maximum size. The system increments the extensions of previously saved files by 1: `.1`, `.2`, `.3`, ..., `.<number of backup files>`. For example, the old `app.log.1` becomes `app.log.2`, and so on. If the system has already reached the limit when adding a backup file, it deletes the oldest log file. If you set a value less than `1`, the system will not save old log files.|

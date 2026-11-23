@@ -1,0 +1,3 @@
+# Calculator Functions
+
+The [Calculator](../../transformation/calc/README.md), [Calculator (Variables)](../../variables/variables-calc.md), and [Calculator (Tree)](../../data-trees/calculator-tree.md) nodes provide built-in functions for various calculations and data transformations. For your convenience, these functions are categorized into lists based on their purpose. The node wizards display the function descriptions, explaining their parameters.
