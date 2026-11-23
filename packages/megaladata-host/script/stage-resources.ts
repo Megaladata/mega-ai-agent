@@ -10,7 +10,7 @@ import { buildPackageDocs } from "./build-package-docs"
 import { collectBuildNotices } from "./collect-build-notices"
 import release from "../../product/megaladata-release.json"
 import catalogs from "../../product/megaladata-catalogs.json"
-import { productSkillsDirectory } from "@mega-ai-agent/product/skills"
+import { productHelpDirectory, productSkillsDirectory } from "@mega-ai-agent/product/skills"
 import { resourceInventory } from "../../megaladata-runtime/src/resource-inventory.mjs"
 
 export function actionCatalogForPlatform(platform: string) {
@@ -34,9 +34,6 @@ export async function stageResources(input: {
   browsers: string
   target: { platform: string; arch: string }
   flavor: "desktop" | "cli"
-  // Built-in knowledge service key; never committed. release.yml requires it,
-  // local and PR builds may stage without it.
-  knowledgeKey?: string
 }) {
   const target = `${input.target.platform}-${input.target.arch}`
   if (input.target.platform !== process.platform || input.target.arch !== process.arch)
@@ -67,8 +64,12 @@ export async function stageResources(input: {
   const browsers = input.browsers
   const staging = destination + ".staging"
   for (const paths of [
-    [destination, staging, source, node, browsers, productSkillsDirectory, docsSource],
-    await Promise.all([destination, staging, source, node, browsers, productSkillsDirectory, docsSource].map(canonicalBuildPath)),
+    [destination, staging, source, node, browsers, productSkillsDirectory, productHelpDirectory, docsSource],
+    await Promise.all(
+      [destination, staging, source, node, browsers, productSkillsDirectory, productHelpDirectory, docsSource].map(
+        canonicalBuildPath,
+      ),
+    ),
   ]) {
     if (
       paths
@@ -103,8 +104,9 @@ export async function stageResources(input: {
   }
   await rm(staging, { recursive: true, force: true })
   await mkdir(join(staging, "bin"), { recursive: true })
-  if (input.knowledgeKey?.trim()) await Bun.write(join(staging, "knowledge-key"), input.knowledgeKey.trim())
   await cp(productSkillsDirectory, join(staging, "skills"), { recursive: true, verbatimSymlinks: true })
+  await mkdir(join(staging, "help"), { recursive: true })
+  await cp(productHelpDirectory, join(staging, "help", "megaladata-help"), { recursive: true, verbatimSymlinks: true })
   await cp(node, join(staging, pins.node))
   await cp(browsers, join(staging, "browsers"), {
     recursive: true,

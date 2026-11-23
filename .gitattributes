@@ -1,3 +1,4 @@
 packages/core/migration/**/snapshot.json linguist-generated
 packages/core/src/database/migration.gen.ts linguist-generated
 packages/desktop/test/megaladata/fixtures/standalone-cli/*.csv text eol=lf
+packages/product/help/** text eol=lf

@@ -143,8 +143,6 @@ async function handle(message) {
       state.browser = authenticated.context
       const config = {
         resources: input.resources,
-        endpoint: input.endpoint,
-        apiKey: input.connection.apiKey,
         // Preparation must bind to the same canonical path used by private login.
         megaladataUrl: megaladataAddress(input.connection.url),
         stateDir: input.stateDir,
@@ -154,6 +152,7 @@ async function handle(message) {
         resultProfile: "user-v1",
         actionManifestUri: input.actionManifestUri,
         actionManifestSha256: input.actionManifestSha256,
+        // The pinned catalog ships in resources; the knowledge service is not consulted for it.
         replayBootstrap: false,
         replayLoginUser: null,
         // Acceptance-only shutdown cleanup; the bridge binds it to the observed

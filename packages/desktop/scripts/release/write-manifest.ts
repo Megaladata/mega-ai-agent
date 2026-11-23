@@ -183,7 +183,7 @@ const manifest = decodeManifest({
           profiles: `%APPDATA%/${Product.channels[channel]}/megaladata/runtime`,
           secretStore: "electron-safeStorage-dpapi-current-user",
         },
-  connection: { schemaVersion: 1, generationProtocol: 1, knowledgeEndpoint: pins.endpoint },
+  connection: { schemaVersion: 1, generationProtocol: 1 },
   updater: { feed: Product.updateFeed, channel, previousVersion: null },
   signing: { status: mac ? "ad-hoc" : "unsigned", identity: mac ? "-" : null, notarized: false },
   installation: {

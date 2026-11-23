@@ -287,7 +287,7 @@ export async function connectionService(
         // preserves saved URLs independently of this marker.
         urlSource: "explicit" as const,
         username: candidate.username,
-        // The knowledge service uses the built-in key; a key sent by older clients is ignored.
+        // The product does not use a Dock key; a key sent by an older client is ignored.
         apiKey: "",
         password,
       }

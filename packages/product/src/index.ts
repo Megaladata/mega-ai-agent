@@ -13,7 +13,6 @@ export const Product = Object.freeze({
   updateFeed: null as string | null,
   changelogFeed: null as string | null,
   artifactName: "mega-ai-agent-${os}-${arch}.${ext}",
-  knowledgeEndpoint: "https://mcp.megaladata.ai/mcp",
   connection: Object.freeze({ url: "https://agent.megaladata.com/app/", username: "user" }),
   stores: Object.freeze({ settings: "mega-ai-agent.settings", updater: "mega-ai-agent.updater" }),
   config: Object.freeze({

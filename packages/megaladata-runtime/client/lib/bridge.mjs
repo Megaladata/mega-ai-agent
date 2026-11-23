@@ -159,10 +159,11 @@ export async function createBridge(config, session, { browserTransport: managedB
     metadata: session.metadata, redactor });
   const startup = catalogStartup(startupOptions);
   try {
-    const connections = await Promise.allSettled([connectRemote(() => ({ client: new Client({ name: 'megaladata-dock', version: session.metadata.client }), transport: remoteTransport() }), { startup }).then(client => { remote = client; }), browser.connect(browserTransport)]);
+    // The product ships Megaladata Help and the action catalog; only diagnostic Dock setups name a knowledge endpoint.
+    const connections = await Promise.allSettled([...(config.endpoint ? [connectRemote(() => ({ client: new Client({ name: 'megaladata-dock', version: session.metadata.client }), transport: remoteTransport() }), { startup }).then(client => { remote = client; })] : []), browser.connect(browserTransport)]);
     const failed = connections.find(result => result.status === 'rejected');
     if (failed) throw failed.reason;
-    const [remoteTools, browserTools] = await Promise.all([readCatalog(remote, { startup }), readCatalog(browser)]);
+    const [remoteTools, browserTools] = await Promise.all([remote ? readCatalog(remote, { startup }) : [], readCatalog(browser)]);
     if (!browserTools.some(tool => tool.name === 'browser_run_code_unsafe')) {
       throw new Error('The pinned browser runtime lacks the verified clipboard execution tool');
     }

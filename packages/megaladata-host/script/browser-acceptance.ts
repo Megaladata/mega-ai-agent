@@ -93,7 +93,6 @@ try {
         chat: "browser-validation",
         validation: true,
         headless: !headed,
-        endpoint: `http://127.0.0.1:${server.port}/mcp`,
         connection: {
           apiKey: "fixture-key",
           password: "",
@@ -147,12 +146,10 @@ try {
 }
 
 async function rejectSetup(resources: string, directory: string, url: string) {
-  // Isolated development bundle: only its manifest endpoint changes. Original artifact stays intact.
+  // Isolated development bundle. The original artifact stays intact.
   const bundle = join(directory, "bundle")
   const profile = join(directory, "profile")
   await cp(resources, bundle, { recursive: true, dereference: false, verbatimSymlinks: true })
-  const manifest = await Bun.file(join(bundle, "resource-manifest.json")).json()
-  await Bun.write(join(bundle, "resource-manifest.json"), JSON.stringify({ ...manifest, endpoint: url + "mcp" }))
   const child = Bun.spawn(
     [resolve(resources, "../../bin/mega-ai-agent-cli"), "megaladata", "setup", "--stdin-json", "--format", "json"],
     {
