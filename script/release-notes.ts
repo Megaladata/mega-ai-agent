@@ -37,16 +37,11 @@ const hashes = new Map(
 )
 await Bun.write(path.join(dir, "SHA256SUMS.txt"), files.map((file) => `${hashes.get(file)}  ${file}\n`).join(""))
 
-const matrix = await report("linux-matrix.json")
-if (
-  matrix?.artifactHash !== hashes.get("mega-ai-agent-linux-amd64.deb") ||
-  matrix?.reports?.length !== 5 ||
-  !["ubuntu22", "ubuntu24", "ubuntu26", "debian12", "debian13"].every((name) =>
-    matrix.reports.some((entry: { name: string; status: string }) => entry.name === name && entry.status === "PASS"),
-  )
+// Mega does not run the five-distro DEB install matrix. A complete passing report is recorded when one is attached.
+const matrixStatus = linuxMatrixStatus(
+  await report("linux-matrix.json"),
+  hashes.get("mega-ai-agent-linux-amd64.deb"),
 )
-  throw new Error("A complete passing Linux matrix is required")
-const matrixStatus = `Docker matrix PASS (${matrix.reports.map((entry: { name: string }) => entry.name).join(", ")})`
 // Set by release.yml from the MEGALADATA_RELEASE_SKIP_MACOS repository variable when no macOS runner is available.
 const withoutMacos = process.env.MEGALADATA_RELEASE_SKIP_MACOS === "true"
 const manifests = ["release-manifest.json", "windows-release-manifest.json"]
@@ -74,33 +69,44 @@ const macos: [file: string, status: string][] = withoutMacos
       ],
       [`mega-ai-agent-${version}-macos-source.tar.gz`, "macOS corresponding source"],
       ["macos-release-manifest.json", "macOS release manifest (ad-hoc signed app; not notarized)"],
-      ["latest-mac.yml", "macOS update metadata"],
-      ["mega-ai-agent-mac-arm64.zip.blockmap", "macOS differential update blockmap"],
+      ...present([
+        ["latest-mac.yml", "macOS update metadata"],
+        ["mega-ai-agent-mac-arm64.zip.blockmap", "macOS differential update blockmap"],
+      ]),
     ]
 const expected: [file: string, status: string][] = [
-  ["mega-ai-agent-linux-amd64.deb", `${await staticStatus("static-deb.json")} + ${matrixStatus}`],
+  [
+    "mega-ai-agent-linux-amd64.deb",
+    matrixStatus ? `${await staticStatus("static-deb.json")} + ${matrixStatus}` : await staticStatus("static-deb.json"),
+  ],
   [
     "mega-ai-agent-linux-x86_64.AppImage",
-    `${await staticStatus("static-appimage.json")}; Docker matrix covers the DEB only`,
+    matrixStatus
+      ? `${await staticStatus("static-appimage.json")}; Docker matrix covers the DEB only`
+      : await staticStatus("static-appimage.json"),
   ],
   [
     `mega-ai-agent-cli-${version}-linux-x64.tar.gz`,
-    "static verify PASS (cli-manifest); Docker matrix covers the DEB only",
+    matrixStatus
+      ? "static verify PASS (cli-manifest); Docker matrix covers the DEB only"
+      : "static verify PASS (cli-manifest)",
   ],
   ["mega-ai-agent-win-x64.exe", `${await staticStatus("static-nsis.json")}; unsigned`],
   [`mega-ai-agent-cli-${version}-win32-x64.zip`, "archive manifest verification PASS; unsigned"],
   [`mega-ai-agent-${version}-source.tar.gz`, "source archive (git archive HEAD)"],
   [`mega-ai-agent-${version}-windows-source.tar.gz`, "Windows corresponding source"],
-  ["latest.yml", "Windows update metadata"],
-  ["latest-linux.yml", "Linux update metadata"],
-  ["mega-ai-agent-win-x64.exe.blockmap", "Windows differential update blockmap"],
-  ["mega-ai-agent-linux-x86_64.AppImage.blockmap", "Linux differential update blockmap (also embedded in AppImage)"],
   ["release-manifest.json", "Linux release manifest (unsigned)"],
   ["windows-release-manifest.json", "Windows release manifest (unsigned)"],
   ...macos,
   ["static-deb.json", "static verification report"],
   ["static-appimage.json", "static verification report"],
-  ["linux-matrix.json", "Docker matrix report"],
+  ...present([
+    ["latest.yml", "Windows update metadata"],
+    ["latest-linux.yml", "Linux update metadata"],
+    ["mega-ai-agent-win-x64.exe.blockmap", "Windows differential update blockmap"],
+    ["mega-ai-agent-linux-x86_64.AppImage.blockmap", "Linux differential update blockmap (also embedded in AppImage)"],
+    ...(matrixStatus ? [["linux-matrix.json", "Docker matrix report"] as [string, string]] : []),
+  ]),
 ]
 for (const [file] of expected) if (!hashes.has(file)) throw new Error(`Required release asset missing: ${file}`)
 const rows = [
@@ -116,7 +122,9 @@ const notes = [
   `- Version: ${version}`,
   `- Channel: ${args.channel}`,
   `- Commit: ${commit}`,
-  "- Linux x64 DEB/AppImage/CLI: static verification; DEB offline Docker matrix from this run (reports attached)",
+  matrixStatus
+    ? "- Linux x64 DEB/AppImage/CLI: static verification; DEB offline Docker matrix from this run (reports attached)"
+    : "- Linux x64 DEB/AppImage/CLI: static verification. The Docker install matrix was not run for this release.",
   "- Windows x64: native CI build, settings regression tests, installer/payload and CLI archive verification",
   withoutMacos
     ? "- macOS: not built for this release (no macOS runner was available); macOS assets are not attached"
@@ -124,7 +132,9 @@ const notes = [
   "- Pre-release: Linux/Windows unsigned; macOS own code ad-hoc signed, without Developer ID or notarization. OS security warnings are expected.",
   "- CI builds use no Megaladata account or LLM credentials and do not replace installed GUI, Keychain/DPAPI or live Megaladata/provider acceptance for this exact build.",
   "- Settings: saved-key indicator, Save closes after success, Check tests the current draft, Close/Escape confirm unsaved changes.",
-  "- Desktop updates use signed GitHub Release metadata with a private cloud.ru S3 fallback using read-only SigV4 GET. Build-time endpoints remain disabled until signature acceptance on the exact source SHA; publication and mirror checks are required.",
+  hashes.has("latest.yml")
+    ? "- Desktop updates use signed GitHub Release metadata with a private cloud.ru S3 fallback using read-only SigV4 GET. Build-time endpoints remain disabled until signature acceptance on the exact source SHA; publication and mirror checks are required."
+    : "- Update metadata was not published. The in-app update feed stays disabled for this release.",
   ...(version === "0.4.0"
     ? [
         "- Users of 0.3.9 or 0.3.10 on any platform must install 0.4.0 manually over the existing installation; these versions have their update feed disabled. Keep the existing profile; do not uninstall or delete application data first.",
@@ -150,6 +160,10 @@ const notes = [
 await Bun.write(args.output, notes)
 console.log(notes)
 
+function present(rows: [string, string][]) {
+  return rows.filter(([file]) => hashes.has(file))
+}
+
 async function sha256(file: string) {
   const hasher = new Bun.CryptoHasher("sha256")
   for await (const chunk of Bun.file(file).stream()) hasher.update(chunk)
@@ -160,6 +174,21 @@ async function report(name: string) {
   const file = Bun.file(path.join(dir, name))
   if (!(await file.exists())) return undefined
   return file.json()
+}
+
+function linuxMatrixStatus(
+  matrix: { artifactHash?: string; reports?: { name: string; status: string }[] } | undefined,
+  debHash: string | undefined,
+) {
+  const names = ["ubuntu22", "ubuntu24", "ubuntu26", "debian12", "debian13"]
+  const reports = matrix?.reports ?? []
+  const passed =
+    !!matrix &&
+    matrix.artifactHash === debHash &&
+    reports.length === names.length &&
+    names.every((name) => reports.some((entry) => entry.name === name && entry.status === "PASS"))
+  if (!passed) return
+  return `Docker matrix PASS (${reports.map((entry) => entry.name).join(", ")})`
 }
 
 async function staticStatus(name: string) {

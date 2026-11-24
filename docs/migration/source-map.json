@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "product": "Mega AI Agent",
+  "note": "This public repository is the corresponding source for a Mega AI Agent build. The private Loginom migration inventory is not part of this tree. The release manifest records the SHA-256 of this file as importSha256 and provenance.migrationManifestSha256.",
+  "components": [
+    {
+      "name": "megaladata-runtime",
+      "path": "packages/megaladata-runtime",
+      "role": "Migrated Megaladata client and browser runtime"
+    },
+    {
+      "name": "megaladata-host",
+      "path": "packages/megaladata-host",
+      "role": "Runtime host, connection, and resource staging"
+    },
+    {
+      "name": "help",
+      "path": "packages/product/help/megaladata-help",
+      "role": "Bundled Megaladata user guide. Search is built locally from these pages."
+    }
+  ]
+}
