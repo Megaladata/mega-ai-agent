@@ -43,7 +43,9 @@ Empty rows are imported.
 More than 12 columns or more than 10 header rows: complete `columns`/`header_rows`; data follows
 the headers, and the name is their nonempty parts joined by `_` (in `source_name` or an allowed
 `name`). Finish the continuation with `megaladata_file_profile`. Above 64 fields or 1000 header
-rows, report the limit and ask for a region.
+rows (`anomalies`: "Excel runtime supports 1–64 columns"), report the limit and ask
+for a region before `node_apply`: do not create the Import, do not convert the
+workbook without consent, and save the requested package without this node.
 
 `source_switch` ([full file](../large-files.md#switch-to-the-full-file)):
 pass only `excel:{source_path:"<full workbook>",sheet_name:"<selected sheet>"}`,

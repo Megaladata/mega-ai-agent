@@ -6,7 +6,7 @@ export function variablesColumnUnionTargetRequest(request,graph){
  if(request.target?.type!=='variables.column_union'||request.target.kind!=='new'||request.target.label!==undefined)return request;
  need(graph?.complete===true&&graph.document_id===request.document_id&&graph.workflow_ref?.workflow_id===request.workflow_ref.workflow_id
   &&Array.isArray(graph.nodes)&&graph.nodes.length<=200,'complete owned graph required for the union caption');
- const labels=new Set(graph.nodes.map(n=>n.label)),base='Соединение переменных';
+ const labels=new Set(graph.nodes.map(n=>n.label)),base='Variable Union';
  const label=Array.from({length:201},(_,i)=>base+(i?' '+(i+1):'')).find(name=>!labels.has(name));
  need(label,'no unique union caption available');return {...request,target:{...request.target,label}};
 }

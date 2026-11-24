@@ -15,13 +15,9 @@ correlation, do not compute sums and the coefficient in Calculator or JavaScript
 Choose integer/real, including discrete integer. String is allowed
 only in spearman/kendall; boolean/datetime/variant are not supported.
 On an existing node, a passed set replaces the previous one; omitting it keeps it.
-Stage 1 supports a nonempty source and at least two joint observations
-per pair. This mode includes only Pearson. For rank coefficients choose
-mode spearman or kendall.
-
-### Pearson of numeric fields
-
-A nonempty source, at least 2 joint observations per pair; pearson mode is Pearson only.
+For pairs from one table, use one node. Put the needed fields in both sets
+and choose the needed pairs from the result. Each pair needs at least 2 joint
+observations. For rank coefficients choose mode spearman or kendall.
 <!-- /mode -->
 
 <!-- mode: spearman -->

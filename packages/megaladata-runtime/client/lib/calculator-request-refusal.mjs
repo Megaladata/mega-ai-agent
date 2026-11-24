@@ -32,7 +32,7 @@ export function verifiedCalculatorSyntaxFailure(error,baseline){
   &&(v.source==='megaladata_wizard_error_tooltip'||v.source==='megaladata_calculator_preview_console'
     &&w.calculator_preview?.status==='observed'&&w.calculator_preview.errors?.length>0&&w.calculator_preview.errors.join('\n')===v.message
     ||v.source==='megaladata_calculator_preview_error_dialog'&&/^[A-Za-z_][A-Za-z0-9_]{0,127}$/.test(v.field_name??'')
-      &&/Ошибка разбора выражения\s*["«]([A-Za-z_][A-Za-z0-9_]{0,127})["»]/.exec(v.message)?.[1]===v.field_name
+      &&/Error parsing\s+"([A-Za-z_][A-Za-z0-9_]{0,127})"\s+expression/.exec(v.message)?.[1]===v.field_name
       &&r.trace?.filter(e=>e.event==='wizard_calculator_preview_error_dismissed'&&e.root_ref===w.root_ref&&e.message===v.message).length===1)
   &&r.trace?.filter(e=>e.event==='wizard_calculator_validation_failed'&&e.root_ref===w.root_ref&&e.message===v.message).length===1;
 }

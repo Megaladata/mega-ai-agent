@@ -2,7 +2,7 @@ import {selectPreparedGraphNode,isPreparedBodyReplacement} from './node-graph-se
 
 const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
 const requireValue=(value,message)=>{if(!value)throw Error(message);};
-const question='Node configuration will cause its deactivation. Do you really want to start node configuration? Yes Yes, don\\\'t ask again No';
+const question='Node configuration will cause its deactivation. Do you really want to start node configuration? Yes Yes, don\'t ask again No';
 
 // Only a settled opening gesture and a fresh owned surface can authorize
 // continuation. A missing/unknown browser reply never permits another click.

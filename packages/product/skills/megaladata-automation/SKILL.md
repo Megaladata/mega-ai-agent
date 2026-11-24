@@ -31,6 +31,12 @@ the original path, then `dock_artifact_deliver`, then
 and do not upload that full file again. After delivery, treat it as the server
 source for the rest of the cycle.
 
+Megaladata computes the totals, not local Python or bash; inspect a file through
+`megaladata_file_profile`. On a tool refusal, follow only its `next_step` or
+recovery, then report the blocker; do not read logs, diagnostics, or product
+sources. Conversion and derived files need consent
+([boundaries](references/workflow.md#action-boundaries)).
+
 To edit a local `.mgp` from a path or attachment, call
 `megaladata_dock_prepare({intent: "open_package", local_package_path: "the exact path"})`.
 That call uploads the agent's own server copy and opens it; a separate package
@@ -57,8 +63,7 @@ and do not upload again. Report the confirmed storage path and size from the
 delivery result. Do not create or configure nodes, run a calculation, or save
 a package unless the user asks. A later step, such as import or building a
 scenario, may be offered in words. A profile, scan, and sample are not required
-for a plain delivery. The cycle "profile, sample, scenario, full calculation,
-Save" below applies only when the user asks to build or run a calculation.
+for a plain delivery.
 
 ## Loading data for a calculation
 
@@ -225,8 +230,10 @@ Playwright, raw UI, the clipboard, DOM/JavaScript, or direct server methods to
 bypass a managed-runtime refusal. The only exception is temporary recovery
 through `megaladata_dock_browser_recovery` when Dock `next_step` names that
 tool ([Preparation and cancellation](references/browser.md)). Do not create nodes
-through `node.add` or links through `link.create` in the action API. Run dependent
-operations sequentially.
+through `node.add` or links through `link.create` in the action API. In one
+browser, run one node operation at a time, even when the nodes are independent.
+Wait for the final status through `megaladata_dock_node_wait` before the next
+operation.
 
 Large attachments are a reference to the original path, not a ready `input_artifacts` entry. For a calculation, start with a profile; the reference stores the file fingerprint at attach time. `MEGALADATA_FILE_CHANGED` requires a new attachment. `MEGALADATA_FILE_NOT_FOUND` requires restoring the source or a new path. Do not refresh an old fingerprint and do not bypass an explicit deny. If small inline attachments are not confirmed in `input_artifacts`, say so; do not guess a server path. `megaladata_dock_artifact_deliver` performs delivery. Do not overwrite someone else's files and do not change the allowed directories.
 
@@ -282,7 +289,10 @@ allow a manual bypass of managed tools.
 
 ## Completion
 
-Match each required result to an executed node and a read output. Compute
+Match each required result to an executed node and a read output. Collect the
+values for the report before Save: Save can reset active outputs. After Save,
+use verified receipts and exports; re-execute nodes only for new calculations
+or when the user asks for a fresh result. Compute
 every new metric in the scenario; when the sample is incomplete, do not fill
 it with unseen rows. Save the package through `package.save_checkpoint` and
 wait for the receipt. If the user did not give a path for the changed local
@@ -298,6 +308,6 @@ is complete.
 
 Report the full confirmed server path of the `.mgp`, the results, and the
 limitations. After working with a local package, say that the local file was
-not changed. If the user then asks for documentation, activate `package-docs`
-after the current operation finishes. Documentation requires a local `.mgp`:
-this workflow does not download a saved server package automatically.
+not changed. Documentation requested afterwards is `package-docs` after the
+current operation; it needs a local `.mgp`, and this workflow does not download
+a saved server package automatically.

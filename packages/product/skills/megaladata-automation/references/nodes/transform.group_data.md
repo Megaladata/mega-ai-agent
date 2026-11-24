@@ -6,6 +6,7 @@ In `dock_node_apply`, choose `transform.group_data`, mode `aggregate`. When chan
 In the output mapping, `configured_field.name` is the current output name: after apply with `measures` that is the measure `name` (for example `Metric`) or the key name; do not build a name from the field and the function (`Amount_Median`) unless the node returned it.
 
 For each measure set `field: {kind: "input_field", name: "name"}`, `function`, and the output `name`/`label`. Two measures of one field may have different names. Compute aggregates with Grouping, not Calculator or JS.
+Compute a share inside a group as `promoters / respondents`. For a share of all answers, use `Stat("respondents", "Sum")` in the denominator.
 
 - `median`: integer/real → real; without NULL, and completely NULL → NULL.
 - `mode`: integer/string/real/boolean/datetime/variant → the same type; without NULL, and completely NULL → 0/empty string/False/1899-12-30/NULL (Variant). For scalar types, a tie chooses the smallest value (Boolean → False; strings by code points, for example Beta < alpha).

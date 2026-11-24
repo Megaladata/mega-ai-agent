@@ -61,7 +61,7 @@ export const inspectJavascriptWizardSettlement=withJavascriptWizardMasks(functio
   }
   if(dialogs.length){
     const text=String(dialogs[0].innerText??'').replace(/\s+/g,' ').trim();
-    const expected='Megaladata 7.4.2 Node configuration will cause its deactivation. Do you really want to start node configuration? Yes Yes, don\\\'t ask again No';
+    const expected='Megaladata 7.4.2 Node configuration will cause its deactivation. Do you really want to start node configuration? Yes Yes, don\'t ask again No';
     if(dialogs.length!==1||!graph||!pendingOwner||text!==expected)throw Error('Wizard settlement foreign dialog');
     surface='deactivation';
   }

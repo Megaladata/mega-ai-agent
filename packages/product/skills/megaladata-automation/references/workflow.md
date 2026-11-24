@@ -326,3 +326,33 @@ The runtime sets technical deadlines. Do not pass `budgets` or `budget_ms`, do
 not extend the original deadline of an unfinished operation, and do not start
 it again after an uncertain result. The schemas of the current catalog define
 the full read-only protocol and the limits of supported nodes.
+
+## Action boundaries
+
+Megaladata computes the results: sums, groups, counts, and checks are scenario
+nodes and a read of the output port. Do not compute or check totals with local
+Python, bash, or awk unless the user explicitly asks for a local check. Inspect
+a local data file only through `megaladata_file_profile`, `megaladata_file_scan`,
+and `megaladata_file_sample`, not through openpyxl, pandas, or csv. Normalize
+values with scenario nodes.
+
+Recover a refusal or an incomplete tool reply (`USER_RESPONSE_BUDGET`,
+`REQUEST_REJECTED`, `FAILED`, `AMBIGUOUS`) only through the reply's `next_step`
+and `recovery_options`, `megaladata_dock_operation_inspect`, a smaller request,
+or a retry with the same `operation_id` when the reply says so. If that does not
+help, stop and report the blocker: the tool, the error code, what was done, and
+what the user can do. Do not look for a bypass in bash or Python: do not read
+logs, `diagnostics/`, `events.jsonl`, the application profile, `runtime/`, the
+installed CLI sources or binary, processes, or environment variables. Read only
+this skill's help (`SKILL.md` and `references/`). Take `artifact_id`,
+`upload_grant_id`, NodeRef, and paths only from tool replies, not from logs; a
+local receipt does not replace an undelivered reply.
+
+Convert files (XLSX to CSV, SQLite, splitting a sheet or a file, a custom
+converter), copy data, and upload derived files to Megaladata only with explicit
+consent. If importing the source is refused, offer those options in words and ask.
+
+Report a known limit (Excel is 1–64 columns per node; a profile `anomalies`
+warning) before `megaladata_dock_node_apply` and ask for a region or a decision.
+Do not create an empty or incomplete import "to check", and do not save an extra
+node; save the package when the user asked for it.

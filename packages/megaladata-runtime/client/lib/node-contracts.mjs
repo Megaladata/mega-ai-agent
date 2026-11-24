@@ -18,8 +18,8 @@ const definitions = [
   ['transform.enrich_data','Enrich Data','enrichdata',2,1,true,['left'],'processors/transformation/enrich-data.md'],
   ['research.quality','Data Quality','quality',1,5,false,['profile'],'processors/scrutiny/README.md'],
   ['imports.database','Database','dbimport',0,1,false,['table','sql'],'integration/import/database.md'],
-  ['imports.lgd','Megaladata Data файл','importnative',0,1,false,['native'],'integration/import/ldf.md'],
-  ['exports.lgd','Megaladata Data файл','exportnative',1,0,false,['native'],'integration/export/ldf.md'],
+  ['imports.lgd','Megaladata File','importnative',0,1,false,['native'],'integration/import/ldf.md'],
+  ['exports.lgd','Megaladata File','exportnative',1,0,false,['native'],'integration/export/ldf.md'],
   ['preprocessing.coarse_classes','Coarse Classes','coarseclasses',1,3,false,['internal','apply'],'processors/preprocessing/coarse-classes.md'],
   ['research.factor_analysis','Factor Analysis','factoranalysis',1,2,false,['pca_fixed','pca_eigenvalue','pca_variance','apply'],'processors/scrutiny/factor-analysis.md'],
   ['trees.from_table','Table to Tree','datatotree',1,0,false,['manual_structure'],'processors/data-trees/table-to-tree.md'],
@@ -53,13 +53,13 @@ const definitions = [
   ['transform.sliding_window','Lag','slidingwindow',1,1,false,['lag'],'processors/transformation/lag.md'],
   ['transform.date_time', 'Date and Time', 'datereform', 1, 1, false, ['calendar'], 'processors/transformation/trans-datatime/README.md'],
   ['transform.collapse_columns', 'Unpivoting', 'columnflipping', 1, 1, false, ['unpivot'], 'processors/transformation/collapse-columns.md'],
-  ['transform.sorting', 'Сортировка', 'sorting', 1, 1, false, ['keys'], 'processors/transformation/sorting.md'],
+  ['transform.sorting', 'Sort', 'sorting', 1, 1, false, ['keys'], 'processors/transformation/sorting.md'],
   ['transform.ungroup_data','Ungroup','ungroupdata',2,2,false,['shares','computed','seasonal'],'processors/transformation/ungrouping.md'],
   ['transform.join_data', 'Join', 'joindata', 2, 1, false, ['inner', 'left', 'right', 'full', 'difference'], 'processors/transformation/join/README.md'],
   ['transform.col_union_data','Column Union','coluniondata',1,1,true,['positional'],'processors/transformation/column-union.md'],
   ['transform.union_data', 'Union', 'uniondata', 2, 1, true, ['append_all'], 'processors/transformation/union.md'],
   ['programming.javascript', 'JavaScript', 'javascript', 1, 1, false, ['script'], 'processors/programming/java-script/index.html'],
-  ['control.condition', 'Условие', 'condition', 1, 2, false, ['ports','variable_branch'], 'processors/control/condition.md'],
+  ['control.condition', 'Condition', 'condition', 1, 2, false, ['ports','variable_branch'], 'processors/control/condition.md'],
   ['programming.python', 'Python', 'python', 1, 1, false, ['script'], 'processors/programming/python/README.md'],
 ];
 const freeze = value => { if (value && typeof value === 'object') { Object.values(value).forEach(freeze); Object.freeze(value); } return value; };
@@ -80,7 +80,7 @@ export const NODE_TYPES = freeze(Object.fromEntries(definitions.map(([type, titl
     : type === 'programming.javascript' ? 'Megaladata 7.4.2 synchronous scalar Data API, one tabular input and output (port 0); declared or code-defined schema. Requires an installed owned handler.'
     : type === 'programming.python' ? 'Python 3.13 code on the Megaladata server, separate process (external_process). Port 0 in/out: builtin_data InputTable/OutputTable or builtin_pandas_utils with pandas 2.2.3/numpy 2.2.4. schema_mode code: the script creates columns; declared: wizard columns. Code saved verbatim, readback source_sha256. Known file, network, process, environment and reflection APIs and package installation are refused before any edit (a denylist, not a sandbox).'
     : type === 'control.condition' ? 'Switch: first true branch runs, others are blocked; built-in Otherwise runs when none is true. Ports exist only after mode ports (new node, finish done); then link table input 0 and variables input 0 and use mode variable_branch. Output 0 = branch, 1 = Otherwise; reading a blocked branch port is refused as not active.'
-    : type === 'transform.join_data' ? 'Join two tables by keys; not positional Соединение.'
+    : type === 'transform.join_data' ? 'Join two tables by keys; not a positional column union.'
     : type === 'transform.union_data' ? 'Append rows, preserving duplicates; not UNION DISTINCT.' : type === 'research.duplicates' ? 'Mark all copies and contradictions; retain all rows. Filtering Duplicate=false removes every member of a duplicate group. Unassigned fields are preserved and ignored. No automatic deduplication or conflict resolution.' : title,
   ...(type==='control.loop'?{palette_group:'Control',semantics:'group_rows'}:{}),
   graph_handler: 'node_target_v1', graph_handler_status: 'internal_candidate', configuration_handler: null,
@@ -147,7 +147,10 @@ export function validateNodeTargetRequest(request) {
   }
   const targets = new Set();
   for (const input of request.inputs) {
-    object(input, ['source', 'output', 'input']); validateNodeReference(input.source); index(input.output); index(input.input);
+    object(input, ['source', 'output', 'input', 'replace_existing'], ['source', 'output', 'input']); validateNodeReference(input.source); index(input.output); index(input.input);
+    if(input.replace_existing!==undefined&&typeof input.replace_existing!=='boolean')throw Error('replace_existing must be a boolean');
+    if(input.replace_existing===true&&(target.kind!=='existing'||(NODE_TYPES[target.type].input_kinds?.[input.input]??'data')!=='data'))
+      throw Error('replace_existing requires a named tabular input on an existing target');
     if (input.source.document_id !== request.document_id || input.source.workflow_id !== request.workflow_ref.workflow_id) throw new Error('Input belongs to another workflow');
     if (targets.has(input.input)) throw new Error('More than one source for a target input');
     targets.add(input.input);

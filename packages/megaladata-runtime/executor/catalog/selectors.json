@@ -62,7 +62,7 @@
       "provenance": { "path": "bg/selectors.ts", "line_start": 302, "line_end": 306, "commit": "2cad5602158fd2e4836d821d644a2b8d92f571a2", "sha256": "59f5ed385076a5ca4cb97827647bbbca49da9380717fb44f204aa415e4b4e9e3", "role": "selector" }
     },
     {
-      "symbol": "component.imports.lgd", "strategy": "data_tid", "match": "suffix", "value": "ModelForm;colVendors_Components>Import>Megaladata_Data_файл",
+      "symbol": "component.imports.lgd", "strategy": "data_tid", "match": "suffix", "value": "ModelForm;colVendors_Components>Import>Megaladata_File",
       "scope": "activeWorkflow", "cardinality": "one", "visibility": "visible", "state": ["enabled"], "parameters": {},
       "provenance": { "path": "bg/selectors.ts", "line_start": 322, "line_end": 326, "commit": "2cad5602158fd2e4836d821d644a2b8d92f571a2", "sha256": "59f5ed385076a5ca4cb97827647bbbca49da9380717fb44f204aa415e4b4e9e3", "role": "selector" }
     },

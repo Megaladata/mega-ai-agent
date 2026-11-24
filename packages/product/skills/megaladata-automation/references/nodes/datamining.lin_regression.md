@@ -1,16 +1,17 @@
 # Linear regression (`datamining.lin_regression`)
 
-`dock_node_apply`: `input_fields`/`target_field` are the technical names of continuous numeric fields (indicators are below); the other fields are kept outside training.
+`input_fields`/`target_field` are the names of continuous numeric fields. Other fields stay outside training.
 Keep types and values: integer X/ID is `type:"integer", data_kind:"Continuous"`; Real is a fractional field or an explicitly requested Y. After import, read every field completely.
 All rows, a constant, no normalization or validation; `finish:"execute"` is Teach and Execute. Changes retrain the same node.
 Outputs: **0 is the forecast `<target>_rergession` and the source fields; 1 is the coefficients `Name`/`<target>_coefficients` with the constant; 2 is the summary**. Tables: `read.ports:[0,1]`, `sample_rows:100`, `require_exact_numbers:true`.
 The forecast CSV is `exports.text` from port 0, `inputs:[{source:regression.node,output:0,input:0}]`, including when `statistics:"full"`. Coefficients are port 1; their CSV is only on request, separately. Save the package; a cold open has no configuration.
-Model-quality summary (physical port 2): `read.variable_ports:[0]` after Execute, a complete fresh `VariablesForm`, 15 variables. Variable ordinals are separate; `read.ports:[2]` is wrong. Use only native values, without Calculator, JS, or recomputation.
+After Execute, read the summary through `read.variable_ports:[0]` (physical port 2). Check 15 fresh variables in `VariablesForm`. Put tabular ports in `read.ports`. Pass native values.
 
 <!-- mode: enter apply -->
 `enter` trains or retrains. To forecast new data: `mode:"apply"` on the same trained Enter node, the previous `input_fields`/`target_field`, `inputs:[]`, `finish:"execute"`; the model and settings are kept without Teach.
 Sequential train/test is Enter, `linear_regression.partition:{method:"sequential",train_count:16,test_count:2}`. The first 16 rows train, and the next 2 are only forecast.
 The model-quality summary with F/p is `statistics:"coefficients"` (the default); port 1 is Name/Y_coefficients. F/p of the summary (port 2) does not require `full`. SE/t/p/95% bounds of the **coefficients** are on request: `mode:"enter"`, `linear_regression:{statistics:"full"}` is port 1, 9 native columns with NULL.
+Judge a factor's significance by `<target>_PValue` on port 1. If it disagrees with the model test, report `ModelPValue` separately.
 Categories: a discrete string in `input_fields` and `linear_regression:{statistics:"full",normalization:[{field:"Category",method:"indicator",reference:"first"}]}`. The first item of the native list is the reference, with a visible zero coefficient. Name is repeated; UniqueValues (string) distinguishes categories. Enter only, without apply or other reference values; numeric fields are not normalized.
 <!-- /mode -->
 

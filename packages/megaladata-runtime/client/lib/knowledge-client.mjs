@@ -8,6 +8,10 @@ import { stemmer as stemEnglish } from '@orama/stemmers/english';
 // Megaladata Help ships with the product; the seven read-only tools keep the names
 // and URIs the remote knowledge service used, so skills and node cards stay valid.
 export const HELP_URI = 'viking://resources/megaladata-dock/sources/megaladata-help';
+// The Logical Functions page is shipped as logic.md. Accept the name taken from its title.
+const PAGE_ALIASES = new Map([
+  ['data/processors/func/calc-func/logical.md', 'data/processors/func/calc-func/logic.md'],
+]);
 const RETIRED = ['viking://resources/megaladata-dock/sources/e2e-tests', 'viking://resources/megaladata-dock/sources/ai-skills'];
 // Agent tool output is truncated at 50 KiB; keep every reply below it with room for the envelope.
 const REPLY_BYTES = 44000;
@@ -28,7 +32,8 @@ const TOOLS = [
   { name: 'find', description: 'Search Megaladata Help offline. Returns ranked fragments with their page URI, section breadcrumb and an excerpt; read the page with the read tool.', inputSchema: query },
   { name: 'search', description: 'Same as find: offline keyword search over Megaladata Help with synonyms for Calculator functions.', inputSchema: query },
   { name: 'read', description: 'Read one or more Megaladata Help pages by URI (.html links are mapped to the shipped .md pages). A directory URI returns its README page.', inputSchema: {
-    type: 'object', properties: { uris: { anyOf: [uri, { type: 'array', items: uri, minItems: 1, maxItems: 10 }] } }, required: ['uris'] } },
+    type: 'object', properties: { uris: { description: 'Pass a URI string for one page or a JSON array of URI strings for multiple pages.',
+      anyOf: [uri, { type: 'array', items: uri, minItems: 1, maxItems: 10 }] } }, required: ['uris'] } },
   { name: 'list', description: 'List pages and subdirectories under a Megaladata Help directory URI, with page titles.', inputSchema: {
     type: 'object', properties: { uri, recursive: { type: 'boolean' } }, required: ['uri'] } },
   { name: 'tree', description: 'Show the Megaladata Help directory tree with page titles, indented by depth.', inputSchema: {
@@ -239,7 +244,12 @@ function excerpt(body, words) {
 }
 
 function read(help, args) {
-  const list = Array.isArray(args.uris) ? args.uris : [args.uris];
+  let uris = args.uris;
+  // Some models stringify the array even though the tool accepts it directly.
+  if (typeof uris === 'string' && uris.trimStart().startsWith('[')) {
+    try { uris = JSON.parse(uris); } catch { /* Preserve scalar path handling. */ }
+  }
+  const list = Array.isArray(uris) ? uris : [uris];
   if (!list.length || list.length > 10 || list.some(item => typeof item !== 'string')) return failure('read: uris must be a URI or a list of up to 10 URIs.');
   const blocks = [];
   let found = 0;
@@ -359,6 +369,8 @@ function resolve(help, value) {
   if (help.pages.has(path)) return { file: path };
   if (help.dirs.has(path)) return { dir: path };
   if (help.pages.has(`${path}.md`)) return { file: `${path}.md` };
+  const alias = PAGE_ALIASES.get(path.endsWith('.md') ? path : `${path}.md`);
+  if (alias && help.pages.has(alias)) return { file: alias };
   return { missing: path };
 }
 

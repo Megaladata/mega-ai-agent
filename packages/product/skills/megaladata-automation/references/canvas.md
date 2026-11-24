@@ -34,3 +34,27 @@ task. `sample_complete=false` means the table is incomplete. Exact numeric
 reads, Cross Table category reconciliation, and the limits of a full read are
 described in the [work order](workflow.md). The number of visible graph
 elements does not prove that the links or the calculations are correct.
+
+## Insert a node and replace an input source
+
+Use `inputs[].replace_existing:true` only when the user explicitly asks to change
+the processing order or the source of an existing node. A refusal because an
+input is already linked is not that permission. Work only in the open prepared
+scenario; take document, workflow, and GUID from the current observation.
+
+For "add a filter before grouping", first read the current link and the settings
+of the downstream node. Create the new filter with the previous source as its
+input, finish its configuration, and check the result. Then call `dock_node_apply`
+with a new operation_id, `target.kind:"existing"`, and the ref of the same grouping
+node, keeping its settings:
+`inputs:[{source:<filter NodeRef>,output:0,input:0,replace_existing:true}]`.
+Do not recreate the grouping node or Export. Moving an existing node's input to
+another source follows the same explicit-request rule.
+
+The parameter replaces the link only on the named tabular `input`, not the other
+inputs; variables and trees are not supported. Without the parameter, or when it
+is `false`, the existing link is kept and a conflict is refused; `inputs:[]`
+keeps the links. The `replaced_links` receipt contains the removed and created
+link with source, output, target, and input; check both and the other links.
+On `AMBIGUOUS`, do not repeat the removal or the connection: follow inspect or
+recovery of the original operation. Save the package after the chain is checked.

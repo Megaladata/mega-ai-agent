@@ -77,7 +77,7 @@ export async function restConnectionCapability(page,t,readPlacementGraph=readGra
       const visible=e=>e.checkVisibility({checkVisibilityCSS:true}),normalize=s=>s.replace(/\s+/g,' ').trim();
       const c=bg.app.Application.FInstance.FMainForm.Items.Workspace.getActiveTab().Controller;
       const dialogs=[...document.querySelectorAll('.x-window')].filter(visible),dialog=dialogs[0],native=dialog&&Ext.getCmp(dialog.id);
-      const text='Megaladata '+t.build+' Node configuration will cause its deactivation. Do you really want to start node configuration? Yes Yes, don\\\'t ask again No';
+      const text='Megaladata '+t.build+' Node configuration will cause its deactivation. Do you really want to start node configuration? Yes Yes, don\'t ask again No';
       if(c.FController!==b.controller||c.Node.data.node!==b.node||!b.root.isConnected||dialogs.length!==1||native?.el?.dom!==dialog||normalize(dialog.innerText)!==text)throw Error('Connection deactivation question differs');
       const crumbs=[...document.querySelectorAll('[data-tid^='+JSON.stringify(t.workflow_ref.prefix+';cnrNaviMode;b.s_')+']')];
       const nodeElement=crumbs.at(-2),wizardElement=crumbs.at(-1),nc=nodeElement&&Ext.getCmp(nodeElement.id),wc=wizardElement&&Ext.getCmp(wizardElement.id);
