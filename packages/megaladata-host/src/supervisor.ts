@@ -17,6 +17,8 @@ export type Launch = {
   actionManifestUri?: string
   actionManifestSha256?: string
   validation?: boolean
+  // Host-owned HTTP cache only; browser profiles and authentication remain fresh.
+  validationHttpCache?: boolean
   headless?: boolean
   environment?: NodeJS.ProcessEnv
   // Acceptance-only: exact saved package path the runtime closes and logs out of during
@@ -27,6 +29,9 @@ export type Launch = {
   // Private launcher capability for temporary browser recovery tools.
   browserRecovery?: boolean
   startupDeadline?: number
+  resourceManifestHash?: string
+  resourceCachePath?: string
+  resourceCacheVersion?: string
 }
 
 type ProcessLaunch = Pick<Launch, "node" | "entry" | "stateDir" | "generation" | "environment"> & { diagnosticSecrets?: string[] }
@@ -56,12 +61,6 @@ export function runtimeEnvironment(environment: NodeJS.ProcessEnv, platform = pr
     "TEMP",
     "TMP",
     "TMPDIR",
-    "PATH",
-    "PATHEXT",
-    "USERNAME",
-    "USERDOMAIN",
-    "HOMEDRIVE",
-    "HOMEPATH",
     "LANG",
     "LC_ALL",
     "SSL_CERT_FILE",
@@ -77,6 +76,7 @@ export function runtimeEnvironment(environment: NodeJS.ProcessEnv, platform = pr
     "all_proxy",
     "no_proxy",
     "NODE_USE_ENV_PROXY",
+    "MEGA_AI_AGENT_ACCEPTANCE_VIEWPORT",
   ]
   if (platform === "linux")
     keys.push(
@@ -117,7 +117,9 @@ export async function supervise(input: Launch, signal?: AbortSignal) {
     { ...input, environment: undefined, protocol: 1 },
     Math.max(1, Math.min(input.validation ? 210_000 : 120_000, (input.startupDeadline ?? Infinity) - Date.now())),
     signal,
-    input.closeSavedPackageOnShutdown === true || input.acceptanceCleanupPackage ? 45_000 : 5000,
+    // Windows browser/resource teardown can outlast 5s even after native Close/logout.
+    // Leave headroom for the exit grace inside the outer Host's 30s close budget.
+    input.closeSavedPackageOnShutdown === true || input.acceptanceCleanupPackage ? 45_000 : 15_000,
   )
   const ready = runtime.ready
   if (
@@ -290,6 +292,7 @@ async function superviseProcess(
     void close().catch(() => undefined)
   }
   signal?.addEventListener("abort", cancel, { once: true })
+  const started = performance.now()
   try {
     const ready = await request("start", start, timeout)
     signal?.throwIfAborted()
@@ -305,6 +308,10 @@ async function superviseProcess(
     }
     return { ready, request, close, exited }
   } catch (cause) {
+    await appendFile(join(input.stateDir, "startup-failures.jsonl"), JSON.stringify({ version: 1,
+      recorded_at: new Date().toISOString(), phase: "runtime.start", generation: input.generation, pid: child.pid,
+      elapsed_ms: Math.round(performance.now() - started), error: startupDiagnostic(cause, input.diagnosticSecrets),
+    }) + "\n", { mode: 0o600 }).catch(() => undefined)
     const cleanupConfirmed = await close().then(
       () => true,
       () => false,

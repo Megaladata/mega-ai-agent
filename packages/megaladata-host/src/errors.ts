@@ -1,4 +1,16 @@
 const codes = new Set([
+  "DASHBOARD_ORIGIN_MISMATCH",
+  "DASHBOARD_STORAGE_UNAVAILABLE",
+  "DASHBOARD_ACCESS_DENIED",
+  "DASHBOARD_VERSION_EXISTS",
+  "DASHBOARD_WRITE_UNKNOWN",
+  "DASHBOARD_DELETE_BUSY",
+  "DASHBOARD_DELETE_UNKNOWN",
+  "DASHBOARD_CANCELLED",
+  "MEGALADATA_RUNTIME_CLEANUP_FAILED",
+  "MEGALADATA_REPLY_INVALID",
+  "DASHBOARD_INPUT_INVALID",
+  "MEGALADATA_GENERATION_UNAVAILABLE",
   "MEGALADATA_SCOPE_DENIED",
   "MEGALADATA_RECOVERY_REQUIRED",
   "MEGALADATA_CALL_UNCERTAIN",
@@ -33,10 +45,6 @@ const codes = new Set([
   "MEGALADATA_LOGIN_UNAVAILABLE",
   "MEGALADATA_BROWSER_START_FAILED",
   "MEGALADATA_RUNTIME_START_FAILED",
-  "MEGALADATA_RUNTIME_FAILED",
-  "MEGALADATA_RUNTIME_CLEANUP_FAILED",
-  "MEGALADATA_RUNTIME_DISCONNECTED",
-  "MEGALADATA_RUNTIME_TIMEOUT",
   "MEGALADATA_RUNTIME_UNAVAILABLE",
   "MEGALADATA_STORE_READ_FAILED",
   "MEGALADATA_STORE_WRITE_FAILED",
@@ -69,13 +77,22 @@ export function hostError(value: unknown) {
 }
 
 const reasons: Record<string, string> = {
-  MEGALADATA_FILE_TOO_LARGE: "The file exceeds the limit of this transfer method.",
-  MEGALADATA_FILE_NOT_FOUND: "File not found. Provide an existing path.",
-  MEGALADATA_FILE_NOT_REGULAR: "A regular file is required, not a directory or special file.",
-  MEGALADATA_FILE_ACCESS_DENIED: "Access to the file is denied. Do not retry the read through another path.",
-  MEGALADATA_FILE_CHANGED: "The file changed. Select and confirm the current file again.",
-  MEGALADATA_UPLOAD_CANCELLED: "Upload cancelled.",
-  MEGALADATA_UPLOAD_UNCERTAIN: "Stopping or cleaning up the upload was not confirmed. Do not send the file again.",
+  DASHBOARD_CANCELLED: "Операция dashboard отменена.",
+  DASHBOARD_WRITE_UNKNOWN: "Результат публикации неизвестен. Проверьте версию на стенде; повторная запись автоматически не выполняется.",
+  DASHBOARD_DELETE_BUSY: "Этот дашборд уже удаляется. Повторите запрос после завершения операции.",
+  DASHBOARD_DELETE_UNKNOWN: "Не удалось подтвердить результат удаления версий. Повторная команда начнётся с проверки стенда.",
+  DASHBOARD_STORAGE_UNAVAILABLE: "Не удалось прочитать хранилище публикаций или установить принадлежность версий.",
+  DASHBOARD_VERSION_EXISTS: "Имя публикации уже занято. Существующая версия сохранена.",
+  DASHBOARD_ACCESS_DENIED: "Недостаточно прав для чтения или записи публикации в Megaladata.",
+  DASHBOARD_ORIGIN_MISMATCH: "Подключение относится к другому стенду. Откройте dashboard заново из Studio.",
+  MEGALADATA_GENERATION_UNAVAILABLE: "Подключение изменилось. Откройте dashboard заново из Studio.",
+  MEGALADATA_FILE_TOO_LARGE: "Файл превышает лимит этого способа передачи.",
+  MEGALADATA_FILE_NOT_FOUND: "Файл не найден. Укажите существующий путь.",
+  MEGALADATA_FILE_NOT_REGULAR: "Нужен обычный файл, а не каталог или специальный файл.",
+  MEGALADATA_FILE_ACCESS_DENIED: "Доступ к файлу запрещён. Не повторяйте чтение обходным путём.",
+  MEGALADATA_FILE_CHANGED: "Файл изменился. Заново выберите и подтвердите актуальный файл.",
+  MEGALADATA_UPLOAD_CANCELLED: "Загрузка отменена.",
+  MEGALADATA_UPLOAD_UNCERTAIN: "Остановка или уборка загрузки не подтверждена. Не отправляйте файл повторно.",
 }
 
 // Private IPC carries only these fields. Never forward an exception's message,
@@ -91,7 +108,7 @@ export function hostFailure(value: unknown) {
       const number = source && typeof source === "object" ? Reflect.get(source, key) : undefined
       if (typeof number === "number" && Number.isSafeInteger(number) && number >= 0) details[key] = number
     }
-    details.hint = "Provide a path; large files use a profile and a sample. For now, choose a smaller file."
+    details.hint = "Укажите путь; для больших файлов будет профиль и выборка. Сейчас выберите файл меньшего размера."
   }
   return { error, details }
 }

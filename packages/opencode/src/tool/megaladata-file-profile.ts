@@ -39,7 +39,7 @@ export const megaladataFileTools = Effect.fn("Megaladata.fileTools")(function* (
     {
       name: "megaladata_file_profile",
       description:
-        "Profile a local CSV/TSV/TXT or XLSX by literal path BEFORE Read or admission. XLSX is recognized by ZIP workbook relationships; reads bounded streaming XML, disk-indexed shared strings, sheet names/visibility, dimensions, date system, cached formulas and Excel import settings. Quick budget: 8 MiB decoded content / about 5 seconds. Select sheet_name if needed. settings.source delivery IDs and source_path are filled after sample delivery. Excel runtime supports 1–12 columns, 1–10 header rows and imports blank rows; respect settings_complete=false. CSV returns encoding/dialect and paginated columns. Does not validate the whole file: use megaladata_file_scan for exact count/types.",
+        "Profile a local CSV/TSV/TXT or XLSX by literal path BEFORE Read or admission. XLSX is recognized by ZIP workbook relationships; reads bounded streaming XML, disk-indexed shared strings, sheet names/visibility, dimensions, date system, cached formulas and Excel import settings. Quick budget: 8 MiB decoded content / about 5 seconds. Select sheet_name if needed. settings.source delivery IDs and source_path are filled after sample delivery. Excel runtime supports 1–64 columns, 1–1000 header rows and imports blank rows; respect settings_complete=false. CSV returns encoding/dialect and paginated columns. Does not validate the whole file: use megaladata_file_scan for exact count/types.",
       properties: {
         path: { type: "string" },
         profile_id: { type: "string" },
@@ -60,8 +60,8 @@ export const megaladataFileTools = Effect.fn("Megaladata.fileTools")(function* (
         header_rows: {
           type: "integer",
           minimum: 0,
-          maximum: 10,
-          description: "XLSX header rows; default 1. Runtime Excel import requires 1–10.",
+          maximum: 1000,
+          description: "XLSX header rows; default 1. Runtime Excel import requires 1–1000.",
         },
         blank_rows: {
           type: "string",
@@ -146,7 +146,7 @@ export const megaladataFileTools = Effect.fn("Megaladata.fileTools")(function* (
                   manifest,
                   offset_count: offsets.length,
                   next_step:
-                    "megaladata_file_admit on path, then artifact_deliver. Build and report on the sample; the full calculation follows after the full file is uploaded.",
+                    "megaladata_file_admit on path, then artifact_deliver. Build and report on the sample; полный расчёт будет после загрузки полного файла.",
                 }
               })
               yield* authorized.verifyAttachment()

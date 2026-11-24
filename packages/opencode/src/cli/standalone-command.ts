@@ -2,7 +2,7 @@ import { parseArgs } from "node:util"
 import { launchNodeHost, NodeHostStartupError } from "@mega-ai-agent/megaladata-host/node-client"
 import type { cliProfile } from "@mega-ai-agent/product/cli-profile"
 import { hostError } from "@mega-ai-agent/megaladata-host/errors"
-import { megaladataManagement } from "./megaladata-management"
+import { megaladataManagement, statusText, type statusView } from "./megaladata-management"
 import { standaloneBundle } from "./standalone-bundle"
 
 export async function standaloneCommand(args: string[], paths: ReturnType<typeof cliProfile>) {
@@ -96,7 +96,11 @@ export async function standaloneCommand(args: string[], paths: ReturnType<typeof
       acknowledge: parsed.values.acknowledge,
       ids: parsed.positionals.slice(2),
     })
-    process.stdout.write(JSON.stringify(result, null, parsed.values.format === "json" ? undefined : 2) + "\n")
+    process.stdout.write(
+      (parsed.positionals[1] === "status" && format !== "json"
+        ? statusText(result as ReturnType<typeof statusView>)
+        : JSON.stringify(result, null, format === "json" ? undefined : 2)) + "\n",
+    )
   } catch (error) {
     failure(error)
   } finally {

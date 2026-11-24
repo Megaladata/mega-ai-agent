@@ -3,8 +3,23 @@ import { defineConfig } from "electron-vite"
 import appPlugin from "@opencode-ai/app/vite"
 import * as fs from "node:fs/promises"
 import { execFileSync } from "node:child_process"
+import { createPublicKey } from "node:crypto"
 
 const MEGA_AI_AGENT_SERVER_DIST = "../opencode/dist/node"
+
+// Fixture trust is a build input, never a runtime override. Release CI cannot opt in.
+const updateTestKey = (() => {
+  if (
+    process.env.MEGA_AI_AGENT_UPDATE_TEST_BUILD !== "1" ||
+    process.env.GITHUB_WORKFLOW === "release" ||
+    process.env.GITHUB_WORKFLOW_REF?.includes("/.github/workflows/release.yml@")
+  )
+    return null
+  const pem = process.env.MEGA_AI_AGENT_UPDATE_TEST_PUBLIC_KEY
+  if (!pem?.startsWith("-----BEGIN PUBLIC KEY-----") || createPublicKey(pem).asymmetricKeyType !== "ed25519")
+    throw Error("MEGALADATA_UPDATE_TEST_PUBLIC_KEY_INVALID")
+  return pem
+})()
 
 // Capture provenance at build time, never from the user's working directory.
 const source = (() => {
@@ -54,6 +69,14 @@ const sentry =
 export default defineConfig({
   main: {
     define: {
+      MEGA_AI_AGENT_UPDATE_TEST_PUBLIC_KEY: JSON.stringify(updateTestKey),
+      MEGA_AI_AGENT_UPDATE_GITHUB_API: JSON.stringify(
+        process.env.MEGA_AI_AGENT_UPDATE_GITHUB_API?.trim() || null,
+      ),
+      MEGA_AI_AGENT_UPDATE_GITHUB_DOWNLOAD: JSON.stringify(
+        process.env.MEGA_AI_AGENT_UPDATE_GITHUB_DOWNLOAD?.trim() || null,
+      ),
+      MEGA_AI_AGENT_UPDATE_FEED: JSON.stringify(process.env.MEGA_AI_AGENT_UPDATE_FEED?.trim() || null),
       "import.meta.env.MEGA_AI_AGENT_CHANNEL": JSON.stringify(channel),
       "import.meta.env.MEGA_AI_AGENT_SOURCE_SHA": JSON.stringify(source.sha),
       "import.meta.env.MEGA_AI_AGENT_SOURCE_DIRTY": JSON.stringify(source.dirty),
@@ -79,7 +102,12 @@ const require = __cjs_mod__.createRequire(import.meta.url);
       },
       externalizeDeps: {
         include: [nodePtyPkg],
-        exclude: ["@mega-ai-agent/product", "@opencode-ai/schema", "@mega-ai-agent/megaladata-host"],
+        exclude: [
+          "@mega-ai-agent/product",
+          "@opencode-ai/schema",
+          "@mega-ai-agent/megaladata-host",
+          "@mega-ai-agent/dashboard",
+        ],
       },
     },
     plugins: [

@@ -32,7 +32,7 @@ export function verifiedCalculatorSyntaxFailure(error,baseline){
   &&(v.source==='megaladata_wizard_error_tooltip'||v.source==='megaladata_calculator_preview_console'
     &&w.calculator_preview?.status==='observed'&&w.calculator_preview.errors?.length>0&&w.calculator_preview.errors.join('\n')===v.message
     ||v.source==='megaladata_calculator_preview_error_dialog'&&/^[A-Za-z_][A-Za-z0-9_]{0,127}$/.test(v.field_name??'')
-      &&/Error parsing ["«]([A-Za-z_][A-Za-z0-9_]{0,127})["»] expression/.exec(v.message)?.[1]===v.field_name
+      &&/Ошибка разбора выражения\s*["«]([A-Za-z_][A-Za-z0-9_]{0,127})["»]/.exec(v.message)?.[1]===v.field_name
       &&r.trace?.filter(e=>e.event==='wizard_calculator_preview_error_dismissed'&&e.root_ref===w.root_ref&&e.message===v.message).length===1)
   &&r.trace?.filter(e=>e.event==='wizard_calculator_validation_failed'&&e.root_ref===w.root_ref&&e.message===v.message).length===1;
 }
@@ -54,7 +54,7 @@ export function verifiedCalculatorRequestRefusal(refusal,node){
 export async function rejectUnchangedCalculatorDraft(channel,baseline,error,{close=closePreparedWizard,open=openPreparedWizard,
  syntax=false,graphBefore,readGraph,
  select=async channel=>{const s=await channel.observe({condition:'same calculator graph after rejected draft',ready:s=>s.prepared_node_context?.surface==='graph'&&s.wizard?.status==='absent'});
-  await selectPreparedGraphNode(channel,s,'reselect retained calculator for rejection verification');}}={}){
+  await selectPreparedGraphNode(channel,s,'reselect retained calculator for rejection verification',{refreshReplacedBody:syntax});}}={}){
  const node=identity(baseline),before=configuration(baseline);
  need(Object.values(node).every(v=>typeof v==='string'&&v.length),'Exact calculator identity required');
  if(syntax){

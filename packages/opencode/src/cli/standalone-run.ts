@@ -2,11 +2,17 @@ import { Option, Schema } from "effect"
 import { Megaladata } from "@opencode-ai/schema/megaladata"
 import { MegaladataHost } from "@mega-ai-agent/megaladata-host/adapter"
 import { launchNodeHost, NodeHostStartupError } from "@mega-ai-agent/megaladata-host/node-client"
+import { withBundledRipgrep } from "@mega-ai-agent/megaladata-host/bundled-ripgrep"
 import type { cliProfile } from "@mega-ai-agent/product/cli-profile"
 import { Product } from "@mega-ai-agent/product"
 import { standaloneCancellation } from "./standalone-cancellation"
 import { standaloneBundle } from "./standalone-bundle"
 import { InstallationBrowserRecovery } from "@opencode-ai/core/installation/version"
+import { join } from "node:path"
+import { dashboardDataRoot } from "@mega-ai-agent/product/dashboard-root"
+import { dashboardPrompt } from "@mega-ai-agent/dashboard/contract/prompt"
+import { hostError, hostErrorText } from "@mega-ai-agent/megaladata-host/errors"
+import { dashboardFlag } from "./standalone-dashboard"
 
 export async function standaloneRun(args: string[], paths: ReturnType<typeof cliProfile>, mode: "run" | "tui" = "run") {
   const signal = mode === "run" ? standaloneCancellation() : undefined
@@ -21,14 +27,20 @@ export async function standaloneRun(args: string[], paths: ReturnType<typeof cli
   const json =
     flags.includes("--format=json") || flags.some((value, index) => value === "--format" && flags[index + 1] === "json")
   const headless = flags.includes("--headless")
-  const filtered = args.filter((value, index) => index >= boundary || !["--headless", "--no-headless"].includes(value))
-  const failure = (code: string, exit: number) => {
+  const dashboard = dashboardFlag(args, mode)
+  const forwarded = dashboard && dashboard !== "invalid" ? dashboard.rest : args
+  const forwardedBoundary = forwarded.indexOf("--") < 0 ? forwarded.length : forwarded.indexOf("--")
+  const filtered = forwarded.filter(
+    (value, index) => index >= forwardedBoundary || !["--headless", "--no-headless"].includes(value),
+  )
+  const failure = (code: string, exit: number, message = code) => {
     process.exitCode = exit
     if (json)
-      process.stdout.write(JSON.stringify({ type: "error", error: { name: code, data: { message: code } } }) + "\n")
-    process.stderr.write(code + "\n")
+      process.stdout.write(JSON.stringify({ type: "error", error: { name: code, data: { message } } }) + "\n")
+    process.stderr.write(message + "\n")
   }
   if (
+    dashboard === "invalid" ||
     (headless && flags.includes("--no-headless")) ||
     (mode === "tui" &&
       flags.some((value) =>
@@ -53,6 +65,7 @@ export async function standaloneRun(args: string[], paths: ReturnType<typeof cli
   })
   if (!bundle) return
   process.env.MEGA_AI_AGENT_RESOURCES = bundle.resources
+  withBundledRipgrep(process.env, bundle.resources)
   if (signal?.aborted) {
     failure("CLI_CANCELLED", 130)
     return
@@ -83,6 +96,48 @@ export async function standaloneRun(args: string[], paths: ReturnType<typeof cli
       failure("MEGALADATA_RECOVERY_REQUIRED", 4)
       return
     }
+    if (dashboard && !status.value.generation) {
+      failure("MEGALADATA_CONFIG_REQUIRED", 2)
+      return
+    }
+    const target = dashboard
+      ? await (async () => {
+          const { prepareDashboard } = await import("@mega-ai-agent/dashboard/agent/folder")
+          const { PublicationSource } = await import("@mega-ai-agent/dashboard/contract/publication")
+          const origin = new URL(status.value.url).origin
+          // Pre-chat owns the whole private Host: shutdown cancels and waits for its Studio operation.
+          const interrupt = () => { void host.close().catch(() => undefined) }
+          signal?.addEventListener("abort", interrupt, { once: true })
+          try {
+            signal?.throwIfAborted()
+            return await prepareDashboard({
+              id: dashboard.id, origin, signal,
+              dashboards: dashboardDataRoot(process.env),
+              template: join(bundle.resources, "dashboard/template"),
+              readPublication: async binding => {
+                await host.request("connection.ready", {})
+                return Schema.decodeUnknownSync(Schema.NullOr(PublicationSource), { onExcessProperty: "error" })(
+                  await host.request("dashboard.read", { origin, generation: status.value.generation, binding }),
+                )
+              },
+            })
+          } finally { signal?.removeEventListener("abort", interrupt) }
+        })().catch(error => {
+          const code = error instanceof Error && /^(DASHBOARD_SNAPSHOT_(UNAVAILABLE|INVALID)|DASHBOARD_BINDING_CONFLICT|DASHBOARD_PUBLICATION_(INVALID|TOO_LARGE))$/.test(error.message)
+            ? error.message : hostError(error)
+          failure(code, 1, code === hostError(error) ? hostErrorText(error) : code)
+          return undefined
+        })
+      : undefined
+    if (dashboard && !target) return
+    if (target?.notice) {
+      const notice = target.notice
+      process.stderr.write((notice.kind === "newer-publication"
+        ? `На стенде новая версия ${notice.latest}. Локальные исходники сохранены; перед заменой потребуется подтверждение.`
+        : notice.kind === "publication-check-unavailable"
+          ? "Не удалось проверить публикацию в Studio. Открыт сохранённый локальный черновик."
+          : `Сборка версии ${notice.latest} не удалась. Текущая версия: ${notice.current ?? "нет"}. ${notice.error ?? ""}`) + "\n")
+    }
     if (mode === "run" && automation && !status.value.generation) {
       failure("MEGALADATA_CONFIG_REQUIRED", 2)
       return
@@ -107,7 +162,7 @@ export async function standaloneRun(args: string[], paths: ReturnType<typeof cli
     if (mode === "tui" && !status.value.generation && process.stdin.isTTY) {
       const { confirm, isCancel } = await import("@clack/prompts")
       const setup = await confirm({
-        message: "Configure Megaladata now? You can continue an ordinary chat without a connection.",
+        message: "Настроить Megaladata сейчас? Можно продолжить обычный чат без подключения.",
         initialValue: false,
         output: process.stderr,
       })
@@ -151,9 +206,13 @@ export async function standaloneRun(args: string[], paths: ReturnType<typeof cli
         throw error ?? new Error("CLI_ARGUMENT_INVALID")
       })
     if (mode === "run") {
-      const { RunCommand } = await import("./cmd/run")
+      const { RunCommand, setRunDashboard } = await import("./cmd/run")
       if (signal?.aborted) throw Error("CLI_CANCELLED")
-      await parser.command(RunCommand).parseAsync(filtered)
+      if (target) {
+        setRunDashboard(dashboardPrompt(target.action))
+        cleanup.detach = () => setRunDashboard()
+      }
+      await parser.command(RunCommand).parseAsync(target ? ["--dir", target.directory, ...filtered] : filtered)
     } else {
       const { TuiThreadCommand, setTuiMegaladataHost, setTuiStartupWarning } = await import("./cmd/tui")
       setTuiMegaladataHost(host.port)

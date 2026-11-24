@@ -24,7 +24,7 @@ const knowledge=Object.freeze({
     official_help_build_scope:'online help is not pinned to build 7.4.2; executable examples are backed by the observed profile',
   }),
   limitations:Object.freeze([
-    'Only Megaladata 7.4.2 and tabular v1: another observed build requires refusal before any mutation.',
+    'Только Megaladata 7.4.2 и табличный v1: другой наблюдённый build требует отказа до мутации.',
     'Import Data statically from builtIn/Data; external modules, FS, Fetch, and Calc are outside this contract.',
     'Use only syntax and API verified on this build; a clean editor does not prove Execute.',
     'For a code-defined output table call AssignColumns before the first Append; declared mode uses the saved schema.',
@@ -91,11 +91,26 @@ const declared=Object.freeze({...previous,version:'1.2.0',
   }),
 });
 
-const current=Object.freeze({...declared,version:'1.3.0',
+const dataOnly=Object.freeze({...declared,version:'1.3.0',
   limitations:Object.freeze([...declared.limitations,
     'In parameters.source_text for AssignColumns use DataType.Integer, DataType.Float (real), DataType.String, DataType.Boolean, and DataType.DateTime from builtIn/Data. DataType.Real does not exist; parameters.columns uses the string type="real", which is a different contract.']),
   scalar_data_api:Object.freeze({...declared.scalar_data_api,
     column_types:Object.freeze({integer:'DataType.Integer',real:'DataType.Float',string:'DataType.String',boolean:'DataType.Boolean',datetime:'DataType.DateTime'}),
+  }),
+});
+
+const current=Object.freeze({...dataOnly,version:'1.4.0',
+  limitations:Object.freeze([
+    'Megaladata 7.4.2: tabular Data retains input/output 0; sources require input_state:unconnected and verified absence of incoming links.',
+    'Static builtIn/Data; builtIn/FS only in the unconnected source branch. Fetch, Calc, external modules and dynamic import/require remain refused.',
+    ...dataOnly.limitations.slice(2),
+  ]),
+  filesystem:Object.freeze({
+    import:'import * as fs from "builtIn/FS";',
+    scope:'Megaladata7.4.2/Linux native operator probes LAB-1549; candidate pending autonomous acceptance.',
+    paths:'Only the assigned user-storage subtree. Unsaved relative paths use the personal folder; saved paths use the MGP directory; a moved package needs its sidecar separately.',
+    bytes:'readFileSync without encoding returns ArrayBuffer; use Uint8Array, not Node Buffer.',
+    effects:'Declared output: dock_node_apply with finish:execute maps first, then runs once, including existing nodes. Code output without FS/Fetch runs twice: materialize, map, reactivate. Cold/downstream runs once. FS/Fetch scripts need declared output columns. a and wx are not idempotent; never retry unknown or partial effects.',
   }),
 });
 
@@ -104,7 +119,7 @@ export const JAVASCRIPT_CARD_LIMITATIONS=current.limitations;
 
 export function describeJavascriptKnowledge(observedBuild,version=current.version) {
   if(observedBuild!==knowledge.validated_for.megaladata_build)throw Error('JavaScript knowledge is not validated for observed Megaladata build');
-  const selected=version===knowledge.version?knowledge:version===previous.version?previous:version===declared.version?declared:version===current.version?current:null;
+  const selected=version===knowledge.version?knowledge:version===previous.version?previous:version===declared.version?declared:version===dataOnly.version?dataOnly:version===current.version?current:null;
   if(!selected)throw Error('Unsupported JavaScript knowledge version');
   return structuredClone({...selected,knowledge_sha256:createHash('sha256').update(JSON.stringify(selected)).digest('hex')});
 }

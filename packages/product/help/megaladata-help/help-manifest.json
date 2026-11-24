@@ -5,7 +5,7 @@
     "url": "https://help.megaladata.com/userguide/"
   },
   "pages": 284,
-  "bytes": 1195585,
+  "bytes": 1194502,
   "files": [
     {
       "path": "data/README.md",
@@ -329,8 +329,8 @@
     },
     {
       "path": "data/integration/web-services/web-services-page.md",
-      "sha256": "a489b9d113ca0922351c805254a77e2e392cf026ca85fb2c99eab169038b0a96",
-      "bytes": 2648
+      "sha256": "3bc0c7d19cba6a8ddbac16e411840f222292ed87840b1c686dcdc95b2718b880",
+      "bytes": 2619
     },
     {
       "path": "data/interface/README.md",
@@ -514,8 +514,8 @@
     },
     {
       "path": "data/processors/datamining/self-organizing-network.md",
-      "sha256": "5bd51b85c2d3ff593a6dccc85fc248406ded4234941625e485b7e482272375d9",
-      "bytes": 4577
+      "sha256": "3d076cd29f6ab0164a241fda32e79590f2658b5cf26c82e7e74cefe616bdb9fb",
+      "bytes": 4505
     },
     {
       "path": "data/processors/func/README.md",
@@ -704,8 +704,8 @@
     },
     {
       "path": "data/processors/programming/java-script/README.md",
-      "sha256": "4f136495049ce9a2520961d318f94e053c6624e6c5827e2f031883289c40068b",
-      "bytes": 6039
+      "sha256": "2ac7705fcde8862928d4b73879111b8d2af75e4c8c4acc543dda9a6f58f87237",
+      "bytes": 5952
     },
     {
       "path": "data/processors/programming/java-script/api-description.md",
@@ -714,23 +714,23 @@
     },
     {
       "path": "data/processors/programming/java-script/calc-functions.md",
-      "sha256": "8a5825c8a6e353e4357472c1b02137943d2c94f8b9b2df0e0843f555034e380e",
-      "bytes": 1795
+      "sha256": "39221929b772f92a823a33cc4b0cbc550c9efe0f77ce7884fccb95dd7a442e5a",
+      "bytes": 1750
     },
     {
       "path": "data/processors/programming/java-script/console.md",
-      "sha256": "ef6686618f16563a272eab716795f25932868d045b6a39bf17e8ec0b5eb93a86",
-      "bytes": 4261
+      "sha256": "460b10c8f24c4f9e3f15ee948dcb5d435f3d5d4d93a537418dbedb52ab96e95c",
+      "bytes": 4112
     },
     {
       "path": "data/processors/programming/java-script/enum.md",
-      "sha256": "7d888f066302d00fb8ea5ce543d0673ceba79bb69fee21bdaa4697637a815c0f",
-      "bytes": 3136
+      "sha256": "da5f1ff1fece64858a93abb34d69c0103b91b2233a5d3d46c2915e1f19b30da5",
+      "bytes": 3072
     },
     {
       "path": "data/processors/programming/java-script/external-modules.md",
-      "sha256": "7f4bcbdfe01bce1dcc82cdf44c42b818f727c38656daa26f70a40cb726e84049",
-      "bytes": 5080
+      "sha256": "b0b581b5c8febe93c9f3cbeb11f10ad3f05fdf529a0ec4d5fd3c86fe89f943d6",
+      "bytes": 4906
     },
     {
       "path": "data/processors/programming/java-script/fetch-api.md",
@@ -754,18 +754,18 @@
     },
     {
       "path": "data/processors/programming/java-script/input-tables.md",
-      "sha256": "587118bcb060b1ea3280fc9607c5488114223b422acabcb022531214343f32e5",
-      "bytes": 3752
+      "sha256": "4063c130b08b110307b34ef281c985139a13c780d3b614e802e7f76b424373e5",
+      "bytes": 3644
     },
     {
       "path": "data/processors/programming/java-script/input-variables.md",
-      "sha256": "ece9f6036cec831b4f677a9da49da3b6084a1de57ee694281239bbb00c02a0ae",
-      "bytes": 2178
+      "sha256": "e470e1ba1508767f3f8f1b8a9decc16e3c93bc3bf575710a98b1988fdee11417",
+      "bytes": 2109
     },
     {
       "path": "data/processors/programming/java-script/output-table.md",
-      "sha256": "56f1352f65e7186e131b3eb598b8f6d99398a802ab2868f5a49351c9fb0a0037",
-      "bytes": 7085
+      "sha256": "cda29f53ee7ffb08bc0f8493a793d53adb75bb36cfd42c514ad54a71c09c2be2",
+      "bytes": 6871
     },
     {
       "path": "data/processors/programming/python/README.md",
@@ -1074,8 +1074,8 @@
     },
     {
       "path": "data/scheduler/README.md",
-      "sha256": "686d69930b182efe0e6fee50ebc71fd74778a8a3abb5e01570688e891c52a6eb",
-      "bytes": 301
+      "sha256": "5bc7f67df299bdc8faa695227a19877363003a5505283762646a274dc5f3a936",
+      "bytes": 299
     },
     {
       "path": "data/scheduler/batch-processing.md",
@@ -1234,8 +1234,8 @@
     },
     {
       "path": "data/visualization/duplicates-and-contradictions/main-table.md",
-      "sha256": "1cc544048cf29d713b0bd0fc4f6958bb469d6a0cc2f178913230a89750fab016",
-      "bytes": 4251
+      "sha256": "dd04c184066c9619a4d25a28bb2af2cc39371d3723aebb5ddbeea77621c96600",
+      "bytes": 4181
     },
     {
       "path": "data/visualization/fine-classes/README.md",

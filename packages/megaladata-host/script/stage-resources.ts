@@ -8,6 +8,7 @@ import { buildPhase } from "./build-phase"
 import { buildKeychain } from "./build-keychain"
 import { buildPackageDocs } from "./build-package-docs"
 import { collectBuildNotices } from "./collect-build-notices"
+import { ripgrepPinForTarget, stageRipgrep } from "./ripgrep-resource"
 import release from "../../product/megaladata-release.json"
 import catalogs from "../../product/megaladata-catalogs.json"
 import { productHelpDirectory, productSkillsDirectory } from "@mega-ai-agent/product/skills"
@@ -125,6 +126,8 @@ export async function stageResources(input: {
   await cp(join(dashboard, "dist/draft.js"), join(staging, "dashboard/draft.js"))
   await cp(join(dashboard, "src/draft/selfcheck.mjs"), join(staging, "dashboard/selfcheck.mjs"))
   await cp(node, join(staging, pins.node))
+  // Bundled so the agent's glob/grep never download ripgrep at runtime.
+  await stageRipgrep({ resources: staging, pin: ripgrepPinForTarget(target) })
   await cp(browsers, join(staging, "browsers"), {
     recursive: true,
     verbatimSymlinks: true,
@@ -186,7 +189,7 @@ export async function stageResources(input: {
     await setLinuxSandboxMode(sandbox)
   }
   if (process.platform === "darwin" && input.flavor === "cli") await buildKeychain(join(staging, "bin"))
-  await mkdir(join(staging, "licenses"))
+  await mkdir(join(staging, "licenses"), { recursive: true })
   const docs = await buildPhase(`${input.flavor}-package-docs`, () =>
     buildPackageDocs(join(staging, "skills/package-docs/scripts")))
   await collectBuildNotices(join(staging, "licenses/package-docs"), [{ root: docs.root, metafile: docs.metafile }])
@@ -204,6 +207,7 @@ export async function stageResources(input: {
   Mega AI Agent includes code derived from OpenCode (MIT) and Megaladata Dock (AGPL-3.0).
   The original copyright/license notices are preserved in licenses/.
   Node.js license and bundled dependency notices are in licenses/Node.txt.
+  ripgrep (MIT or Unlicense) is bundled in ripgrep/; its license texts are in licenses/ripgrep/.
   Package documentation uses Golos Text under the SIL Open Font License (licenses/Golos-OFL.txt).
   Its emitted npm dependency notices are in licenses/package-docs/.
   Playwright, MCP and their dependency license files are included alongside their package sources in runtime/client/node_modules/.

@@ -146,7 +146,7 @@ try {
 }
 
 async function rejectSetup(resources: string, directory: string, url: string) {
-  // Isolated development bundle. The original artifact stays intact.
+  // Isolated copy of the development bundle; the original artifact stays intact.
   const bundle = join(directory, "bundle")
   const profile = join(directory, "profile")
   await cp(resources, bundle, { recursive: true, dereference: false, verbatimSymlinks: true })

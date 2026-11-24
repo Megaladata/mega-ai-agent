@@ -29,6 +29,42 @@ export function setupCandidate(json: string, current: Megaladata.View): Megalada
   }
 }
 
+// Every CLI command starts its own Host, so `starting` only means this process has not loaded Help yet.
+// `status` reports the saved connection instead; readiness is `megaladata check`.
+export function statusView(current: Megaladata.View) {
+  if (current.state !== "starting") return current
+  return { ...current, state: current.generation ? ("configured" as const) : ("unconfigured" as const) }
+}
+
+export function statusText(current: ReturnType<typeof statusView>) {
+  const count = current.recoveries?.length ?? 0
+  const clean = current.state !== "recoverable-error" && !count
+  const lines = [
+    current.generation
+      ? `Подключение настроено: ${current.url}, пользователь ${current.username}.` +
+        (clean ? " Незавершённых операций нет. Проверить соединение — `megaladata check`." : "")
+      : "Подключение не настроено — `megaladata setup`.",
+  ]
+  if (current.state === "pending")
+    lines.push("Сохранённое изменение подключения ещё не применено; отменить его — `megaladata cancel-pending`.")
+  if (count) {
+    const word =
+      count % 10 === 1 && count % 100 !== 11
+        ? "операция"
+        : [2, 3, 4].includes(count % 10) && ![12, 13, 14].includes(count % 100)
+          ? "операции"
+          : "операций"
+    lines.push(
+      `Требуется восстановление: ${count} ${word} — проверьте сценарий в Megaladata и выполните \`megaladata recover\`.`,
+    )
+  } else if (current.state === "recoverable-error")
+    lines.push(
+      `Ошибка подключения${current.failure ? `: ${current.failure}` : ""}. ` +
+        "Проверить соединение — `megaladata check`, настроить заново — `megaladata setup`.",
+    )
+  return lines.join("\n")
+}
+
 export async function megaladataManagement(
   host: Awaited<ReturnType<typeof launchNodeHost>>,
   command: string,
@@ -41,7 +77,7 @@ export async function megaladataManagement(
   const decoded = view(await host.request("connection.status", {}))
   if (Option.isNone(decoded)) throw new Error("MEGALADATA_REPLY_INVALID")
   const current = decoded.value
-  if (command === "status") return current
+  if (command === "status") return statusView(current)
   if (command === "cancel-pending") return host.request("connection.cancel-pending", { revision: current.revision })
   if (command === "recover") {
     if (!current.recoveries?.length) return current
@@ -49,7 +85,7 @@ export async function megaladataManagement(
       if (!process.stdin.isTTY) throw new Error("MEGALADATA_RECOVERY_CONFIRMATION_REQUIRED")
       const { confirm, isCancel } = await import("@clack/prompts")
       const answer = await confirm({
-        message: "Megaladata state was checked manually. Confirm finishing recovery without retrying operations?",
+        message: "Состояние Megaladata проверено вручную. Подтвердить завершение восстановления без повтора операций?",
         initialValue: false,
         output: process.stderr,
       })
@@ -73,6 +109,7 @@ export async function megaladataManagement(
   }
   if (command !== "setup") throw new Error("CLI_ARGUMENT_INVALID")
   const candidate = options.stdinJSON ? setupCandidate(await readSetup(), current) : await interactiveSetup(current)
+  await host.request("connection.verify-resources", {})
   const checked = validation(await host.request("connection.check", candidate))
   if (Option.isNone(checked)) throw new Error("MEGALADATA_REPLY_INVALID")
   const saved = view(
@@ -101,30 +138,30 @@ async function interactiveSetup(current: Megaladata.View): Promise<Megaladata.Ca
   if (!process.stdin.isTTY) throw new Error("CLI_STDIN_REQUIRED")
   const { password, text, select } = await import("@clack/prompts")
   const url = await text({
-    message: "Megaladata URL",
+    message: "URL Megaladata",
     defaultValue: current.url,
     initialValue: current.url,
     output: process.stderr,
   })
   if (typeof url !== "string") throw new Error("CLI_CANCELLED")
   const username = await text({
-    message: "Username",
+    message: "Имя пользователя",
     defaultValue: current.username,
     initialValue: current.username,
     output: process.stderr,
   })
   if (typeof username !== "string") throw new Error("CLI_CANCELLED")
   const mode = await select({
-    message: "Megaladata password",
+    message: "Пароль Megaladata",
     output: process.stderr,
     options: [
-      ...(current.hasPassword ? [{ value: "preserve", label: "Keep current" }] : []),
-      { value: "empty", label: "Empty password" },
-      { value: "replace", label: "Enter a new one" },
+      ...(current.hasPassword ? [{ value: "preserve", label: "Сохранить текущий" }] : []),
+      { value: "empty", label: "Пустой пароль" },
+      { value: "replace", label: "Ввести новый" },
     ],
   })
   if (typeof mode !== "string") throw new Error("CLI_CANCELLED")
-  const secret = mode === "replace" ? await password({ message: "New password", output: process.stderr }) : ""
+  const secret = mode === "replace" ? await password({ message: "Новый пароль", output: process.stderr }) : ""
   if (typeof secret !== "string") throw new Error("CLI_CANCELLED")
   return setupCandidate(
     JSON.stringify({

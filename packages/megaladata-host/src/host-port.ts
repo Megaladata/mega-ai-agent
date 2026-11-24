@@ -5,6 +5,7 @@ import type { FileReference } from "./file-reference"
 import { hostException, hostFailure } from "./errors"
 import { runtimeCallTimeout } from "../../megaladata-runtime/src/call-timeout.mjs"
 import { HostTaskScope } from "./task-scope"
+import { DashboardDelete, DashboardRead, DashboardPublish } from "./dashboard"
 import { Schema } from "effect"
 import { prepareTool } from "../../megaladata-runtime/client/lib/skill.mjs"
 import { browserRecoveryToolName, isBrowserRecoveryTool } from "../../megaladata-runtime/client/lib/browser-recovery.mjs"
@@ -81,6 +82,7 @@ export function megaladataHostPort(port: HostPort, service: Awaited<ReturnType<t
       catalog: Set<string>
       admitted: Set<string>
       packagePreparation?: AbortController
+      dashboardController?: AbortController
       // Operation of a browser recovery attempt that still holds the page.
       recovery?: string
     }
@@ -254,6 +256,7 @@ export function megaladataHostPort(port: HostPort, service: Awaited<ReturnType<t
       if (data.method === "release") {
         run.released = true
         run.packagePreparation?.abort()
+        run.dashboardController?.abort()
         if (!run.calls) {
           await release(input.run, run)
         }
@@ -328,6 +331,37 @@ export function megaladataHostPort(port: HostPort, service: Awaited<ReturnType<t
         }
         return
       }
+      if (["dashboardRead", "dashboardPublish", "dashboardVersions", "dashboardDelete"].includes(data.method)) {
+        if (run.scope?.profile !== "megaladata-dashboard" || run.applyingScope) throw new Error("MEGALADATA_SCOPE_DENIED")
+        if (run.dispatching) throw new Error("MEGALADATA_CALL_BUSY")
+        run.dispatching = true
+        run.calls++
+        const controller = new AbortController()
+        run.dashboardController = controller
+        try {
+          const status = await service.api.status()
+          const request = { ...input, generation: status.generation }
+          const result = await (async () => {
+            switch (data.method) {
+              case "dashboardRead": return service.readDashboard(Schema.decodeUnknownSync(DashboardRead)(request), controller.signal)
+              case "dashboardPublish": return service.publishDashboard(Schema.decodeUnknownSync(DashboardPublish)(request), controller.signal)
+              case "dashboardVersions": return {
+                generation: status.generation,
+                versions: await service.listDashboardVersions(Schema.decodeUnknownSync(DashboardRead)(request), controller.signal),
+              }
+              case "dashboardDelete": return service.deleteDashboard(Schema.decodeUnknownSync(DashboardDelete)(input), controller.signal)
+            }
+          })()
+          reply({ id: data.id, result }, status.generation)
+        } finally {
+          run.dashboardController = undefined
+          run.dispatching = false
+          run.calls--
+          if (run.released && !run.calls) await release(input.run, run)
+        }
+        return
+      }
+      if (run.scope?.profile === "megaladata-dashboard" && data.method === "call") throw new Error("MEGALADATA_SCOPE_DENIED")
       const browserCall =
         data.method === "call" &&
         "name" in input &&
@@ -375,6 +409,10 @@ export function megaladataHostPort(port: HostPort, service: Awaited<ReturnType<t
       run.calls++
       try {
         if (data.method === "tools") {
+          if (run.scope?.profile === "megaladata-dashboard") {
+            reply({ id: data.id, result: { tools: [] } })
+            return
+          }
           const status = await service.api.status()
           const automation = run.scope?.profile === "megaladata-automation"
           const generation = run.lease?.generation ?? status.generation
@@ -493,6 +531,7 @@ export function megaladataHostPort(port: HostPort, service: Awaited<ReturnType<t
         }
         if (data.method === "interrupt") {
           run.packagePreparation?.abort()
+          run.dashboardController?.abort()
           if (!run.lease) {
             const status = await service.api.status()
             if (service.hasRuntime(status.generation, run.chat)) await connectionLease(input.run, run)
@@ -676,6 +715,7 @@ export function megaladataHostPort(port: HostPort, service: Awaited<ReturnType<t
     runs.forEach((run) => {
       run.released = true
       run.packagePreparation?.abort()
+      run.dashboardController?.abort()
     })
     // In-flight operations retain their leases until their finally handlers run.
     state.stopping = Promise.all([...pending]).then(async () => {

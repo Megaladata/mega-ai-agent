@@ -11,7 +11,8 @@
     "./updater": "./src/updater.ts",
     "./wsl/types": "./src/wsl/types.ts",
     "./vite": "./vite.js",
-    "./index.css": "./src/index.css"
+    "./index.css": "./src/index.css",
+    "./diagnostics": "./src/utils/diagnostics.ts"
   },
   "scripts": {
     "typecheck": "tsgo -b",
@@ -49,6 +50,7 @@
     "vite-plugin-solid": "catalog:"
   },
   "dependencies": {
+    "@mega-ai-agent/dashboard": "workspace:*",
     "@mega-ai-agent/product": "workspace:*",
     "@corvu/drawer": "catalog:",
     "@dnd-kit/abstract": "0.5.0",

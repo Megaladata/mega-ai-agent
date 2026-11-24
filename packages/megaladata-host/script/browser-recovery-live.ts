@@ -80,12 +80,13 @@ try {
   )
   check(delivered.status === "SUCCEEDED", "delivered")
   const workflow = { workflow_id: prepared.workspace.workflow_ref.workflow_id }
+  await call("dock_action_describe", { node_types: ["imports.text"], modes: ["delimited"] })
   await call("dock_node_apply", {
     operation_id: "import-1",
     contract_revision: "1.0.0",
     document_id: prepared.workspace.document_id,
     workflow_ref: workflow,
-    target: { kind: "new", type: "imports.text", label: "Source" },
+    target: { kind: "new", type: "imports.text", label: "Источник" },
     inputs: [],
     mode: "delimited",
     parameters: {

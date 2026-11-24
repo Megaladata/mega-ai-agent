@@ -17,6 +17,8 @@ export async function connectionService(
   runtime: ConnectionRuntime,
   recovery?: Pick<Awaited<ReturnType<typeof recoveryStore>>, "pending" | "acknowledge">,
 ) {
+  // Both Desktop and CLI cross this boundary before preparing any runtime.
+  await store.initialize()
   const state: {
     active?: ActiveConnection
     handle?: RuntimeHandle
@@ -287,7 +289,7 @@ export async function connectionService(
         // preserves saved URLs independently of this marker.
         urlSource: "explicit" as const,
         username: candidate.username,
-        // The product does not use a Dock key; a key sent by an older client is ignored.
+        // The knowledge service uses the built-in key; a key sent by older clients is ignored.
         apiKey: "",
         password,
       }
@@ -311,7 +313,7 @@ export async function connectionService(
             ].includes(error.message)
               ? error.message
               : "MEGALADATA_CONNECTION_CHECK_FAILED"
-          throw new Error(code)
+          throw new Error(code, { cause: error })
         })
         .finally(() => checks.delete(controller))) ?? { state: "unknown" as const }
       if (state.closing) throw new Error("MEGALADATA_HOST_CLOSED")
@@ -379,6 +381,13 @@ export async function connectionService(
   await loadProfile()
   return {
     beginClose,
+    // Launcher-only update gate. Keep lease activity out of the public settings API.
+    updateWorkState() {
+      return {
+        activeWork: [...leases.values()].some((lease) => lease.active),
+        unsettledWork: [...leases.values()].some((lease) => lease.recovery) || Boolean(recovery?.pending().length),
+      }
+    },
     api,
     browserStatus(generation: number, browser: Megaladata.BrowserStatus) {
       if (state.closing || generation !== state.active?.generation) return

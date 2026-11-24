@@ -218,6 +218,7 @@ for (const item of targets) {
       OTUI_TREE_SITTER_WORKER_PATH: bunfsRoot + treeSitterWorkerPath,
       MEGA_AI_AGENT_WORKER_PATH: workerPath,
       MEGA_AI_AGENT_CHANNEL: `'${Script.channel}'`,
+      MEGA_AI_AGENT_UPDATE_FEED: JSON.stringify(process.env.MEGA_AI_AGENT_UPDATE_FEED ?? ""),
       MEGA_AI_AGENT_BROWSER_RECOVERY: JSON.stringify(Script.browserRecovery),
       MEGA_AI_AGENT_LIBC: item.os === "linux" ? `'${item.abi ?? "glibc"}'` : "",
       ...(item.os === "linux" ? { "process.env.OPENTUI_LIBC": JSON.stringify(item.abi ?? "glibc") } : {}),

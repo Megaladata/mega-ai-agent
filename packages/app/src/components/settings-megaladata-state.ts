@@ -34,6 +34,21 @@ export function megaladataBrowserMessage(browser?: Megaladata.BrowserStatus) {
 
 const delay = () => new Promise<void>((resolve) => setTimeout(resolve, 1000))
 
+export function createMegaladataConnectionStatus(api: Megaladata.API | undefined) {
+  const [state, setState] = createStore({ value: undefined as Megaladata.View["state"] | undefined })
+  let disposed = false
+  onCleanup(() => {
+    disposed = true
+  })
+  return {
+    required: () => state.value === "unconfigured",
+    async refresh() {
+      const view = await api?.status().catch(() => undefined)
+      if (!disposed) setState("value", view?.state)
+    },
+  }
+}
+
 // This promise intentionally outlives the settings dialog. Only redacted views
 // are retained, so a deferred activation failure remains visible after closing.
 export async function watchMegaladataApplication(
@@ -170,18 +185,25 @@ export function createMegaladataSettings(api: Megaladata.API | undefined, saved:
       if (disposed) return
       setState("checkedBrowser", validation.browser ? { ...validation.browser } : undefined)
       if (!save) {
+        const unsaved = dirty() || state.view?.state === "unconfigured"
         setState(
           "message",
           validation.browser && validation.browser.state !== "verified"
-            ? dirty()
+            ? unsaved
               ? "megaladata.helpChecked"
               : "megaladata.helpCheckedSaved"
-            : dirty()
+            : unsaved
               ? "megaladata.checked"
               : "megaladata.checkedSaved",
         )
         return
       }
+      if (
+        state.baseline?.state === "unconfigured" &&
+        validation.browser?.state === "failed" &&
+        validation.browser.failure === "MEGALADATA_LOGIN_REJECTED"
+      )
+        throw Error(validation.browser.failure)
       setState("phase", "saving")
       let current = await api.save({ validationId: validation.validationId, revision: candidate.revision })
       const revision = current.revision

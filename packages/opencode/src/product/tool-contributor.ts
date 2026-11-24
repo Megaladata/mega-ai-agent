@@ -174,7 +174,7 @@ const contribute = Effect.fnUntraced(function* (input: ContributeInput) {
                   )
                     return yield* Effect.die(
                       Error(
-                        "local_package_path requires open_package without package_path or workflow_ref. Path: " +
+                        "local_package_path requires open_package without package_path or workflow_ref. Путь: " +
                           path.resolve(input.directory, args.local_package_path),
                       ),
                     )
@@ -203,7 +203,7 @@ const contribute = Effect.fnUntraced(function* (input: ContributeInput) {
                         const source = yield* snapshotMegaladataFile(args.local_package_path, ctx)
                         if (path.extname(source.file.name).toLowerCase() !== ".mgp")
                           return yield* Effect.die(
-                            Error("local_package_path requires a .mgp file. Path: " + source.sourcePath),
+                            Error("local_package_path requires a .mgp file. Путь: " + source.sourcePath),
                           )
                         delete forwarded.local_package_path
                         if (forwarded.operation_id === undefined) forwarded.operation_id = crypto.randomUUID()
@@ -268,6 +268,7 @@ const contribute = Effect.fnUntraced(function* (input: ContributeInput) {
                   output: content,
                   metadata: {
                     generation: megaladata.generation,
+                    ...(Array.isArray(result._meta?.outputFiles) ? { outputFiles: result._meta.outputFiles } : {}),
                     truncated: truncated.truncated,
                     ...(state === "pending" ? { megaladataPending: true } : {}),
                     ...(truncated.truncated ? { outputPath: truncated.outputPath } : {}),
@@ -299,6 +300,17 @@ const contribute = Effect.fnUntraced(function* (input: ContributeInput) {
 })
 
 const definitions = Effect.fnUntraced(function* (profile: TaskScope.Profile) {
+  if (profile === "megaladata-dashboard") {
+    const { DashboardDeleteTool, DashboardDraftTool, DashboardPublishTool } = yield* Effect.promise(() => import("@/tool/dashboard"))
+    const draft = yield* DashboardDraftTool
+    const publish = yield* DashboardPublishTool
+    const remove = yield* DashboardDeleteTool
+    return [
+      { ...(yield* Tool.init(draft)), origin: "builtin" as const },
+      { ...(yield* Tool.init(publish)), origin: "builtin" as const },
+      { ...(yield* Tool.init(remove)), origin: "builtin" as const },
+    ]
+  }
   if (profile !== "package-docs") return []
   const { PackageDocsTool } = yield* Effect.promise(() => import("@/tool/package-docs"))
   const docs = yield* PackageDocsTool

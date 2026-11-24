@@ -655,11 +655,12 @@ export async function profileXlsx(path: string, dir: string, options: XlsxOption
       shared_strings_complete: book.sstComplete,
       coverage: { bytes_read: 0, observed_records: 0, elapsed_ms: 0, eof: false },
     }
-    if (!Number.isInteger(p.header_rows) || p.header_rows < 0 || p.header_rows > 10)
-      invalid("header_rows must be 0..10")
+    if (!Number.isInteger(p.header_rows) || p.header_rows < 0 || p.header_rows > 1000)
+      invalid("header_rows must be 0..1000")
     let previous = 0,
       width = 0
     const technicalNames = new Set<string>()
+    const headers = new Map<number, string>()
     const eof = await book.rows(
       sheet,
       async (r) => {
@@ -694,7 +695,7 @@ export async function profileXlsx(path: string, dir: string, options: XlsxOption
             label: name,
             technical_name: technical,
             type: "string",
-            data_kind: "Discrete",
+            data_kind: "Дискретный",
             observations: 0,
             nulls: 0,
             null_fraction: 0,
@@ -702,6 +703,12 @@ export async function profileXlsx(path: string, dir: string, options: XlsxOption
           })
         }
         const headerEnd = p.first_row + p.header_rows
+        if (p.header_rows > 1 && r.number < headerEnd)
+          for (const [col, cell] of values) {
+            const before = headers.get(col)
+            // Keep enough to refuse overlong names without retaining every header cell.
+            headers.set(col, (before ? before + "_" + cell.value : cell.value).slice(0, 121))
+          }
         if (r.number >= headerEnd) {
           const blanks = p.blank_rows === "import" ? Math.max(0, r.number - Math.max(previous + 1, headerEnd)) : 0
           const count = p.blank_rows === "import" || values.size ? 1 : 0
@@ -713,7 +720,7 @@ export async function profileXlsx(path: string, dir: string, options: XlsxOption
             if (!v) continue
             if (col.observations - col.nulls === 1) col.type = v.kind
             if (col.type === "integer" && v.kind === "real") col.type = "real"
-            col.data_kind = ["integer", "real", "datetime"].includes(col.type) ? "Continuous" : "Discrete"
+            col.data_kind = ["integer", "real", "datetime"].includes(col.type) ? "Непрерывный" : "Дискретный"
             if (col.examples.length < 3 && !col.examples.includes(v.value.slice(0, 60)))
               col.examples.push(v.value.slice(0, 60))
           }
@@ -725,6 +732,17 @@ export async function profileXlsx(path: string, dir: string, options: XlsxOption
         p.declared_dimension = ref ?? ""
       },
     )
+    if (p.header_rows > 1) {
+      technicalNames.clear()
+      for (const [i, col] of p.columns.entries()) {
+        col.name = col.label = headers.get(i + 1) ?? `Column${i + 1}`
+        const base = /^[A-Za-z_][A-Za-z0-9_]{0,119}$/.test(col.name) ? col.name : `Column${i + 1}`
+        let technical = base
+        for (let suffix = i + 1; technicalNames.has(technical); suffix++) technical = `${base}_${suffix}`
+        technicalNames.add(technical)
+        col.technical_name = technical
+      }
+    }
     p.observed_dimension = dimension(p.first_row, p.last_row, width)
     p.coverage = {
       bytes_read: budget.bytes,
@@ -743,14 +761,13 @@ export async function profileXlsx(path: string, dir: string, options: XlsxOption
 
 function xlsxReply(p: Stored, cursor = 0) {
   const reasons = [
-    ...(p.columns.length < 1 || p.columns.length > 12 ? ["Excel runtime supports 1–12 columns"] : []),
-    ...(p.header_rows < 1 ? ["Excel runtime requires 1–10 header rows"] : []),
+    ...(p.columns.length < 1 || p.columns.length > 64 ? ["Excel runtime supports 1–64 columns"] : []),
+    ...(p.header_rows < 1 ? ["Excel runtime requires 1–1000 header rows"] : []),
     ...(p.blank_rows !== "import" ? ["Excel runtime imports blank rows; blank_rows=skip cannot be applied"] : []),
     ...(!p.shared_strings_complete ? ["Shared strings quick budget reached; exact scan required"] : []),
     ...((p.scan?.missing_cached_values ?? p.missing_cached_values)
       ? ["Formulas without cached values; no formula evaluation"]
       : []),
-    ...(p.columns.some((c) => c.type === "boolean") ? ["Excel runtime does not support boolean column type"] : []),
     ...(new Set(p.columns.map((c) => c.name)).size !== p.columns.length ? ["Duplicate source headers"] : []),
     ...(p.columns.some((c) => !c.name || c.name.length > 120 || /[\x00-\x1f]/.test(c.name))
       ? ["Excel headers must be 1–120 characters without controls"]
@@ -900,8 +917,8 @@ export async function scanXlsx(id: string, dir: string, options: { signal?: Abor
             p.columns[c.col - 1].type = book.kind(c, value)
             p.columns[c.col - 1].observations++
             p.columns[c.col - 1].data_kind = ["integer", "real", "datetime"].includes(p.columns[c.col - 1].type)
-              ? "Continuous"
-              : "Discrete"
+              ? "Непрерывный"
+              : "Дискретный"
           }
           const expected = p.columns[c.col - 1]?.type
           const actual = book.kind(c, value)

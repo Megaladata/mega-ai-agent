@@ -1,7 +1,7 @@
 {
   "name": "@opencode-ai/desktop",
   "private": true,
-  "version": "0.3.11",
+  "version": "0.4.0",
   "type": "module",
   "license": "MIT AND AGPL-3.0-only",
   "author": {
@@ -22,6 +22,7 @@
   },
   "main": "./out/main/index.js",
   "dependencies": {
+    "@mega-ai-agent/dashboard": "workspace:*",
     "@zip.js/zip.js": "2.7.62",
     "effect": "catalog:",
     "electron-context-menu": "4.1.2",
@@ -57,7 +58,8 @@
     "zod-openapi": "5.4.6",
     "@mega-ai-agent/product": "workspace:*",
     "@opencode-ai/schema": "workspace:*",
-    "@mega-ai-agent/megaladata-host": "workspace:*"
+    "@mega-ai-agent/megaladata-host": "workspace:*",
+    "app-builder-lib": "26.15.2"
   },
   "optionalDependencies": {
     "@lydell/node-pty-darwin-arm64": "1.2.0-beta.12",

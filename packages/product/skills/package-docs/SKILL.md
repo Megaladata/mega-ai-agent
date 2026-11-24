@@ -8,8 +8,8 @@ description: >-
   write documentation, describe a scenario, or generate an AI Report.
   The package is not changed; the browser and searching for the package on the
   server are forbidden. If only a server path is known, immediately request a
-  local .mgp. Megaladata Dock Help is needed to describe handler purpose.
-compatibility: Mega AI Agent Linux Desktop and standalone CLI with package_docs_run; a local .mgp and the Megaladata Dock Help service. The generator uses the bundled Node, without Python, LibreOffice, or a browser.
+  local .mgp. The bundled Megaladata Help is needed to describe handler purpose.
+compatibility: Mega AI Agent Linux Desktop and standalone CLI with package_docs_run; a local .mgp and the bundled Megaladata Help. The generator uses the bundled Node, without Python, LibreOffice, or a browser.
 metadata:
   megaladata-generated: scripts/package-docs.mjs
 ---

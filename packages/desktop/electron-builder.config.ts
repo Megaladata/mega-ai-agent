@@ -37,6 +37,12 @@ const config: Configuration = {
   productName: process.platform === "linux" ? productSlug(channel) : productName(channel),
   artifactName: Product.artifactName,
   publish: Product.updateFeed ? { provider: "generic", url: Product.updateFeed } : null,
+  async afterAllArtifactBuild(result) {
+    const { buildBlockMap } = await import("app-builder-lib/out/targets/blockmap/blockmap")
+    const images = result.artifactPaths.filter((file) => file.endsWith(".AppImage"))
+    for (const file of images) await buildBlockMap(file, "gzip", `${file}.blockmap`)
+    return images.map((file) => `${file}.blockmap`)
+  },
   // Native backend dependencies run in the bundled Node sidecar. Renderer/main
   // dependencies use N-API or platform packages already selected by the lockfile.
   npmRebuild: false,
@@ -73,7 +79,12 @@ const config: Configuration = {
     minimumSystemVersion: "14.0",
     identity: "-",
     // Preserve upstream signatures and the staged resource-manifest hashes.
-    signIgnore: ["/Contents/Resources/megaladata/bin/", "/Contents/Resources/megaladata/browsers/"],
+    signIgnore: [
+      "/Contents/Resources/megaladata/bin/",
+      "/Contents/Resources/megaladata/browsers/",
+      "/Contents/Resources/megaladata/ripgrep/",
+      "/Contents/Resources/megaladata/dashboard/",
+    ],
     notarize: false,
     target: [
       { target: "dmg", arch: ["arm64"] },
@@ -90,6 +101,7 @@ const config: Configuration = {
     verifyUpdateCodeSignature: true,
   },
   nsis: {
+    include: path.join(packageDir, "resources", "uninstall-uri.nsh"),
     oneClick: true,
     perMachine: false,
     deleteAppDataOnUninstall: false,

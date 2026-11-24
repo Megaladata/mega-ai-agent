@@ -89,9 +89,7 @@ if (
   )
 )
   throw Error("Target installer artifact is required")
-// The public checkout does not include docs/migration/source-map.json.
-// The bundled runtime license is the remaining attribution for this build.
-const source = await fileHash(join(root, "packages/megaladata-runtime/LICENSE"))
+const source = await fileHash(join(root, "docs/migration/source-map.json"))
 const manifest = decodeManifest({
   schemaVersion: 1,
   version: args.version,
@@ -211,7 +209,7 @@ const manifest = decodeManifest({
     reportFiles: mac
       ? ["static-dmg.json", "static-zip.json"]
       : target === "linux-x64"
-        ? ["static-deb.json", "static-appimage.json"]
+        ? ["static-deb.json", "static-appimage.json", "linux-matrix/linux-matrix.json"]
         : ["static-nsis.json", "windows-native.json"],
   },
   provenance: {

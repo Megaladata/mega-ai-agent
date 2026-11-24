@@ -21,6 +21,11 @@ if (!args.tag || !args.channel || !args.assets || !args.output)
 
 const version = args.tag.replace(/^v/, "")
 const commit = (await $`git rev-parse --verify ${args.tag + "^{commit}"}`.text()).trim()
+const previous = (
+  await $`git describe --tags --abbrev=0 --match ${"v*"} --exclude ${args.tag} ${args.tag}`.nothrow().quiet().text()
+).trim()
+const range = previous ? `${previous}..${args.tag}` : args.tag
+const changes = (await $`git log --no-merges --max-count=200 --format=${"- %h %s"} ${range}`.text()).trimEnd()
 
 const dir = path.resolve(args.assets)
 const files = (await readdir(dir, { withFileTypes: true }))
@@ -33,19 +38,15 @@ const hashes = new Map(
 await Bun.write(path.join(dir, "SHA256SUMS.txt"), files.map((file) => `${hashes.get(file)}  ${file}\n`).join(""))
 
 const matrix = await report("linux-matrix.json")
-const matrixNames = ["ubuntu22", "ubuntu24", "ubuntu26", "debian12", "debian13"]
-const matrixPassed =
-  !!matrix &&
-  matrix.artifactHash === hashes.get("mega-ai-agent-linux-amd64.deb") &&
-  matrix.reports?.length === 5 &&
-  matrixNames.every((name) =>
+if (
+  matrix?.artifactHash !== hashes.get("mega-ai-agent-linux-amd64.deb") ||
+  matrix?.reports?.length !== 5 ||
+  !["ubuntu22", "ubuntu24", "ubuntu26", "debian12", "debian13"].every((name) =>
     matrix.reports.some((entry: { name: string; status: string }) => entry.name === name && entry.status === "PASS"),
   )
-if (matrix && !matrixPassed) throw new Error("A complete passing Linux matrix is required")
-const matrixStatus =
-  matrixPassed && matrix
-    ? `Docker matrix PASS (${matrix.reports.map((entry: { name: string }) => entry.name).join(", ")})`
-    : ""
+)
+  throw new Error("A complete passing Linux matrix is required")
+const matrixStatus = `Docker matrix PASS (${matrix.reports.map((entry: { name: string }) => entry.name).join(", ")})`
 // Set by release.yml from the MEGALADATA_RELEASE_SKIP_MACOS repository variable when no macOS runner is available.
 const withoutMacos = process.env.MEGALADATA_RELEASE_SKIP_MACOS === "true"
 const manifests = ["release-manifest.json", "windows-release-manifest.json"]
@@ -67,37 +68,39 @@ const macos: [file: string, status: string][] = withoutMacos
   : [
       ["mega-ai-agent-mac-arm64.dmg", `${await staticStatus("static-dmg.json")}; offline smoke PASS; ad-hoc signed`],
       ["mega-ai-agent-mac-arm64.zip", `${await staticStatus("static-zip.json")}; offline smoke PASS; ad-hoc signed`],
-      [`mega-ai-agent-cli-${version}-darwin-arm64.tar.gz`, "archive verification and offline smoke PASS; ad-hoc signed"],
+      [
+        `mega-ai-agent-cli-${version}-darwin-arm64.tar.gz`,
+        "archive verification and offline smoke PASS; ad-hoc signed",
+      ],
       [`mega-ai-agent-${version}-macos-source.tar.gz`, "macOS corresponding source"],
       ["macos-release-manifest.json", "macOS release manifest (ad-hoc signed app; not notarized)"],
+      ["latest-mac.yml", "macOS update metadata"],
+      ["mega-ai-agent-mac-arm64.zip.blockmap", "macOS differential update blockmap"],
     ]
 const expected: [file: string, status: string][] = [
-  [
-    "mega-ai-agent-linux-amd64.deb",
-    matrixPassed ? `${await staticStatus("static-deb.json")} + ${matrixStatus}` : await staticStatus("static-deb.json"),
-  ],
+  ["mega-ai-agent-linux-amd64.deb", `${await staticStatus("static-deb.json")} + ${matrixStatus}`],
   [
     "mega-ai-agent-linux-x86_64.AppImage",
-    matrixPassed
-      ? `${await staticStatus("static-appimage.json")}; Docker matrix covers the DEB only`
-      : await staticStatus("static-appimage.json"),
+    `${await staticStatus("static-appimage.json")}; Docker matrix covers the DEB only`,
   ],
   [
     `mega-ai-agent-cli-${version}-linux-x64.tar.gz`,
-    matrixPassed
-      ? "static verify PASS (cli-manifest); Docker matrix covers the DEB only"
-      : "static verify PASS (cli-manifest)",
+    "static verify PASS (cli-manifest); Docker matrix covers the DEB only",
   ],
   ["mega-ai-agent-win-x64.exe", `${await staticStatus("static-nsis.json")}; unsigned`],
   [`mega-ai-agent-cli-${version}-win32-x64.zip`, "archive manifest verification PASS; unsigned"],
   [`mega-ai-agent-${version}-source.tar.gz`, "source archive (git archive HEAD)"],
   [`mega-ai-agent-${version}-windows-source.tar.gz`, "Windows corresponding source"],
+  ["latest.yml", "Windows update metadata"],
+  ["latest-linux.yml", "Linux update metadata"],
+  ["mega-ai-agent-win-x64.exe.blockmap", "Windows differential update blockmap"],
+  ["mega-ai-agent-linux-x86_64.AppImage.blockmap", "Linux differential update blockmap (also embedded in AppImage)"],
   ["release-manifest.json", "Linux release manifest (unsigned)"],
   ["windows-release-manifest.json", "Windows release manifest (unsigned)"],
   ...macos,
   ["static-deb.json", "static verification report"],
   ["static-appimage.json", "static verification report"],
-  ...(matrixPassed ? [["linux-matrix.json", "Docker matrix report"] as [string, string]] : []),
+  ["linux-matrix.json", "Docker matrix report"],
 ]
 for (const [file] of expected) if (!hashes.has(file)) throw new Error(`Required release asset missing: ${file}`)
 const rows = [
@@ -107,31 +110,30 @@ const rows = [
     .map((file) => `| ${file} | ${hashes.get(file)} | metadata |`),
   "| SHA256SUMS.txt | — | checksums of every asset above |",
 ]
-// The tag is v0.3.9, so the notes file is script/release-notes/v0.3.9.md.
-// Asset checksums below stay generated from this build.
-const narrativeFile = Bun.file(path.join(import.meta.dir, "release-notes", `${args.tag}.md`))
-if (!(await narrativeFile.exists())) throw new Error(`Release notes file is missing: script/release-notes/${args.tag}.md`)
-const narrative = (await narrativeFile.text()).trim()
-if (!narrative) throw new Error(`Release notes file is empty: script/release-notes/${args.tag}.md`)
 const notes = [
-  narrative,
-  "",
   `# Mega AI Agent ${args.tag}`,
   "",
   `- Version: ${version}`,
   `- Channel: ${args.channel}`,
   `- Commit: ${commit}`,
-  matrixPassed
-    ? "- Linux x64 DEB/AppImage/CLI: static verification; DEB offline Docker matrix from this run (reports attached)"
-    : "- Linux x64 DEB/AppImage/CLI: static verification",
+  "- Linux x64 DEB/AppImage/CLI: static verification; DEB offline Docker matrix from this run (reports attached)",
   "- Windows x64: native CI build, settings regression tests, installer/payload and CLI archive verification",
   withoutMacos
     ? "- macOS: not built for this release (no macOS runner was available); macOS assets are not attached"
     : "- macOS 14+ Apple Silicon arm64: native CI build, source tests, DMG/ZIP verification and offline Desktop/CLI smoke",
   "- Pre-release: Linux/Windows unsigned; macOS own code ad-hoc signed, without Developer ID or notarization. OS security warnings are expected.",
-  "- CI is credential-free and does not replace installed GUI, Keychain/DPAPI or live Megaladata/provider acceptance for this exact build.",
+  "- CI builds use no Megaladata account or LLM credentials and do not replace installed GUI, Keychain/DPAPI or live Megaladata/provider acceptance for this exact build.",
   "- Settings: saved-key indicator, Save closes after success, Check tests the current draft, Close/Escape confirm unsaved changes.",
-  "- Public automatic update feed remains disabled; install updates manually.",
+  "- Desktop updates use signed GitHub Release metadata with a private cloud.ru S3 fallback using read-only SigV4 GET. Build-time endpoints remain disabled until signature acceptance on the exact source SHA; publication and mirror checks are required.",
+  ...(version === "0.4.0"
+    ? [
+        "- Users of 0.3.9 or 0.3.10 on any platform must install 0.4.0 manually over the existing installation; these versions have their update feed disabled. Keep the existing profile; do not uninstall or delete application data first.",
+        "- New (preview): node dashboards opened from Megaladata Studio in Desktop or CLI. The agent builds a local draft; publishing needs a separate confirmation and the Dashboard service for Megaladata Enterprise 7.4.2. The installed end-to-end dashboard flow was not verified for this release.",
+        "- Recommended screen resolution: 1280×800 or higher. On smaller screens such as 1366×768, a node requested at an explicit position far outside the visible workflow may be refused; automatic placement works.",
+        "- Known limitation: with a local OpenCode plugin configured and an npm registry that silently drops connections, a session can wait up to about 970 s before it continues.",
+        ...(withoutMacos ? [] : ["- Known limitation: macOS automatic update (notify mode) was not verified on a live Mac for this release."]),
+      ]
+    : []),
   "- Desktop applies detected system proxy settings to its backend with a startup fallback; explicit proxy environment and Chromium/browser proxy handling remain supported.",
   "",
   "## Assets",
@@ -139,6 +141,10 @@ const notes = [
   "| Asset | SHA256 | Status |",
   "| --- | --- | --- |",
   ...rows,
+  "",
+  previous ? `## Changes since ${previous}` : "## Changes",
+  "",
+  changes || "- No commits",
   "",
 ].join("\n")
 await Bun.write(args.output, notes)

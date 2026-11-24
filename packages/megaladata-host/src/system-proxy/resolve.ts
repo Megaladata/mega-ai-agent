@@ -1,4 +1,5 @@
 import { hostname } from "node:os"
+import { WINDOWS_POWERSHELL_TIMEOUT_MS } from "../windows-powershell"
 
 import { proxyHostPort } from "./address"
 import { translateBypass } from "./bypass"
@@ -161,7 +162,7 @@ async function resolveSystemProxyUnsafe(input: ResolveSystemProxyInput): Promise
     const closed = routes.find((_, index) => statuses[index] === "closed" || statuses[index] === "timeout")
     if (closed) notices.push({ code: "unreachable", detail: proxyHostPort(closed) })
   }
-  // Node exits with ERR_PROXY_INVALID_CONFIG when a proxy URL cannot be parsed.
+  // Node завершает процесс с ERR_PROXY_INVALID_CONFIG, если URL прокси не разбирается.
   if (!runtimeAccepts(settings.http) || !runtimeAccepts(settings.https)) return failedResult("internal")
   const source = chromium.http || chromium.https ? "chromium" : settings.source
   return appliedResult({
@@ -203,7 +204,7 @@ async function loadSettings(
   if (input.read) return loadRead(input.read, input)
   const read = await deadline(
     readSystemProxy({ platform: input.platform, environment: input.environment, timeoutMs: input.deadlineMs }),
-    input.deadlineMs ?? 8000,
+    input.deadlineMs ?? ((input.platform ?? process.platform) === "win32" ? WINDOWS_POWERSHELL_TIMEOUT_MS : 8000),
   )
   if (read.ok === false) return { ok: false, code: read.reason === "timeout" ? "timeout" : "read-failed" }
   if (!read.value.ok) return { ok: false, code: read.value.code }
@@ -217,7 +218,7 @@ async function loadRead(read: () => Promise<SystemProxySnapshot | undefined>, in
   } catch {
     return { ok: false as const, code: "read-failed" as const }
   }
-  const waited = await deadline(reading, input.deadlineMs ?? 8000)
+  const waited = await deadline(reading, input.deadlineMs ?? ((input.platform ?? process.platform) === "win32" ? WINDOWS_POWERSHELL_TIMEOUT_MS : 8000))
   if (waited.ok === false)
     return { ok: false as const, code: waited.reason === "timeout" ? ("timeout" as const) : ("read-failed" as const) }
   if (!waited.value) return { ok: true as const }
@@ -297,7 +298,7 @@ async function chromiumView(input: ResolveSystemProxyInput) {
       if (row.proxy.http && secure && !https) https = row.proxy.http
       if (row.proxy.socks && !socks) socks = row.proxy.socks
     }
-    // HTTP wins even after SOCKS; compare it with the chosen routes after the whole walk.
+    // HTTP имеет приоритет даже после SOCKS; сравниваем с выбранными маршрутами после всего обхода.
     const merged = routes.flatMap((row) => {
       const address = row.proxy.http || row.proxy.socks
       if (!address) return []

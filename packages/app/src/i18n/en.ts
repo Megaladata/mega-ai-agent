@@ -1,10 +1,54 @@
-import { DESKTOP_NATIVE_ENGLISH } from "./desktop-native"
+import { DESKTOP_NATIVE_ENGLISH, DESKTOP_UPDATER_ENGLISH } from "./desktop-native"
 
 // English is the designer-written source. Missing locales reuse these strings
 // byte-for-byte as the established fallback; do not invent translations.
 export const MEGALADATA_ENGLISH = {
+  "megaladata.configure": "Set up",
+  "megaladata.connectionRequired":
+    "Connection is not configured. Open Megaladata, enter the URL, username and password, then retry your request.",
+  ...DESKTOP_UPDATER_ENGLISH,
+  "session.file.unavailable": "File not found",
+  "settings.updates.channel": "Updates",
+  "settings.updates.stable": "Stable releases only (default)",
+  "settings.updates.unstable": "Also unstable releases",
+  "settings.updates.managed": "Update settings are managed by your administrator.",
+  "settings.updates.disabled": "Updates are disabled.",
+  "settings.updates.unsupported": "This version is no longer supported by the server — please update.",
+  "settings.updates.available": "Version {{version}} is available",
+  "settings.updates.onClose":
+    "The update will be installed when you close the application. Active work postpones installation until the next exit.",
+  "settings.updates.download": "Download",
+  "settings.updates.closeAndUpdate": "Close and update",
+  "settings.updates.verificationFailed":
+    "Could not verify the update or contact the feed. Nothing was downloaded. See the logs for details.",
+
   "prompt.attachment.missingPath":
     "This attachment has no disk path. Save it and attach it using the file picker, or provide its path.",
+  "dashboard.notice.newer-publication": "A newer version {{latest}} is published. Local sources are preserved; replacing it will require confirmation.",
+  "dashboard.notice.publication-check-unavailable": "The publication could not be checked in Studio. The saved local draft is open.",
+  "dashboard.notice.latest-build-failed": "Version {{latest}} failed to build. Current version: {{current}}. {{error}}",
+  "dashboard.version.none": "none",
+  "dashboard.conflict": "A newer version {{latest}} is published. Replace it with the local draft? This approval applies only to the prepared publication.",
+  "dashboard.conflict.newDraft": "A dashboard has already been saved for this node. If you publish your draft, users will see your version after it builds successfully. Publish? The saved version is {{latest}}.",
+  "dashboard.conflict.publishMine": "Publish my version",
+  "dashboard.conflict.cancel": "Cancel",
+  "dashboard.delete.confirm": "Delete",
+  "dashboard.delete.count": "Published versions to delete: {{count}}.",
+  "dashboard.delete.confirmedRemoved": "Versions already confirmed deleted: {{count}}.",
+  "dashboard.delete.warning": "The local draft and unpublished changes will be deleted.",
+  "dashboard.target.accessDenied": "You do not have permission to read the publication in Megaladata.",
+  "dashboard.target.publicationInvalid": "The published sources have an unsupported or invalid format. A template cannot replace them.",
+  "dashboard.target.connectionFailed": "The Megaladata connection is unavailable or has changed. Check the connection and open the dashboard from Studio again.",
+  "dashboard.target.bindingConflict": "This local draft belongs to another stand or node. Its sources were preserved.",
+  "dashboard.target.failed": "The dashboard could not be opened. Check the Megaladata connection and try a new snapshot from Studio.",
+  "dashboard.target.snapshotGone":
+    "The snapshot was already used, has expired or belongs to another stand. Press the button in Studio again.",
+  "dashboard.target.checkFailed": "Could not check the snapshot in Desktop. Try sending again.",
+  "dashboard.target.notConfigured": "Connect a Megaladata stand in settings first.",
+  "dashboard.target.localOnly": "Open a local Desktop chat to work on this dashboard.",
+  "prompt.context.dashboardDraft": "Dashboard draft for node “{{name}}”",
+  "prompt.context.dashboardRevise": "Dashboard edit “{{name}}”",
+  "settings.permissions.tool.dashboard_publish.description": "Publish the dashboard to the stand. Check the node and package below",
   "megaladata.saveClose": "Save and close",
   "megaladata.saving": "Saving settings…",
   "megaladata.applying": "Applying settings…",
@@ -26,8 +70,6 @@ export const MEGALADATA_ENGLISH = {
   "megaladata.checkedSaved": "Connection verified: the AI server is accessible and Megaladata sign-in succeeded.",
   "megaladata.refresh": "Refresh settings",
   "megaladata.loadFailed": "Could not load Megaladata settings.",
-  "megaladata.wizardRuntimeFailed":
-    "Could not apply the Megaladata connection. Check your connection settings and save them again.",
   "megaladata.discardTitle": "Close without saving?",
   "megaladata.discardDescription": "Your changes will be discarded. Previously saved settings will remain unchanged.",
   "megaladata.keepEditing": "Continue editing",
@@ -57,6 +99,8 @@ export const MEGALADATA_ENGLISH = {
   "megaladata.pending": "Settings will apply after active Megaladata tasks and unfinished operation recovery complete.",
   "megaladata.runtimeFailed":
     "Megaladata is unavailable. Check and save your connection settings again. Other application features remain available.",
+  "megaladata.wizardRuntimeFailed":
+    "Could not apply the Megaladata connection. Check your connection settings and save them again.",
   "megaladata.checked": "Connection verified. Settings have not been saved yet.",
   "megaladata.failed": "Could not verify or apply the connection. Check server availability and credentials.",
   "megaladata.conflict": "Another window changed these settings. Reload current settings and try again.",
@@ -65,6 +109,27 @@ export const MEGALADATA_ENGLISH = {
   "megaladata.checking": "Checking connection…",
   "megaladata.cancel": "Cancel pending changes",
   "megaladata.reload": "Reload current settings",
+  "diagnostics.title": "Collect diagnostics",
+  "diagnostics.noChat": "No chat is open: recent attempts are collected",
+  "diagnostics.group.chat": "Chat",
+  "diagnostics.group.runtime": "Execution journals and session diagnostics",
+  "diagnostics.group.logs": "Application logs",
+  "diagnostics.group.dumps": "Attach crash dump",
+  "diagnostics.group.summary": "{{included}} files, {{size}}; skipped: {{omitted}}",
+  "diagnostics.dumps.warning": "A crash dump holds process memory and is attached without anonymization.",
+  "diagnostics.dataWarning":
+    "Passwords, keys, your login and internal server addresses are removed. The archive may contain chat text and fragments of your data.",
+  "diagnostics.total": "Archive: {{size}}",
+  "diagnostics.files.show": "Show files",
+  "diagnostics.files.hide": "Hide files",
+  "diagnostics.files.open": "Open",
+  "diagnostics.reason.budget": "did not fit",
+  "diagnostics.reason.unsafe": "secret found",
+  "diagnostics.reason.unreadable": "binary or unreadable",
+  "diagnostics.cancel": "Cancel",
+  "diagnostics.save": "Save as…",
+  "diagnostics.saved.title": "Diagnostics saved",
+  "diagnostics.failed.title": "Could not collect diagnostics",
 } as const
 
 export const dict = {
@@ -88,7 +153,7 @@ export const dict = {
   "command.category.permissions": "Permissions",
   "command.category.workspace": "Workspace",
   "command.category.settings": "Settings",
-  "command.logs.export": "Export logs",
+  "command.logs.export": "Collect diagnostics…",
 
   "theme.scheme.system": "System",
   "theme.scheme.light": "Light",

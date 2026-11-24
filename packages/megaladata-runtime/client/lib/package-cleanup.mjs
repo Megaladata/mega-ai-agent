@@ -280,8 +280,18 @@ async function closeOwnedPackage(page, options, deadline, guardedDismiss) {
         if(state.failed_open_receipt&&state.failed_open_receipt!==prepared)return {reason:'FAILED_OPEN_OWNER_CHANGED'};
         state.failed_open_receipt=prepared;
       }
+      const navigatedDraft = o.unsavedDraft && prepared.phase==='superseded' && [...prep.receipts.values()].some(r=>{
+        if(r.phase!=='verified'||r.packageNode!==node||r.tab!==prepared.tab||!r.navigationResult)return false;
+        try {if(JSON.parse(r.request).session!==o.sessionId)return false;}catch{return false;}
+        const seen=new Set();
+        for(let source=r.navigationSource;source&&!seen.has(source)&&seen.size<32;source=source.navigationSource){
+          if(source===prepared)return true;
+          seen.add(source);
+        }
+        return false;
+      });
       if(o.unsavedDraft && (JSON.parse(prepared.request).intent!=='new_draft'
-        || prepared.phase!==(o.failedOpenOperation?'effect_possible':'verified')
+        || prepared.phase!==(o.failedOpenOperation?'effect_possible':'verified')&&!navigatedDraft
         || prepared.packageInventoryBefore!==0))return {reason:'DRAFT_OWNER_UNCONFIRMED'};
       if(o.failedOpenOperation&&(dismissOpenError||[...document.querySelectorAll('[role="dialog"],.x-message-box,.bg-mask-message,.x-mask-msg')].some(visible)
         ||state.open_error_dismiss_started)) {
@@ -461,8 +471,8 @@ async function closeOwnedPackage(page, options, deadline, guardedDismiss) {
       const no = page.locator('[data-tid^="msgbox"][data-tid$="tlb;no"]:visible');
       if (await message.count() !== 1 || await no.count() !== 1) return finish('BLOCKED','DIAGNOSTIC_SAVE_PROMPT_MISSING');
       const text = (await message.innerText({timeout:remaining()})).trim();
-      if (!/do you want to save changes in/i.test(text) || typeof before.display_name !== 'string'
-          || !text.includes(before.display_name) || /currently locked|cancel the active processes/i.test(text))
+      if (!/сохранить изменения в пакете/i.test(text) || typeof before.display_name !== 'string'
+          || !text.includes(before.display_name) || /заблокирован|отменить активные процессы/i.test(text))
         return finish('BLOCKED','DIAGNOSTIC_SAVE_PROMPT_CHANGED');
       // QA explicitly owns the temporary changes. Keep the exact account,
       // package and native node binding through the confirmation click.
