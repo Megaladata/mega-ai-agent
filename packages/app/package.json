@@ -17,7 +17,6 @@
   },
   "scripts": {
     "typecheck": "tsgo -b",
-    "typecheck:e2e": "tsgo -p e2e/tsconfig.json",
     "start": "vite",
     "dev": "vite",
     "build": "vite build",
@@ -25,18 +24,11 @@
     "test": "bun run test:unit && bun run test:browser",
     "test:unit": "bun test --conditions=solid --only-failures --preload ../ui/test/solid-jsx.ts --preload ./happydom.ts ./src",
     "test:browser": "bun test --conditions=browser --preload ../ui/test/solid-jsx.ts --preload ./happydom.ts ./test-browser",
-    "test:unit:watch": "bun test --conditions=solid --watch --preload ../ui/test/solid-jsx.ts --preload ./happydom.ts ./src",
-    "test:e2e": "playwright test",
-    "test:e2e:local": "playwright test",
-    "test:e2e:ui": "playwright test --ui",
-    "test:e2e:report": "playwright show-report e2e/playwright-report",
-    "test:stability": "bun test ./e2e/performance/unit/visual-stability.test.ts && playwright test --config e2e/performance/timeline-stability/playwright.config.ts",
-    "test:bench": "bun test ./e2e/performance/unit && playwright test --config e2e/performance/playwright.config.ts"
+    "test:unit:watch": "bun test --conditions=solid --watch --preload ../ui/test/solid-jsx.ts --preload ./happydom.ts ./src"
   },
   "license": "MIT",
   "devDependencies": {
     "@happy-dom/global-registrator": "20.12.0",
-    "@playwright/test": "catalog:",
     "@sentry/vite-plugin": "catalog:",
     "@tailwindcss/vite": "catalog:",
     "@tsconfig/bun": "1.0.9",
