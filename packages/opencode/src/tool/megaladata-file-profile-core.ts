@@ -21,7 +21,7 @@ const SQLITE_HEADER = Buffer.from("SQLite format 3\x00")
 const LGD_HEADER = Buffer.from("BGDATA\x03\x00\x02\x01")
 const BINARY_FORMATS = [
   { header: SQLITE_HEADER, format: "sqlite", import_node_type: "imports.database" },
-  { header: LGD_HEADER, format: "lgd", import_node_type: "imports.lgd" },
+  { header: LGD_HEADER, format: "mgd", import_node_type: "imports.lgd" },
 ] as const
 // Bun does not ship ICU's windows-1251 decoder; keep the same strict mapping
 // in source and in the Node standalone bundle (0x98 is undefined).

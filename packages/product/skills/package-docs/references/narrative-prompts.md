@@ -7,7 +7,7 @@ Do not turn a handler's general capability into a fact about its configuration.
 When settings are empty, formulas and code are unknown; when ports or links
 are absent, do not claim that data passes through them. An empty
 `external_references` does not mean file dependencies are absent: importing
-`data.lgd` requires that file. In every description, keep the direction of
+`data.mgd` requires that file. In every description, keep the direction of
 each edge from `links`: the output `source_label.source_port_name` passes data
 to the input `target_label.target_port_name`. Check both the short package
 description and the detailed module description against it before publishing
@@ -38,7 +38,7 @@ description: do not call the scenario "demonstration", "tutorial", or "test"
 only because it is named "Demo". The phrase "The business purpose is not
 specified" does not allow that claim in the next sentence. For this case it
 is enough: "The package contains a module “Demo”. A Text File node is
-configured to import `data.lgd` and is linked to Calculator; Calculator
+configured to import `data.mgd` and is linked to Calculator; Calculator
 formulas are not specified. A separate Supernode contains Python and another
 Supernode".
 

@@ -45,5 +45,5 @@ export function readLgdExportBrowser({prefix,fields,variableMapping=null}){
   values.checksum.native_value=values.checksum.value;values.checksum.value=0;
  }
  if(cmp(base+'ExportNativeParamsWizard;edtConnection')?.getValue?.()!=='Local')return fail('lgd_export_connection');
- return {verified:true,stage:'lgd_export',values,connection:'Local',format:'lgd',settings_applied:false};
+ return {verified:true,stage:'lgd_export',values,connection:'Local',format:'mgd',settings_applied:false};
 }

@@ -164,7 +164,7 @@ as described in the [hierarchy rules](references/hierarchy-json.md). Null in hie
 does not mean an external port is present. If the business task or a setting is unknown,
 say so directly; examples are in [narrative](references/narrative-prompts.md).
 Empty settings do not confirm formulas, code, or port assignments. Do not describe missing
-ports and links as connected. If an import refers to `data.lgd`
+ports and links as connected. If an import refers to `data.mgd`
 or another file, that is a file dependency; do not write "no external
 dependencies" or "the package has no external dependencies". Leave the absence of references to
 external packages in the matching section. Explain general handler capabilities

@@ -400,9 +400,9 @@
         },
         {
           "source": "megaladata-help",
-          "path": "data/integration/import/ldf.md",
-          "sha256": "95ed9afec1e8a77ba1b83d4f0ce5e2f55b4f52678abdeacf09041afe3c10bb74",
-          "document_title": "Import from an LGD file"
+          "path": "data/integration/import/mgd.md",
+          "sha256": "68bbbfceccb101780642251b0df8e33f6cfe7866a86a6b879f51b648ab30fbd0",
+          "document_title": "Megaladata File: Import Component"
         }
       ],
       "supported_profiles": [],
@@ -416,11 +416,11 @@
       "documented_sections": [
         {
           "section": "Ports",
-          "line": 10
+          "line": 11
         },
         {
           "section": "Configuration wizard",
-          "line": 20
+          "line": 21
         }
       ],
       "palette_observation": {
@@ -4075,9 +4075,9 @@
         },
         {
           "source": "megaladata-help",
-          "path": "data/integration/export/ldf.md",
-          "sha256": "161a0cd126553a1ebf392b9993819ce8599c234d73feef99375c632fa8ea765b",
-          "document_title": "Export to an LGD file"
+          "path": "data/integration/export/mgd.md",
+          "sha256": "7be32b99276c0e54717a5cee73de3ebe212b305661b4b4007b3f0fe62c7119a5",
+          "document_title": "Export to the MGD File"
         }
       ],
       "supported_profiles": [],
@@ -4091,11 +4091,11 @@
       "documented_sections": [
         {
           "section": "Ports",
-          "line": 12
+          "line": 9
         },
         {
-          "section": "Configuration wizard",
-          "line": 19
+          "section": "Wizard",
+          "line": 17
         }
       ],
       "palette_observation": {

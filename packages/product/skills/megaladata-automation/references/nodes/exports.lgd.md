@@ -1,14 +1,14 @@
-# LGD export
+# MGD export
 
 <!-- mode: native -->
 Get parameter_schema through dock_action_describe(node_types:["exports.lgd"]).
-One table input 0, mode native. lgd_export: destination is an absolute .lgd
+One table input 0, mode native. lgd_export: destination is an absolute .mgd
 in its own directory; compression="none"/"lzo"/"lz4", overwrite="reject".
 checksum="none"/"compressed"/"all" for LZ4; for none/lzo only "none".
 After reopen, Megaladata may show the previous checksum in a disabled field:
 for none/lzo it is not used, and the effective checksum remains "none".
 On creation, compression, checksum, overwrite, and one path source are required:
-destination OR bindings:{destination:{variable:"LgdPath"}}. {} keeps the settings.
+destination OR bindings:{destination:{variable:"MgdPath"}}. {} keeps the settings.
 The export has no table output: read.ports=[], and the result is output.file_artifacts.
 Execute writes the file; Done saves the settings; Close cancels the draft.
 Keep names, captions, kinds, types, field and row order, and NULL versus empty strings.
@@ -24,7 +24,7 @@ is not a mode of this node; append is not supported.
 For a path from a variable, connect the executed output of variables.calculator or
 another standard source to variable_inputs:[{source:...,output:0,input:0,kind:"variables"}].
 bindings.destination.variable is the exact name in the input mapping. It requires
-an observed string, not NULL, containing its own absolute .lgd path.
+an observed string, not NULL, containing its own absolute .mgd path.
 The built-in workflow-variable output may pass NULL; seeing the name
 in the list does not prove the value. Execute and read the source first.
 After the variable changes, execute the source and the same export: {} keeps
@@ -32,12 +32,12 @@ the binding and reads the current path. Check package save and reopen separately
 
 The stand uses a 64-bit writer; 32-bit Megaladata and Deductor
 are unavailable for verification. The server sets the bitness; the node has no switch.
-Do not promise compatibility with 32-bit or Deductor ≤5.3: LGD is not DDF.
+Do not promise compatibility with 32-bit or Deductor ≤5.3: MGD is not DDF.
 Refuse a request for DDF or that compatibility and explain the limit.
 Other compression algorithms are not claimed by this slice.
 Independent format correctness does not follow from a round-trip import alone.
 Choose the native node through dock_node_apply, mode:"native"; a table Calculator
-and JavaScript are not needed to write LGD. For a round-trip import, select the file through
+and JavaScript are not needed to write an MGD file. For a round-trip import, select the file through
 dock_storage_source, then parameters.source:{kind:"storage",server_source_ref:...}.
 Do not upload or convert it again. Save the package with a separate Save.
 

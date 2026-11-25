@@ -7,11 +7,11 @@ export const lgdImportSettingsSchema=object({checksum:{type:'string',enum:['veri
   description:'Bind filename to one mapped string variable from an executed source. Use variable_inputs kind variables, input 0 (native Input_Var-1), not control. Supply source for the exact current verified file when selecting a binding.'}});
 export const lgdImportParametersSchema=object({source:importSourceSchema,lgd_import:lgdImportSettingsSchema});
 export const lgdExportSettingsSchema=object({
- destination:{type:'string',minLength:1,maxLength:512,description:'Absolute .lgd file in the selected own export directory. Exclusive with bindings.destination.'},
+ destination:{type:'string',minLength:1,maxLength:512,description:'Absolute .mgd file in the selected own export directory. Exclusive with bindings.destination.'},
  compression:{type:'string',enum:['none','lzo','lz4'],description:'Native compression. none and lzo require checksum none.'},
  checksum:{type:'string',enum:['none','compressed','all'],description:'LZ4: no checksum, compressed data, or compressed and uncompressed data. Other compression requires none.'},
  overwrite:{type:'string',enum:['reject','replace'],description:'Default reject. Replace requires an explicit destination or binding in this request; only the exact own file may be replaced.'},
- bindings:object({destination:{type:'object',additionalProperties:false,properties:{variable:{type:'string',minLength:1,maxLength:128}},required:['variable'],description:'Exact string variable on the connected variables input 0; its observed value must be an own absolute .lgd path.'}}),
+ bindings:object({destination:{type:'object',additionalProperties:false,properties:{variable:{type:'string',minLength:1,maxLength:128}},required:['variable'],description:'Exact string variable on the connected variables input 0; its observed value must be an own absolute .mgd path.'}}),
 });
 export const lgdExportParametersSchema=object({lgd_export:lgdExportSettingsSchema});
 export function validateLgdImportParameters(p,mode,r){
@@ -22,13 +22,13 @@ export function validateLgdImportParameters(p,mode,r){
  if(s.bindings!==undefined)need(p.source&&s.bindings&&Object.keys(s.bindings).join(',')==='source_path'
   &&s.bindings.source_path&&Object.keys(s.bindings.source_path).join(',')==='variable'
   &&typeof s.bindings.source_path.variable==='string'&&/^[_A-Za-z][_A-Za-z0-9]{0,127}$/.test(s.bindings.source_path.variable),'binding requires a verified source and exact mapped variable name');
- need((r.variable_inputs??[]).length<=1&&(r.variable_inputs??[]).every(i=>i.kind==='variables'&&i.input===0),'LGD uses the ordinary variables input 0, not a hidden control port');
+ need((r.variable_inputs??[]).length<=1&&(r.variable_inputs??[]).every(i=>i.kind==='variables'&&i.input===0),'MGD uses the ordinary variables input 0, not a hidden control port');
  if(r.target.kind==='new'&&s.bindings)need(r.variable_inputs?.length===1,'new binding needs the executed variable source');
  if(r.target.kind==='new')need(p.source&&['verify','ignore'].includes(s.checksum),'new import requires verified source and an explicit checksum policy (default verify)');
  need(r.inputs.length===0&&r.mappings.every(m=>m.kind==='variables'&&m.direction==='input'&&m.port===0)&&r.read.ports.every(p=>p===0)&&r.read.ports.length<=1,'import has no table inputs; only variable input mapping 0 and table output 0');
 }
 export function validateLgdExportDestination(path,directories=null){
- need(typeof path==='string'&&path.length<=512&&/\.lgd$/i.test(path),'destination must be .lgd');
+ need(typeof path==='string'&&path.length<=512&&/\.mgd$/i.test(path),'destination must be .mgd');
  return requireExportDestination(path,directories);
 }
 export function validateLgdExportParameters(p,mode,r,directories=null){
@@ -55,5 +55,5 @@ export function validateLgdExportParameters(p,mode,r,directories=null){
 export function validateNativeLgdExport(values,directories=null){
  validateLgdExportDestination(values.destination?.value,directories);
  const compression=values.compression?.value,checksum=values.checksum?.value;
- need([0,1,2].includes(compression)&&[0,1,2].includes(checksum)&&(compression===2||checksum===0)&&values.string_cache_max_size?.value===131072,'unsupported retained native LGD format');
+ need([0,1,2].includes(compression)&&[0,1,2].includes(checksum)&&(compression===2||checksum===0)&&values.string_cache_max_size?.value===131072,'unsupported retained native MGD format');
 }

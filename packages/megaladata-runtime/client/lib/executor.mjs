@@ -723,7 +723,7 @@ export function makeServerSourceDownloadCode(options) {
   const name=options.artifact?.name;
   if(!b||!Number.isSafeInteger(b.bytes)||b.bytes<0||typeof b.mtime!=='string'||!b.mtime
     ||!Number.isSafeInteger(options.deadline_at)||options.deadline_at<=Date.now()
-    ||!name||!/\.(csv|tsv|txt|xlsx|lgd)$/i.test(name)||b.destination!==b.directory+'/'+name
+    ||!name||!/\.(csv|tsv|txt|xlsx|mgd)$/i.test(name)||b.destination!==b.directory+'/'+name
     ||s.file_storage?.directory!==b.directory||m.length!==1||m[0].label!==name
     ||m[0].tid!==s.workflow_ref?.prefix+';FileStorageForm;colName_'+storageTidSuffix(name)
     ||m[0].storage_entry?.bytes!==b.bytes||m[0].storage_entry?.mtime!==b.mtime
@@ -766,18 +766,18 @@ export function makeNativeOutputDownloadCode(options){
 
 // Trusted adapter only: every public reference must additionally be checked
 // against createObservationPages.assertIssued before this code is constructed.
-// This candidate covers CSV/TSV/TXT/XLSX/LGD double-click downloads only; package files require
+// This candidate covers CSV/TSV/TXT/XLSX/MGD double-click downloads only; package files require
 // an explicit download command instead of opening their scenario.
 export function makeArtifactDownloadCode(options) {
   const artifact=options?.artifact,snapshot=options?.snapshot;
   const matches=snapshot?.ui?.elements?.filter(item=>item.ref===options.file_ref) ?? [];
   const suffix=artifact?.name?.replace(/\s/g,'_').replace(/,/g,'');
-  if(!artifact?.upload || !/\.(?:csv|tsv|txt|xls|xlsx|lgd|db|json)$/i.test(artifact.name) || matches.length!==1
+  if(!artifact?.upload || !/\.(?:csv|tsv|txt|xls|xlsx|mgd|db|json)$/i.test(artifact.name) || matches.length!==1
     || matches[0].label!==artifact.name || matches[0].tid!==snapshot.workflow_ref?.prefix+';FileStorageForm;colName_'+suffix)
-    throw new Error('Download requires the exact observed authorized CSV/TSV/TXT/XLS/XLSX/LGD/DB/JSON file');
+    throw new Error('Download requires the exact observed authorized CSV/TSV/TXT/XLS/XLSX/MGD/DB/JSON file');
   const shared={expected_build:options.expected_build,expected_origin:options.expected_origin};
   // Upload may have observed the folder tree. Verification owns the separately
-  // issued exact CSV/TSV/TXT/XLSX/LGD ref, so its narrow reads must follow that file, not the
+  // issued exact CSV/TSV/TXT/XLSX/MGD ref, so its narrow reads must follow that file, not the
   // earlier upload region. Global context/blocker guards remain in native reads.
   const observe=makeWorkspaceUiCode({mode:'observe',root_ref:options.file_ref,...shared},{downloadToastObservation:true});
   const act=makeWorkspaceUiCode({mode:'act',snapshot,action:{verb:'double_click',ref:options.file_ref},...shared},{snapshotArgument:true});
@@ -3190,7 +3190,7 @@ export function createActionRuntime({ pinned, execute, artifactStore, allowCandi
           throw Error('dock_storage_source needs one exact file path, not a folder or mask; to see a server folder\'s files call dock_storage_list with the folder path and pattern');
         const path=listing?requireStorageDestination(typeof request.path==='string'&&request.path.length>1?request.path.replace(/\/$/,''):request.path,directories,'inputs',{directory:true})
           :requireStorageDestination(request.path,directories,'inputs');
-        if(!listing&&!/\.(csv|tsv|txt|xlsx|lgd)$/i.test(path))throw Error('Server source must be CSV/TSV/TXT/XLSX/LGD');
+        if(!listing&&!/\.(csv|tsv|txt|xlsx|mgd)$/i.test(path))throw Error('Server source must be CSV/TSV/TXT/XLSX/MGD');
         if(listing)storageListPattern(request.pattern);
         const id=request.operation_id,signature=(listing?'storage.list:'+JSON.stringify([path,request.pattern??null]):'storage.source:'+path);
         if(operations.has(id)||nodeJobs.has(id)||sourceReads.has(id))throw Error('Storage source operation ID conflicts');
@@ -4007,7 +4007,7 @@ export function createActionRuntime({ pinned, execute, artifactStore, allowCandi
       } finally {running=false;}
     },
     preflightDeliveredArtifact(artifact,snapshot) {
-      if(!/\.(?:csv|tsv|txt|xls|xlsx|lgd|db|json)$/i.test(artifact?.name??''))throw Object.assign(Error('Server-copy verification supports only admitted CSV/TSV/TXT/XLS/XLSX/LGD/DB/JSON files; no upload was submitted'),{code:'ARTIFACT_VERIFICATION_UNSUPPORTED'});
+      if(!/\.(?:csv|tsv|txt|xls|xlsx|mgd|db|json)$/i.test(artifact?.name??''))throw Object.assign(Error('Server-copy verification supports only admitted CSV/TSV/TXT/XLS/XLSX/MGD/DB/JSON files; no upload was submitted'),{code:'ARTIFACT_VERIFICATION_UNSUPPORTED'});
       if(snapshot)makeArtifactDiscoveryDownloadCode({artifact,snapshot},{download:browserArtifactDownload,reveal:browserArtifactReveal});
     },
     uploadDeliveredArtifact:options=>runtime.upload({...options,decideConflicts:true}),
@@ -4197,7 +4197,7 @@ export function createActionRuntime({ pinned, execute, artifactStore, allowCandi
               return serverDownloads?serverDownloads.bind(source,receipt):source;
             },
             isBoundFileInput:path=>{
-              if(!/\.(csv|tsv|txt|xlsx|lgd)$/i.test(path))return false;
+              if(!/\.(csv|tsv|txt|xlsx|mgd)$/i.test(path))return false;
               try{requireStorageDestination(path,getStorageBinding()?.directories,'inputs');return true;}
               catch{return false;}
             },

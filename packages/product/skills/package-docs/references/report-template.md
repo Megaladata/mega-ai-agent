@@ -65,13 +65,13 @@ AI Report service version: `1.0`
 ```
 
 The references section covers only `external_references`. For example,
-`FileName: data.lgd` is a file dependency even when the reference list is
+`FileName: data.mgd` is a file dependency even when the reference list is
 empty. Mention it in the package or module description; do not replace the
 reference list with a general claim of "no external dependencies".
 
 In the module description, distinguish a link from a completed calculation.
 For example, when Text File is linked to Calculator and the Calculator
-settings are empty: "Text File is configured to import `data.lgd`; its output
+settings are empty: "Text File is configured to import `data.mgd`; its output
 is linked to the Calculator input. Calculator is intended to compute fields,
 but the formulas are not specified in the package". The name "Demo" by itself
 does not confirm a demonstration purpose; in that case the module description

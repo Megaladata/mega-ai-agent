@@ -4,7 +4,7 @@ export const MEGALADATA_PACKAGE_MIME = "application/x-megaladata-package"
 
 const BINARY_REFERENCE_MIMES = new Map([
   ["db", "application/octet-stream"],
-  ["lgd", "application/octet-stream"],
+  ["mgd", "application/octet-stream"],
   ["xls", "application/vnd.ms-excel"],
 ])
 

@@ -31,7 +31,7 @@ export function requireStorageDestination(path, directories, purpose, { director
     throw Error('Destination is outside the selected Megaladata directory');
   }
   if (!directory && purpose === 'packages' && !/\.mgp$/i.test(path)) throw Error('A Megaladata package filename is required');
-  if (!directory && purpose === 'exports' && !/\.(csv|tsv|txt|xls|xlsx|lgd)$/i.test(path)) throw Error('A CSV, TSV, TXT, XLS, XLSX or LGD filename is required');
+  if (!directory && purpose === 'exports' && !/\.(csv|tsv|txt|xls|xlsx|mgd)$/i.test(path)) throw Error('A CSV, TSV, TXT, XLS, XLSX or MGD filename is required');
   return path;
 }
 
@@ -68,8 +68,8 @@ export function withStorageIdentity(code, binding, storageSession) {
 export function requireExportDestination(value, directories = null) {
   if (directories) return requireStorageDestination(value, directories, 'exports');
   // Unchanged scope for legacy acceptance profiles and catalog revisions.
-  if (typeof value !== 'string' || !/^\/test-2\/(?:[A-Za-z0-9_-]+\/)*[A-Za-z0-9][A-Za-z0-9_.-]*\.(csv|tsv|txt|xls|xlsx|lgd)$/.test(value)
-      || value.length > 512 || value.includes('..')) throw Error('Export requires an explicitly assigned CSV/TSV/TXT/XLS/XLSX/LGD in /test-2');
+  if (typeof value !== 'string' || !/^\/test-2\/(?:[A-Za-z0-9_-]+\/)*[A-Za-z0-9][A-Za-z0-9_.-]*\.(csv|tsv|txt|xls|xlsx|mgd)$/.test(value)
+      || value.length > 512 || value.includes('..')) throw Error('Export requires an explicitly assigned CSV/TSV/TXT/XLS/XLSX/MGD in /test-2');
   return value;
 }
 

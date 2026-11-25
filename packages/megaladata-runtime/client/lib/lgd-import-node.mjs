@@ -86,7 +86,7 @@ export function createLgdImportNodeSupport(config){
    const proof=p.source.kind==='storage'?await options.resolveStorageSource?.(p.source.server_source_ref):undefined;
    source=verifyTextImportSource({source:p.source,settings:proof?{source:{source_path:proof.destination}}:{}},options.verifiedUploads(),options.uploadHistory?.(),proof);
    validateLgdChecksumChange(p.lgd_import?.checksum,source.source,history,node);
-   need(/\.lgd$/i.test(source.source.destination),'verified standalone .lgd required');return source;
+   need(/\.mgd$/i.test(source.source.destination),'verified standalone .mgd required');return source;
   }};
  }};
 }

@@ -43,7 +43,7 @@ export async function configureLgdImportBrowser(page,t,readContext){
       if(combo.inputEl?.dom&&typeof combo.getRawValue?.()==='string'&&combo.inputEl.dom.value!==combo.getRawValue())throw Error('LGD uncommitted filename variable');
       const rows=combo.getStore().getData().items.filter(r=>r.data.field1===combo.getValue());
       const chosen=variables.filter(v=>v.type===5&&!v.is_null&&v.source?.type===5&&rows.length===1&&rows[0].data.field2===v.label+' ( '+v.value+' )');
-      if(chosen.length!==1||typeof chosen[0].value!=='string'||!/^\/(?!\/)/.test(chosen[0].value)||!/\.lgd$/i.test(chosen[0].value))throw Error('LGD selected filename variable is not a verified mapped string');
+      if(chosen.length!==1||typeof chosen[0].value!=='string'||!/^\/(?!\/)/.test(chosen[0].value)||!/\.mgd$/i.test(chosen[0].value))throw Error('MGD selected filename variable is not a verified mapped string');
       source_variable=chosen[0].name;return chosen[0].value;
      }
     }
@@ -68,7 +68,7 @@ export async function configureLgdImportBrowser(page,t,readContext){
    need(typeof tid==='string'&&tid.startsWith(file+'edtFileName;VariableControl;boundlist;'),'LGD bound option identity required');await click(find(tid));
   }
   if(t.source_path!==undefined&&!await fileMode()){
-   need(typeof t.source_path==='string'&&/^\/(?!\/)/.test(t.source_path)&&/\.lgd$/i.test(t.source_path),'verified .lgd source required');
+   need(typeof t.source_path==='string'&&/^\/(?!\/)/.test(t.source_path)&&/\.mgd$/i.test(t.source_path),'verified .mgd source required');
    const l=find(file+'edtFileName;ValueControl').locator('input');
    if(await l.inputValue()!==t.source_path){await point(l);await guard();effect=true;await l.fill(t.source_path);await l.press('Tab');}
   }
@@ -80,14 +80,14 @@ export async function configureLgdImportBrowser(page,t,readContext){
   need(observed.checksum===expectedChecksum&&observed.connection==='Local','requested checksum policy and local file storage required');
 
   need(t.source_path===undefined||observed.source_path===t.source_path,'source changed');
-  need(/\.lgd$/i.test(observed.source_path),'standalone LGD required');
+  need(/\.mgd$/i.test(observed.source_path),'standalone MGD required');
   // Megaladata fills these fields only after ReadHeaderAsync + PreviewDataAsync.
   // Keep the source page visible until that preview succeeds or reports its
   // own error; advancing early can hide a failed preview behind the next card.
   observed=await wait('source preview',async()=>{const v=await native();return v.compression!==''&&v.written_checksum!==''&&v.bitness!==''?v:null;});
   const supported=v=>v.bitness==='64-bit system'&&(v.compression==='LZ4'&&['No','Compressed data','Compressed and uncompressed data'].includes(v.written_checksum)
    ||['Без сжатия','LZO'].includes(v.compression)&&v.written_checksum==='No');
-  need(supported(observed),'unsupported native LGD format');
+  need(supported(observed),'unsupported native MGD format');
   const advance=async target=>{await nativeError();await click(find(root+';btnNext'));await wait(target,async()=>{
    await nativeError();
    return await find(root+';'+target).isVisible()&&await page.evaluate(target=>bg.app.Application.FInstance.FMainForm.Items.Workspace.getActiveTab().Controller.FController.FCardLayout.getActiveItem().el.dom.getAttribute('data-tid').endsWith(';'+target),target);
@@ -96,7 +96,7 @@ export async function configureLgdImportBrowser(page,t,readContext){
   const selectedSource=observed;
   observed=await native();
   need(observed.source_path===selectedSource.source_path&&observed.source_variable===selectedSource.source_variable&&observed.checksum===expectedChecksum&&observed.connection==='Local','source or checksum changed during native validation');
-  need(supported(observed)&&['compression','written_checksum','bitness'].every(k=>observed[k]===selectedSource[k]),'unsupported retained native LGD format');
+  need(supported(observed)&&['compression','written_checksum','bitness'].every(k=>observed[k]===selectedSource[k]),'unsupported retained native MGD format');
   await advance('DoneWizard');
   return {verified:true,cleanup_complete:true,effect_possible:effect,configuration:{verified:true,node_context:{...t.node,verified:true},source:observed}};
  }catch(error){return {verified:false,cleanup_complete:!effect,effect_possible:effect,error:String(error.message).slice(0,1000)};}
