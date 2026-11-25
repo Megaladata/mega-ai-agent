@@ -8,12 +8,19 @@ import { usePlatform } from "@/context/platform"
 import { uuid } from "@/utils/uuid"
 import { getCursorPosition } from "./editor-dom"
 import { createBlobReference, type DraftStore } from "@/utils/draft-store"
-import { MEGALADATA_PACKAGE_MIME } from "@/constants/file-picker"
+import { binaryReferenceMime, MEGALADATA_PACKAGE_MIME } from "@/constants/file-picker"
 import { attachmentMime } from "./files"
 import { normalizePaste, pasteMode } from "./paste"
 
 type PromptTarget = Pick<ReturnType<ReturnType<typeof usePrompt>["capture"]>, "current" | "cursor" | "set">
 type AttachmentTarget = { prompt: PromptTarget; cursor: number | undefined }
+
+function needsReference(file: File) {
+  return (
+    Boolean(binaryReferenceMime(file.name)) ||
+    (file.size > 16 * 1024 * 1024 && !file.name.toLowerCase().endsWith(".mgp"))
+  )
+}
 
 type PromptAttachmentsCoreInput = {
   capture: () => PromptTarget
@@ -49,7 +56,7 @@ export function createPromptAttachmentsCore(input: PromptAttachmentsCoreInput) {
 
   const add = async (file: File | LocalAttachmentReference, toast = true, target = capture()) => {
     if (!target) return false
-    if ("kind" in file || (file.size > 16 * 1024 * 1024 && !file.name.toLowerCase().endsWith(".mgp"))) {
+    if ("kind" in file || needsReference(file)) {
       if (!("kind" in file) && (!input.getPathForFile?.(file) || !input.referenceAttachment)) {
         input.missingPath?.()
         return false
@@ -106,13 +113,7 @@ export function createPromptAttachmentsCore(input: PromptAttachmentsCoreInput) {
       if (ok) found = true
     }
 
-    if (
-      !found &&
-      files.length > 0 &&
-      toast &&
-      !files.some((file) => file.size > 16 * 1024 * 1024 && !file.name.toLowerCase().endsWith(".mgp"))
-    )
-      input.warn?.()
+    if (!found && files.length > 0 && toast && !files.some(needsReference)) input.warn?.()
     return found
   }
 

@@ -34,18 +34,15 @@ formulas are not JS nodes. Describe JS after admission. A tasked reading or repa
 existing JS permits schema, source, and context. Never delete existing JS automatically
 or move unrelated standard operations into it.
 
-## Unconnected source
+## Source
 
-For a source with no incoming link: inputs:[] and parameters.input_state:"unconnected".
-The runtime checks that there are no incoming links and that the native input mapping is empty;
-an empty connected table is a different case. The same input_state is required when
-the source is executed or changed again. Declared output: apply execute maps first,
-then runs once, including existing nodes. Code output without FS/Fetch runs twice:
-materialize, map, reactivate. Cold and downstream run once. Preserve partial failures;
-never retry unknown effects.
-Omit input_state on an ordinary table branch.
-
-FS/Fetch: declare the output columns before a configuration that executes.
+A node without a table input needs `inputs:[]`, `parameters.input_state:"unconnected"`, and an empty native mapping.
+A new node may set `variable_inputs` (`kind:"variables"`, `input:0`).
+Import `InputVariables` from `builtIn/Data` and read `InputVariables.Items.<Name>.Value`.
+Use the same input_state to rerun or edit a source without links. Omit it for connected tables.
+Declared output maps, then executes once, including existing nodes. Code without FS/Fetch
+runs twice: materialize, map, reactivate. Cold and downstream runs once.
+Preserve partial failures. Never retry unknown effects. An FS/Fetch Execute requires a declared output.
 
 ## FS
 

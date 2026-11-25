@@ -84,9 +84,10 @@ normal temporary phase:
    `continuable` means follow `next_step` (a new operation on the same node or
    `megaladata_dock_node_read` from the receipt). `unresolved` means continue
    within the remaining budget or call `action:"stop"`.
-5. Call `action:"stop"` when there is no further justified action. After a stop
-   or when the budget is exhausted (30 calls, 10 minutes per step), do not start
-   the attempt again without a new Dock `next_step`.
+5. Call `action:"stop"` when there is no further justified action. The step
+   budget (30 calls, 10 minutes) is not renewed. If `start` is refused, the
+   operation stays locked: do not repeat `start` or `abandon_operation`; report
+   the `operation_id`, phase, and reason, and stop.
 
 In the final answer, separate what the runtime confirmed, what was done in the
 browser and confirmed only by you (`attested_by_model`), whether the package was

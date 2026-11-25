@@ -34,7 +34,7 @@ source for the rest of the cycle.
 Megaladata computes the totals, not local Python or bash; inspect a file through
 `megaladata_file_profile`. On a tool refusal, follow only its `next_step` or
 recovery, then report the blocker; do not read logs, diagnostics, or product
-sources. Conversion and derived files need consent
+sources. Conversion and derived files need consent, and do not use `sleep`
 ([boundaries](references/workflow.md#action-boundaries)).
 
 To edit a local `.mgp` from a path or attachment, call

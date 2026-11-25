@@ -348,6 +348,17 @@ this skill's help (`SKILL.md` and `references/`). Take `artifact_id`,
 `upload_grant_id`, NodeRef, and paths only from tool replies, not from logs; a
 local receipt does not replace an undelivered reply.
 
+Wait only with `megaladata_dock_node_wait` (up to 60 s per call; on `running`,
+call it again with the same `operation_id`) and `megaladata_dock_operation_inspect`.
+Shell `sleep`, loops, and bash/Python wait timers are forbidden. If the reply
+names a blocker other than `running`, report the `operation_id`, phase, and
+reason, and stop. Open an attached `.mgp` with `megaladata_dock_prepare`
+(`open_package`); do not unpack it (`unzip`/`zipfile`) or read its XML. Do not
+read or create files outside the working directory and the attachments: sibling
+and parent directories, the storage root, and other people's files
+(`cat`/`head`/`find`/`python`, `touch`). The exceptions are this skill's help
+and paths returned by tools.
+
 Convert files (XLSX to CSV, SQLite, splitting a sheet or a file, a custom
 converter), copy data, and upload derived files to Megaladata only with explicit
 consent. If importing the source is refused, offer those options in words and ask.
