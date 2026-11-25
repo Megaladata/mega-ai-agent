@@ -116,7 +116,15 @@ const rows = [
     .map((file) => `| ${file} | ${hashes.get(file)} | metadata |`),
   "| SHA256SUMS.txt | — | checksums of every asset above |",
 ]
+// Human notes are script/release-notes/<tag>.md and are published above this generated block.
+// Asset checksums below stay generated from this build.
+const narrativeFile = Bun.file(path.join(import.meta.dir, "release-notes", `${args.tag}.md`))
+if (!(await narrativeFile.exists())) throw new Error(`Release notes file is missing: script/release-notes/${args.tag}.md`)
+const narrative = (await narrativeFile.text()).trim()
+if (!narrative) throw new Error(`Release notes file is empty: script/release-notes/${args.tag}.md`)
 const notes = [
+  narrative,
+  "",
   `# Mega AI Agent ${args.tag}`,
   "",
   `- Version: ${version}`,
